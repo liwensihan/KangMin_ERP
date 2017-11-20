@@ -1,0 +1,65 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpExpend;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpExpend;
+import com.yidu.model.ErpKindsType;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+public interface ErpExpendService {
+
+	/**
+	 * 删除
+	 * @param expendId 类型id
+	 * @return int
+	 */
+	int deleteByPrimaryKey(String expendId);
+	/**
+     * 添加全部
+     * @param record 类型对象
+     * @return int
+     */
+    int insert(ErpExpend record);
+    /**
+     * 选择性添加
+     * @param record 类型对象
+     * @return 返回int
+     */
+    int insertSelective(ErpExpend record);
+    /**
+     * 查找单个对象
+     * @param typeId 类型id
+     * @return 返回类型对象
+     */
+    ErpExpend selectByPrimaryKey(String expendId);
+    /**
+     * 选择修改
+     * @param record 类型对象
+     * @return 返回数字
+     */
+    int updateByPrimaryKeySelective(ErpExpend record);
+    /**
+     * 修改全部
+     * @param record 类型对象
+     * @returnss
+     */
+    int updateByPrimaryKey(ErpExpend record);
+    /**
+     * 查询所有
+     * @return 返回对象集合
+     */
+    List<ErpExpend> showListExpend();
+    /**
+     * 模糊查询
+     * @param price 值
+     * @return 返回type对象的集合
+     */
+    public List<ErpExpend> findDimType(Map<String,Object> map);
+}

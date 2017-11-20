@@ -1,0 +1,17 @@
+package com.yidu.dao;
+
+import com.yidu.model.ErpProindentDetail;
+
+public interface ErpProindentDetailMapper {
+    int deleteByPrimaryKey(String entdeId);
+
+    int insert(ErpProindentDetail record);
+
+    int insertSelective(ErpProindentDetail record);
+
+    ErpProindentDetail selectByPrimaryKey(String entdeId);
+
+    int updateByPrimaryKeySelective(ErpProindentDetail record);
+
+    int updateByPrimaryKey(ErpProindentDetail record);
+}

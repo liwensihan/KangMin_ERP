@@ -1,0 +1,17 @@
+package com.yidu.dao;
+
+import com.yidu.model.ErpAnnex;
+
+public interface ErpAnnexMapper {
+    int deleteByPrimaryKey(String annexId);
+
+    int insert(ErpAnnex record);
+
+    int insertSelective(ErpAnnex record);
+
+    ErpAnnex selectByPrimaryKey(String annexId);
+
+    int updateByPrimaryKeySelective(ErpAnnex record);
+
+    int updateByPrimaryKey(ErpAnnex record);
+}

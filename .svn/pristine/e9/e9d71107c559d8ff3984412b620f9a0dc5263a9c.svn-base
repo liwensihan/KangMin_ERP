@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpPurchaseDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpPurchaseDetails" >
+    <id column="PUR_DET_ID" property="purDetId" jdbcType="VARCHAR" />
+    <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="PUR_DET_SERIAL" property="purDetSerial" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PUR_DET_ID, PURC_ID, KIN_ID, PUR_DET_SERIAL
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_purchase_details
+    where PUR_DET_ID = #{purDetId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_purchase_details
+    where PUR_DET_ID = #{purDetId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpPurchaseDetails" >
+    insert into erp_purchase_details (PUR_DET_ID, PURC_ID, KIN_ID, 
+      PUR_DET_SERIAL)
+    values (#{purDetId,jdbcType=VARCHAR}, #{purcId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, 
+      #{purDetSerial,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpPurchaseDetails" >
+    insert into erp_purchase_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="purDetId != null" >
+        PUR_DET_ID,
+      </if>
+      <if test="purcId != null" >
+        PURC_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="purDetSerial != null" >
+        PUR_DET_SERIAL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="purDetId != null" >
+        #{purDetId,jdbcType=VARCHAR},
+      </if>
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="purDetSerial != null" >
+        #{purDetSerial,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpPurchaseDetails" >
+    update erp_purchase_details
+    <set >
+      <if test="purcId != null" >
+        PURC_ID = #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="purDetSerial != null" >
+        PUR_DET_SERIAL = #{purDetSerial,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PUR_DET_ID = #{purDetId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpPurchaseDetails" >
+    update erp_purchase_details
+    set PURC_ID = #{purcId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR},
+      PUR_DET_SERIAL = #{purDetSerial,jdbcType=VARCHAR}
+    where PUR_DET_ID = #{purDetId,jdbcType=VARCHAR}
+  </update>
+</mapper>

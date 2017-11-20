@@ -1,0 +1,123 @@
+/**
+ * 
+ */
+package com.yidu.action.ErpPay;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yidu.model.ErpPay;
+import com.yidu.service.ErpPay.ErpPayService;
+import com.yidu.util.SsmMessage;
+
+/**
+ * @author zhangwei
+ * 2017年10月23日
+ */
+@Controller
+@RequestMapping("/ErpPay")
+public class ErpPayAction {
+
+	@Resource
+	private ErpPayService service;
+	/**
+	 * 增加类型
+	 * @param record 类型对象
+	 * @return 返回信息类
+	 */
+	@RequestMapping("insertSelectivePay")
+	@ResponseBody
+	public SsmMessage insertSelectivePay(ErpPay record){
+		SsmMessage mes = new SsmMessage();
+		int rows = service.insertSelective(record);
+		if(rows>-1){
+			mes.setMes("增加成功");
+			mes.setState(1);
+		}else{
+			mes.setMes("增加失败");
+			mes.setState(0);
+		}
+		return mes;
+	}
+	/**
+	 * 查询所有
+	 * @return
+	 */
+	@RequestMapping("showListPay")
+	@ResponseBody
+	public Map showListPay(){
+		List<ErpPay> list = service.showLisPay();
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("code", "");
+		map.put("msg", "");
+		map.put("count", list.size());
+		map.put("data", list);
+		return map;
+	}
+	/**
+	 * 删除
+	 * @param payId 类型id
+	 * @return 返回信息类
+	 */
+	@RequestMapping("deletePay")
+	@ResponseBody
+	public SsmMessage deletePay(String payId){
+		SsmMessage mes = new SsmMessage();
+		ErpPay pay = new ErpPay();
+		pay.setPayId(payId);
+		int rows = service.updateByPrimaryKeySelective(pay);
+		if(rows>-1){
+			mes.setMes("删除成功");
+			mes.setState(1);
+		}else{
+			mes.setMes("删除失败");
+			mes.setState(0);
+		}
+		return mes;
+	}
+	/**
+	 * 修改
+	 * @param record 类型对象
+	 * @return 返回信息类
+	 */
+	@RequestMapping("updateByPrimaryKeySelective")
+	@ResponseBody
+	public SsmMessage updateByPrimaryKeySelective(ErpPay record){
+		SsmMessage mes = new SsmMessage();
+		if(record.getPayId()!=null){
+			int rows = service.updateByPrimaryKeySelective(record);
+			if(rows>-1){
+				mes.setMes("修改成功");
+				mes.setState(1);
+			}else{
+				mes.setMes("修改失败");
+				mes.setState(0);
+			}
+		}
+		return mes;
+	}
+	/**
+	 * 模糊查询
+	 * @param pricer 值
+	 * @return 返回对象的map
+	 */
+	@RequestMapping("findDimPay")
+	@ResponseBody
+	public Map findDimPay(String pricer){
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("pricer", pricer);
+		List<ErpPay> list = service.findDimPay(map);
+		map.put("code", "");
+		map.put("msg", "");
+		map.put("count", list.size());
+		map.put("data", list);
+		return map;
+	}
+}

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpOrdercompMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpOrdercomp" >
+    <id column="ORDERCOMP_ID" property="ordercompId" jdbcType="VARCHAR" />
+    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="QUA_ID" property="quaId" jdbcType="VARCHAR" />
+    <result column="ORDERCOMP_SERIAL" property="ordercompSerial" jdbcType="VARCHAR" />
+    <result column="ORDERCOMP_NUM" property="ordercompNum" jdbcType="INTEGER" />
+    <result column="ORDERCOMP_COMPLETE" property="ordercompComplete" jdbcType="INTEGER" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ORDERCOMP_ID, INDENT_ID, QUA_ID, ORDERCOMP_SERIAL, ORDERCOMP_NUM, ORDERCOMP_COMPLETE, 
+    ISVA, CREATETIME, CREATER, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_ordercomp
+    where ORDERCOMP_ID = #{ordercompId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_ordercomp
+    where ORDERCOMP_ID = #{ordercompId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpOrdercomp" >
+    insert into erp_ordercomp (ORDERCOMP_ID, INDENT_ID, QUA_ID, 
+      ORDERCOMP_SERIAL, ORDERCOMP_NUM, ORDERCOMP_COMPLETE, 
+      ISVA, CREATETIME, CREATER, 
+      REMARK)
+    values (#{ordercompId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, #{quaId,jdbcType=VARCHAR}, 
+      #{ordercompSerial,jdbcType=VARCHAR}, #{ordercompNum,jdbcType=INTEGER}, #{ordercompComplete,jdbcType=INTEGER}, 
+      #{isva,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpOrdercomp" >
+    insert into erp_ordercomp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ordercompId != null" >
+        ORDERCOMP_ID,
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="quaId != null" >
+        QUA_ID,
+      </if>
+      <if test="ordercompSerial != null" >
+        ORDERCOMP_SERIAL,
+      </if>
+      <if test="ordercompNum != null" >
+        ORDERCOMP_NUM,
+      </if>
+      <if test="ordercompComplete != null" >
+        ORDERCOMP_COMPLETE,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ordercompId != null" >
+        #{ordercompId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="quaId != null" >
+        #{quaId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordercompSerial != null" >
+        #{ordercompSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="ordercompNum != null" >
+        #{ordercompNum,jdbcType=INTEGER},
+      </if>
+      <if test="ordercompComplete != null" >
+        #{ordercompComplete,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpOrdercomp" >
+    update erp_ordercomp
+    <set >
+      <if test="indentId != null" >
+        INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="quaId != null" >
+        QUA_ID = #{quaId,jdbcType=VARCHAR},
+      </if>
+      <if test="ordercompSerial != null" >
+        ORDERCOMP_SERIAL = #{ordercompSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="ordercompNum != null" >
+        ORDERCOMP_NUM = #{ordercompNum,jdbcType=INTEGER},
+      </if>
+      <if test="ordercompComplete != null" >
+        ORDERCOMP_COMPLETE = #{ordercompComplete,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORDERCOMP_ID = #{ordercompId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpOrdercomp" >
+    update erp_ordercomp
+    set INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      QUA_ID = #{quaId,jdbcType=VARCHAR},
+      ORDERCOMP_SERIAL = #{ordercompSerial,jdbcType=VARCHAR},
+      ORDERCOMP_NUM = #{ordercompNum,jdbcType=INTEGER},
+      ORDERCOMP_COMPLETE = #{ordercompComplete,jdbcType=INTEGER},
+      ISVA = #{isva,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ORDERCOMP_ID = #{ordercompId,jdbcType=VARCHAR}
+  </update>
+</mapper>

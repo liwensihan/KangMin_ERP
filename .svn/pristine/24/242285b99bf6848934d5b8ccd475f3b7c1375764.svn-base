@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpLogDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpLogDetail" >
+    <id column="DETAIL_ID" property="detailId" jdbcType="VARCHAR" />
+    <result column="LOG_ID" property="logId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="DETAIL_NUM" property="detailNum" jdbcType="INTEGER" />
+    <result column="NUM" property="num" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DETAIL_ID, LOG_ID, KIN_ID, DETAIL_NUM, NUM, CREATETIME, ISVA
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_log_detail
+    where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_log_detail
+    where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpLogDetail" >
+    insert into erp_log_detail (DETAIL_ID, LOG_ID, KIN_ID, 
+      DETAIL_NUM, NUM, CREATETIME, 
+      ISVA)
+    values (#{detailId,jdbcType=VARCHAR}, #{logId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, 
+      #{detailNum,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpLogDetail" >
+    insert into erp_log_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        DETAIL_ID,
+      </if>
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="detailNum != null" >
+        DETAIL_NUM,
+      </if>
+      <if test="num != null" >
+        NUM,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        #{detailId,jdbcType=VARCHAR},
+      </if>
+      <if test="logId != null" >
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailNum != null" >
+        #{detailNum,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpLogDetail" >
+    update erp_log_detail
+    <set >
+      <if test="logId != null" >
+        LOG_ID = #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailNum != null" >
+        DETAIL_NUM = #{detailNum,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        NUM = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpLogDetail" >
+    update erp_log_detail
+    set LOG_ID = #{logId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR},
+      DETAIL_NUM = #{detailNum,jdbcType=INTEGER},
+      NUM = #{num,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
+    where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
+  </update>
+</mapper>

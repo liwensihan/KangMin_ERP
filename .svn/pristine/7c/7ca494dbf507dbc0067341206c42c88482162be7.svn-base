@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpImgMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpImg" >
+  	<id column="IMG_ID" property="imgId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+    <result column="IMG_SERIAL" property="imgSerial" jdbcType="VARCHAR" />
+    <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.yidu.model.ErpImg" >
+    insert into erp_img (KIN_ID, RAW_ID, IMG_ID, 
+      IMG_SERIAL, IMG_URL, ISVA
+      )
+    values (#{kinId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, #{imgId,jdbcType=VARCHAR}, 
+      #{imgSerial,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}
+      )
+  </insert>
+ <insert id="insertSelective" parameterType="com.yidu.model.ErpImg" >
+ 	<selectKey keyProperty="imgId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
+    insert into erp_img
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imgId != null" >
+        IMG_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
+      </if>
+      <if test="imgSerial != null" >
+        IMG_SERIAL,
+      </if>
+      <if test="imgUrl != null" >
+        IMG_URL,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imgId != null" >
+        #{imgId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSerial != null" >
+        #{imgSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="findImg" resultMap="BaseResultMap" parameterType="map" >
+  	select * from erp_img
+  	<where>
+  		<if test="pricer != ''">
+    		(
+    			RAW_ID like CONCAT('%',#{pricer},'%' )
+    			or
+	    		KIN_ID like CONCAT('%',#{pricer},'%' )
+    		)
+    	</if>
+  	</where>
+  </select>
+  <sql id="Base_Column_List" >
+    IMG_ID, KIN_ID, RAW_ID, IMG_SERIAL, IMG_URL, ISVA
+  </sql>
+  
+  
+  <select id="findImgRaw" resultMap="BaseResultMap">
+    select 
+   *
+    from erp_img
+  
+  </select>
+  
+</mapper>

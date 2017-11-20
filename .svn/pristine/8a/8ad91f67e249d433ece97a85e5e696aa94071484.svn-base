@@ -1,0 +1,64 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpIncome;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpFinance;
+import com.yidu.model.ErpIncome;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+public interface ErpIncomeService {
+	/**
+	 * 删除
+	 * @param incomeId 类型id
+	 * @return 返回类型
+	 */
+	int deleteByPrimaryKey(String incomeId);
+	/**
+	 * 添加全部
+	 * @param record 类型对象
+	 * @return 返回类型
+	 */
+    int insert(ErpIncome record);
+    /**
+     * 选择性添加
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int insertSelective(ErpIncome record);
+    /**
+     * 查找单个对象
+     * @param incomeId 类型id
+     * @return 返回类型
+     */
+    ErpIncome selectByPrimaryKey(String incomeId);
+    /**
+     * 选择性修改
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int updateByPrimaryKeySelective(ErpIncome record);
+    /**
+     * 修改全部
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int updateByPrimaryKey(ErpIncome record);
+    /**
+     * 查询所有
+     * @return 返回对象集合
+     */
+    List<ErpIncome> showLisIncome();
+    /**
+     * 模糊查询
+     * @param price 值
+     * @return 返回type对象的集合
+     */
+    public List<ErpIncome> findDimIncome(Map<String,Object> map);
+}

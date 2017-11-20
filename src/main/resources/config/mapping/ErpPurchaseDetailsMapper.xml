@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpPurchaseDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpPurchaseDetails" >
+    <id column="PUR_DET_ID" property="purDetId" jdbcType="VARCHAR" />
+    <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rowId" jdbcType="VARCHAR" />
+    <result column="PUR_DET_SERIAL" property="purDetSerial" jdbcType="VARCHAR" />
+    <result column="PUR_TOTAL_NUMBER" property="purcTotalNumber" jdbcType="INTEGER" />
+    <result column="PUR_TOTAL_PRICE" property="purcTotalPrice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PUR_DET_ID, PURC_ID, RAW_ID, PUR_DET_SERIAL, PUR_TOTAL_NUMBER, PUR_TOTAL_PRICE
+  </sql>
+  
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpPurchaseDetails" >
+  	<selectKey keyProperty="purDetId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into erp_purchase_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="purDetId != null" >
+        PUR_DET_ID,
+      </if>
+      <if test="purcId != null" >
+        PURC_ID,
+      </if>
+      <if test="rowId != null" >
+        RAW_ID,
+      </if>
+      <if test="purDetSerial != null" >
+        PUR_DET_SERIAL,
+      </if>
+      <if test="purcTotalNumber != null" >
+        PUR_TOTAL_NUMBER,
+      </if>
+      <if test="purcTotalPrice != null" >
+        PUR_TOTAL_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="purDetId != null" >
+        #{purDetId,jdbcType=VARCHAR},
+      </if>
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="rowId != null" >
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+      <if test="purDetSerial != null" >
+        #{purDetSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="purcTotalNumber != null" >
+        #{purcTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="purcTotalPrice != null" >
+        #{purcTotalPrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+</mapper>

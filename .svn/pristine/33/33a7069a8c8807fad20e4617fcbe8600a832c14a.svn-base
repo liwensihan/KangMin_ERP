@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpAuditMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpAudit" >
+    <id column="AUD_ID" property="audId" jdbcType="VARCHAR" />
+    <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
+    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="PACT_ID" property="pactId" jdbcType="VARCHAR" />
+    <result column="BANK_ID" property="bankId" jdbcType="VARCHAR" />
+    <result column="AUD_SERIAL" property="audSerial" jdbcType="VARCHAR" />
+    <result column="AUD_NAME" property="audName" jdbcType="VARCHAR" />
+    <result column="AUD_TIME" property="audTime" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="FEEDBACK" property="feedBack" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    AUD_ID, PURC_ID, INDENT_ID, PACT_ID, BANK_ID, AUD_SERIAL, AUD_NAME, AUD_TIME, STATE, FEEDBACK,
+    CREATETIME, CREATER, ISVA, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_audit
+    where AUD_ID = #{audId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_audit
+    where AUD_ID = #{audId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpAudit" >
+    insert into erp_audit (AUD_ID, PURC_ID, INDENT_ID, 
+      PACT_ID, BANK_ID, AUD_SERIAL, 
+      AUD_NAME, AUD_TIME, STATE, 
+      CREATETIME, CREATER, ISVA, 
+      REMARK)
+    values (#{audId,jdbcType=VARCHAR}, #{purcId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, 
+      #{pactId,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, #{audSerial,jdbcType=VARCHAR}, 
+      #{audName,jdbcType=VARCHAR}, #{audTime,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpAudit" keyProperty="audId">
+  	<selectKey keyProperty="audId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into erp_audit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="audId != null" >
+        AUD_ID,
+      </if>
+      <if test="purcId != null" >
+        PURC_ID,
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="pactId != null" >
+        PACT_ID,
+      </if>
+      <if test="bankId != null" >
+        BANK_ID,
+      </if>
+      <if test="audSerial != null" >
+        AUD_SERIAL,
+      </if>
+      <if test="audName != null" >
+        AUD_NAME,
+      </if>
+      <if test="audTime != null" >
+        AUD_TIME,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="feedBack != null">
+      	FEEDBACK,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="audId != null" >
+        #{audId,jdbcType=VARCHAR},
+      </if>
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pactId != null" >
+        #{pactId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="audSerial != null" >
+        #{audSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="audName != null" >
+        #{audName,jdbcType=VARCHAR},
+      </if>
+      <if test="audTime != null" >
+        #{audTime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="feedBack != null">
+      #{feedBack,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpAudit" >
+    update erp_audit
+    <set >
+      <if test="purcId != null" >
+        PURC_ID = #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pactId != null" >
+        PACT_ID = #{pactId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        BANK_ID = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="audSerial != null" >
+        AUD_SERIAL = #{audSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="audName != null" >
+        AUD_NAME = #{audName,jdbcType=VARCHAR},
+      </if>
+      <if test="audTime != null" >
+        AUD_TIME = #{audTime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AUD_ID = #{audId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpAudit" >
+    update erp_audit
+    set PURC_ID = #{purcId,jdbcType=VARCHAR},
+      INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      PACT_ID = #{pactId,jdbcType=VARCHAR},
+      BANK_ID = #{bankId,jdbcType=VARCHAR},
+      AUD_SERIAL = #{audSerial,jdbcType=VARCHAR},
+      AUD_NAME = #{audName,jdbcType=VARCHAR},
+      AUD_TIME = #{audTime,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where AUD_ID = #{audId,jdbcType=VARCHAR}
+  </update>
+</mapper>

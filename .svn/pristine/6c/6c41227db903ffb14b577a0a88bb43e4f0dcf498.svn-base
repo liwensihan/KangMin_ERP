@@ -1,0 +1,103 @@
+package com.yidu.model;
+
+public class ErpApplyasset {
+    private String appassId;
+
+    private String purcId;
+
+    private String appassSerial;
+
+    private String appassApply;
+
+    private String appassType;
+
+    private Integer state;
+
+    private String appassTime;
+
+    private String appassNum;
+
+    private Integer isva;
+
+    private String remark;
+
+    public String getAppassId() {
+        return appassId;
+    }
+
+    public void setAppassId(String appassId) {
+        this.appassId = appassId == null ? null : appassId.trim();
+    }
+
+    public String getPurcId() {
+        return purcId;
+    }
+
+    public void setPurcId(String purcId) {
+        this.purcId = purcId == null ? null : purcId.trim();
+    }
+
+    public String getAppassSerial() {
+        return appassSerial;
+    }
+
+    public void setAppassSerial(String appassSerial) {
+        this.appassSerial = appassSerial == null ? null : appassSerial.trim();
+    }
+
+    public String getAppassApply() {
+        return appassApply;
+    }
+
+    public void setAppassApply(String appassApply) {
+        this.appassApply = appassApply == null ? null : appassApply.trim();
+    }
+
+    public String getAppassType() {
+        return appassType;
+    }
+
+    public void setAppassType(String appassType) {
+        this.appassType = appassType == null ? null : appassType.trim();
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getAppassTime() {
+        return appassTime;
+    }
+
+    public void setAppassTime(String appassTime) {
+        this.appassTime = appassTime == null ? null : appassTime.trim();
+    }
+
+    public String getAppassNum() {
+        return appassNum;
+    }
+
+    public void setAppassNum(String appassNum) {
+        this.appassNum = appassNum == null ? null : appassNum.trim();
+    }
+
+    public Integer getIsva() {
+        return isva;
+    }
+
+    public void setIsva(Integer isva) {
+        this.isva = isva;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+}

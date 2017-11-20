@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpPurchaseMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpPurchase" >
+    <id column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
+    <result column="PURC_SERIAL" property="purcSerial" jdbcType="VARCHAR" />
+    <result column="PURC_TITLE" property="purcTitle" jdbcType="VARCHAR" />
+    <result column="PURC_NAME" property="purcName" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="PURC_TIME" property="purcTime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="PURC_TOTAL_PRICE" property="purcTotalPrice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PURC_ID, PURC_SERIAL, PURC_TITLE, PURC_NAME, STATE, PURC_TIME, CREATER, CREATETIME, 
+    ISVA,PURC_TOTAL_PRICE
+  </sql>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_purchase
+    where PURC_ID = #{purcId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+  	select * from erp_purchase where 
+  	<if test="keywords != null and keywords != ''">
+  		(PURC_ID like #{keywords}
+    	or PURC_SERIAL like #{keywords}
+    	or PURC_TITLE like #{keywords}
+    	or PURC_NAME like #{keywords}) and 
+  	</if>isva=1
+  	limit #{pages.firstRows},#{pages.maxResult}
+  </select>
+  
+  <select id="purchaseFindRows" resultType="int" parameterType="map">
+  	select count(*) from erp_purchase where
+  	<if test="keywords != ''">
+  		(PURC_ID like #{keywords}
+    	or PURC_SERIAL like #{keywords}
+    	or PURC_TITLE like #{keywords}
+    	or PURC_NAME like #{keywords}) and
+  	</if>
+  	isva=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_purchase
+    where PURC_ID = #{purcId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpPurchase" >
+  	<selectKey keyProperty="purcId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into erp_purchase (PURC_ID, PURC_SERIAL, PURC_TITLE, 
+      PURC_NAME, STATE, PURC_TIME, 
+      CREATER, CREATETIME, ISVA, PURC_TOTAL_PRICE
+      )
+    values (#{purcId,jdbcType=VARCHAR}, #{purcSerial,jdbcType=VARCHAR}, #{purcTitle,jdbcType=VARCHAR}, 
+      #{purcName,jdbcType=VARCHAR}, 0, #{purcTime,jdbcType=VARCHAR}, 
+      #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 1, #{purcTotalPrice,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpPurchase" >
+    insert into erp_purchase
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="purcId != null" >
+        PURC_ID,
+      </if>
+      <if test="purcSerial != null" >
+        PURC_SERIAL,
+      </if>
+      <if test="purcTitle != null" >
+        PURC_TITLE,
+      </if>
+      <if test="purcName != null" >
+        PURC_NAME,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="purcTime != null" >
+        PURC_TIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="purcTotalPrice != null" >
+        PURC_TOTAL_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="purcSerial != null" >
+        #{purcSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="purcTitle != null" >
+        #{purcTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="purcName != null" >
+        #{purcName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="purcTime != null" >
+        #{purcTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="purcTotalPrice != null" >
+        #{purcTotalPrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateState" parameterType="string" >
+  	update erp_purchase set ISVA=1 where PURC_ID=#{purcId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpPurchase" >
+    update erp_purchase
+    <set >
+      <if test="purcSerial != null" >
+        PURC_SERIAL = #{purcSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="purcTitle != null" >
+        PURC_TITLE = #{purcTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="purcName != null" >
+        PURC_NAME = #{purcName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="purcTime != null" >
+        PURC_TIME = #{purcTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="purcTotalPrice != null" >
+        PURC_TOTAL_PRICE = #{purcTotalPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where PURC_ID = #{purcId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <update id="update" parameterType="com.yidu.model.ErpPurchase" >
+    update erp_purchase
+    <set >
+      <if test="purcSerial != null" >
+        PURC_SERIAL = #{purcSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="purcTitle != null" >
+        PURC_TITLE = #{purcTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="purcName != null" >
+        PURC_NAME = #{purcName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="purcTime != null" >
+        PURC_TIME = #{purcTime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="purcTotalPrice != null" >
+        PURC_TOTAL_PRICE = #{purcTotalPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where PURC_ID = #{purcId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpPurchase" >
+    update erp_purchase
+    set PURC_SERIAL = #{purcSerial,jdbcType=VARCHAR},
+      PURC_TITLE = #{purcTitle,jdbcType=VARCHAR},
+      PURC_NAME = #{purcName,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      PURC_TIME = #{purcTime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
+      PURC_TOTAL_PRICE = #{purcTotalPrice,jdbcType=DOUBLE}
+    where PURC_ID = #{purcId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,127 @@
+package com.yidu.model;
+
+public class ErpAudit {
+    private String audId;
+
+    private String purcId;
+
+    private String indentId;
+
+    private String pactId;
+
+    private String bankId;
+
+    private String audSerial;
+
+    private String audName;
+
+    private String audTime;
+
+    private Short state;
+
+    private String createtime;
+
+    private String creater;
+
+    private Integer isva;
+    private String remark;//备注
+    public void setAudId(String audId) {
+        this.audId = audId == null ? null : audId.trim();
+    }
+
+    public String getPurcId() {
+        return purcId;
+    }
+
+    public void setPurcId(String purcId) {
+        this.purcId = purcId == null ? null : purcId.trim();
+    }
+
+    public String getIndentId() {
+        return indentId;
+    }
+
+    public void setIndentId(String indentId) {
+        this.indentId = indentId == null ? null : indentId.trim();
+    }
+
+    public String getPactId() {
+        return pactId;
+    }
+
+    public void setPactId(String pactId) {
+        this.pactId = pactId == null ? null : pactId.trim();
+    }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId == null ? null : bankId.trim();
+    }
+
+    public String getAudSerial() {
+        return audSerial;
+    }
+
+    public void setAudSerial(String audSerial) {
+        this.audSerial = audSerial == null ? null : audSerial.trim();
+    }
+
+    public String getAudName() {
+        return audName;
+    }
+
+    public void setAudName(String audName) {
+        this.audName = audName == null ? null : audName.trim();
+    }
+
+    public String getAudTime() {
+        return audTime;
+    }
+
+    public void setAudTime(String audTime) {
+        this.audTime = audTime == null ? null : audTime.trim();
+    }
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
+    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime == null ? null : createtime.trim();
+    }
+
+    public String getCreater() {
+        return creater;
+    }
+
+    public void setCreater(String creater) {
+        this.creater = creater == null ? null : creater.trim();
+    }
+
+    public Integer getIsva() {
+        return isva;
+    }
+
+    public void setIsva(Integer isva) {
+        this.isva = isva;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+}

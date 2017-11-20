@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpWarehouse;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpWarehouse;
+
+/**
+ * 仓库Service
+ * @author Gjwen
+ * 2017年11月9日-下午2:41:08
+ */
+public interface ErpWarehouseService {
+	/**
+	 * 查询仓库
+	 * @param map
+	 * @return 
+	 */
+	List<ErpWarehouse> selectAll(Map<String,Object> map);
+	/**
+	 * 查询函数
+	 * @param map
+	 * @return
+	 */
+	public int warehouseFindRows(Map<String,Object> map);
+}

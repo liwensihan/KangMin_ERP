@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package com.yidu.service.Proindent;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpProindent;
+
+/**
+ * @author dong
+ * @da2017年11月6日
+ * @version 1.0
+ */
+public interface ProindentService {
+	/**
+	 * 查询单个对象
+	 * @param map map
+	 * @return 返回对象集合
+	 */
+	List<ErpProindent> showPro(Map<String, Object> map);
+	/**
+	 * 增加方法
+	 * @param record
+	 * @return
+	 */
+	 int insert(ErpProindent record);
+	 
+	 /**
+	  * 查询所有
+	  * @param map 
+	  * @return
+	  */
+	 List<ErpProindent> selectByPrimaryKey(Map<String, Object> map);
+	 
+	 /**
+	  * 总行数
+	  * @param map
+	  * @return
+	  */
+	 int findRowCount(Map<String, Object> map);
+	 
+	 
+	 /**
+	  * 修改或删除
+	  * @param record
+	  * @return
+	  */
+	 int updateByPrimaryKeySelective(ErpProindent record);
+
+	 
+	 /**
+	  * 根据订单id查询明细，和商品表
+	  * @param indentId
+	  * @return
+	  */
+	 List<Map<String, Object>> selectByPrimaryKeyid(String indentId);
+
+	 /**
+	  * 根据订单id查询明细，和商品表查看明细
+	  * @param indentId
+	  * @return
+	  */
+	 List<Map<String, Object>> showid(String indentId);
+	 /**
+	  * 根据id查询单个对象
+	  * @param indentId 订单id
+	  * @return 返回订单对象
+	  */ 
+	 ErpProindent selectByPrimaryProid(String indentId);
+}

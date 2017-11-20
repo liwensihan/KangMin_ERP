@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpLedgyrMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpLedgyr" >
+    <id column="GYR_ID" property="gyrId" jdbcType="VARCHAR" />
+    <result column="FDPRO_ID" property="fdproId" jdbcType="VARCHAR" />
+    <result column="SALE_ID" property="saleId" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR" />
+    <result column="GYR_SREIAL" property="gyrSreial" jdbcType="VARCHAR" />
+    <result column="GYR_PRICE" property="gyrPrice" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    GYR_ID, FDPRO_ID, SALE_ID, ANNEX_ID, GYR_SREIAL, GYR_PRICE, REMARK, CREATER, CREATETIME, 
+    ISVA
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_ledgyr
+    where GYR_ID = #{gyrId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_ledgyr
+    where GYR_ID = #{gyrId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpLedgyr" >
+    insert into erp_ledgyr (GYR_ID, FDPRO_ID, SALE_ID, 
+      ANNEX_ID, GYR_SREIAL, GYR_PRICE, 
+      REMARK, CREATER, CREATETIME, 
+      ISVA)
+    values (#{gyrId,jdbcType=VARCHAR}, #{fdproId,jdbcType=VARCHAR}, #{saleId,jdbcType=VARCHAR}, 
+      #{annexId,jdbcType=VARCHAR}, #{gyrSreial,jdbcType=VARCHAR}, #{gyrPrice,jdbcType=DECIMAL}, 
+      #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpLedgyr" >
+    insert into erp_ledgyr
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gyrId != null" >
+        GYR_ID,
+      </if>
+      <if test="fdproId != null" >
+        FDPRO_ID,
+      </if>
+      <if test="saleId != null" >
+        SALE_ID,
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID,
+      </if>
+      <if test="gyrSreial != null" >
+        GYR_SREIAL,
+      </if>
+      <if test="gyrPrice != null" >
+        GYR_PRICE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gyrId != null" >
+        #{gyrId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproId != null" >
+        #{fdproId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleId != null" >
+        #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="gyrSreial != null" >
+        #{gyrSreial,jdbcType=VARCHAR},
+      </if>
+      <if test="gyrPrice != null" >
+        #{gyrPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpLedgyr" >
+    update erp_ledgyr
+    <set >
+      <if test="fdproId != null" >
+        FDPRO_ID = #{fdproId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleId != null" >
+        SALE_ID = #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="gyrSreial != null" >
+        GYR_SREIAL = #{gyrSreial,jdbcType=VARCHAR},
+      </if>
+      <if test="gyrPrice != null" >
+        GYR_PRICE = #{gyrPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+    </set>
+    where GYR_ID = #{gyrId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpLedgyr" >
+    update erp_ledgyr
+    set FDPRO_ID = #{fdproId,jdbcType=VARCHAR},
+      SALE_ID = #{saleId,jdbcType=VARCHAR},
+      ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      GYR_SREIAL = #{gyrSreial,jdbcType=VARCHAR},
+      GYR_PRICE = #{gyrPrice,jdbcType=DECIMAL},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
+    where GYR_ID = #{gyrId,jdbcType=VARCHAR}
+  </update>
+</mapper>

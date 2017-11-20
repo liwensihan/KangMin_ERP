@@ -1,0 +1,64 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpPay;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpFinance;
+import com.yidu.model.ErpPay;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+public interface ErpPayService {
+	/**
+	 * 删除
+	 * @param payId 类型id
+	 * @return 返回类型
+	 */
+	int deleteByPrimaryKey(String payId);
+	/**
+	 * 添加全部
+	 * @param record 类型对象
+	 * @return 返回类型
+	 */
+    int insert(ErpPay record);
+    /**
+     * 选择性添加
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int insertSelective(ErpPay record);
+    /**
+     * 查找单个对象
+     * @param payId 类型id
+     * @return 返回类型
+     */
+    ErpPay selectByPrimaryKey(String payId);
+    /**
+     * 修改全部
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int updateByPrimaryKeySelective(ErpPay record);
+    /**
+     * 选择性修改
+     * @param record 类型对象
+     * @return 返回类型
+     */
+    int updateByPrimaryKey(ErpPay record);
+    /**
+     * 查询所有
+     * @return 返回对象集合
+     */
+    List<ErpPay> showLisPay();
+    /**
+     * 模糊查询
+     * @param price 值
+     * @return 返回type对象的集合
+     */
+    public List<ErpPay> findDimPay(Map<String,Object> map);
+}

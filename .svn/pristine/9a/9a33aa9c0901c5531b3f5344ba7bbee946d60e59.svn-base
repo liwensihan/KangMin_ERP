@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpDepaMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpDepa" >
+    <id column="DEPA_ID" property="depaId" jdbcType="VARCHAR" />
+    <result column="DEPA_NAME" property="depaName" jdbcType="VARCHAR" />
+    <result column="DEPA_SERIAL" property="depaSerial" jdbcType="VARCHAR" />
+    <result column="DEPA_PHONE" property="depaPhone" jdbcType="VARCHAR" />
+    <result column="DEPA_REMARK" property="depaRemark" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DEPA_ID, DEPA_NAME, DEPA_SERIAL, DEPA_PHONE, DEPA_REMARK, ISVA, CREATETIME, CREATER
+  </sql>
+  
+  <!-- sql     -->
+  
+  
+  <!-- 分页、模糊查询部门集合 -->
+  <select id="depaFindList" resultMap="BaseResultMap" parameterType="map">
+  	select * from erp_depa dp where 
+  	<if test="key!=''">
+  		dp.DEPA_NAME like #{key} or
+  		dp.DEPA_SERIAL like #{key} or
+  		dp.DEPA_PHONE like #{key} or 
+  		dp.DEPA_REMARK like #{key} and 
+  	</if>
+  	dp.isva=1
+  	limit #{pages.firstRows},#{pages.maxResult}
+  </select>
+  <!--模糊查询部门行数 -->
+  <select id="depaFindListRows" resultType="int" parameterType="map">
+  	select count(*) from erp_depa dp where 
+  	<if test="key!=''">
+  		dp.DEPA_NAME like #{key} or
+  		dp.DEPA_SERIAL like #{key} or
+  		dp.DEPA_PHONE like #{key} or 
+  		dp.DEPA_REMARK like #{key} and 
+  	</if>
+  	dp.isva=1
+  </select>
+  
+  <update id="deleteByDepaId" parameterType="string">
+  	update erp_depa set isva=0 where depa_id=#{depaId}
+  </update>
+  
+  
+  
+  <!-- 根据部门id得到部门信息 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_depa
+    where DEPA_ID = #{depaId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getDepa" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from erp_depa where erp_depa.isva='1'
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_depa
+    where DEPA_ID = #{depaId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpDepa" >
+    insert into erp_depa (DEPA_ID, DEPA_NAME, DEPA_SERIAL, 
+      DEPA_PHONE, DEPA_REMARK, ISVA, 
+      CREATETIME, CREATER)
+    values (#{depaId,jdbcType=VARCHAR}, #{depaName,jdbcType=VARCHAR}, #{depaSerial,jdbcType=VARCHAR}, 
+      #{depaPhone,jdbcType=VARCHAR}, #{depaRemark,jdbcType=VARCHAR}, #{isva,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 增加 -->
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpDepa" >
+  	<selectKey keyProperty="depaId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
+    insert into erp_depa
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="depaId != null" >
+        DEPA_ID,
+      </if>
+      <if test="depaName != null" >
+        DEPA_NAME,
+      </if>
+      <if test="depaSerial != null" >
+        DEPA_SERIAL,
+      </if>
+      <if test="depaPhone != null" >
+        DEPA_PHONE,
+      </if>
+      <if test="depaRemark != null" >
+        DEPA_REMARK,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="depaId != null" >
+        #{depaId,jdbcType=VARCHAR},
+      </if>
+      <if test="depaName != null" >
+        #{depaName,jdbcType=VARCHAR},
+      </if>
+      <if test="depaSerial != null" >
+        #{depaSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="depaPhone != null" >
+        #{depaPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="depaRemark != null" >
+        #{depaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 根据部门id修改部门信息 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpDepa" >
+    update erp_depa
+    <set >
+      <if test="depaName != null" >
+        DEPA_NAME = #{depaName,jdbcType=VARCHAR},
+      </if>
+      <if test="depaSerial != null" >
+        DEPA_SERIAL = #{depaSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="depaPhone != null" >
+        DEPA_PHONE = #{depaPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="depaRemark != null" >
+        DEPA_REMARK = #{depaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DEPA_ID = #{depaId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpDepa" >
+    update erp_depa
+    set DEPA_NAME = #{depaName,jdbcType=VARCHAR},
+      DEPA_SERIAL = #{depaSerial,jdbcType=VARCHAR},
+      DEPA_PHONE = #{depaPhone,jdbcType=VARCHAR},
+      DEPA_REMARK = #{depaRemark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where DEPA_ID = #{depaId,jdbcType=VARCHAR}
+  </update>
+</mapper>

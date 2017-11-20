@@ -1,0 +1,39 @@
+package com.yidu.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpWarehouse;
+/**
+ * 仓库DAO
+ * @author Gjwen
+ * 2017年11月9日-下午2:38:37
+ */
+public interface ErpWarehouseMapper {
+	/**
+	 * 查询仓库表
+	 * @param map
+	 * @return
+	 */
+	List<ErpWarehouse> selectAll(Map<String,Object> map);
+	/**
+	 * 查询函数
+	 * @param map
+	 * @return
+	 */
+	public int warehouseFindRows(Map<String,Object> map);
+	
+	
+	
+    int deleteByPrimaryKey(String wareId);
+
+    int insert(ErpWarehouse record);
+    
+    int insertSelective(ErpWarehouse record);
+
+    ErpWarehouse selectByPrimaryKey(String wareId);
+
+    int updateByPrimaryKeySelective(ErpWarehouse record);
+
+    int updateByPrimaryKey(ErpWarehouse record);
+}

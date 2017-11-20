@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpFdproformMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpFdproform" >
+    <id column="FDPRO_ID" property="fdproId" jdbcType="VARCHAR" />
+    <result column="FDPRO_SERIAL" property="fdproSerial" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR" />
+    <result column="sta_id" property="staId" jdbcType="VARCHAR" />
+    <result column="FDPRO_NUMBER" property="fdproNumber" jdbcType="INTEGER" />
+    <result column="FDPRO_WARECOUNT" property="fdproWarecount" jdbcType="DECIMAL" />
+    <result column="FDPRO_SUMPRICE" property="fdproSumprice" jdbcType="DATE" />
+    <result column="FDPRO_TIME" property="fdproTime" jdbcType="VARCHAR" />
+    <result column="FDPRO_ISVO" property="fdproIsvo" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FDPRO_ID, FDPRO_SERIAL, ANNEX_ID, sta_id, FDPRO_NUMBER, FDPRO_WARECOUNT, FDPRO_SUMPRICE, 
+    FDPRO_TIME, FDPRO_ISVO, CREATETIME, CREATER, REMARK, ISVA
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_fdproform
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_fdproform
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpFdproform" >
+    insert into erp_fdproform (FDPRO_ID, FDPRO_SERIAL, ANNEX_ID, 
+      sta_id, FDPRO_NUMBER, FDPRO_WARECOUNT, 
+      FDPRO_SUMPRICE, FDPRO_TIME, FDPRO_ISVO, 
+      CREATETIME, CREATER, REMARK, 
+      ISVA)
+    values (#{fdproId,jdbcType=VARCHAR}, #{fdproSerial,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, 
+      #{staId,jdbcType=VARCHAR}, #{fdproNumber,jdbcType=INTEGER}, #{fdproWarecount,jdbcType=DECIMAL}, 
+      #{fdproSumprice,jdbcType=DATE}, #{fdproTime,jdbcType=VARCHAR}, #{fdproIsvo,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpFdproform" >
+    insert into erp_fdproform
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fdproId != null" >
+        FDPRO_ID,
+      </if>
+      <if test="fdproSerial != null" >
+        FDPRO_SERIAL,
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID,
+      </if>
+      <if test="staId != null" >
+        sta_id,
+      </if>
+      <if test="fdproNumber != null" >
+        FDPRO_NUMBER,
+      </if>
+      <if test="fdproWarecount != null" >
+        FDPRO_WARECOUNT,
+      </if>
+      <if test="fdproSumprice != null" >
+        FDPRO_SUMPRICE,
+      </if>
+      <if test="fdproTime != null" >
+        FDPRO_TIME,
+      </if>
+      <if test="fdproIsvo != null" >
+        FDPRO_ISVO,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fdproId != null" >
+        #{fdproId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproSerial != null" >
+        #{fdproSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="staId != null" >
+        #{staId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproNumber != null" >
+        #{fdproNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fdproWarecount != null" >
+        #{fdproWarecount,jdbcType=DECIMAL},
+      </if>
+      <if test="fdproSumprice != null" >
+        #{fdproSumprice,jdbcType=DATE},
+      </if>
+      <if test="fdproTime != null" >
+        #{fdproTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproIsvo != null" >
+        #{fdproIsvo,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpFdproform" >
+    update erp_fdproform
+    <set >
+      <if test="fdproSerial != null" >
+        FDPRO_SERIAL = #{fdproSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="staId != null" >
+        sta_id = #{staId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproNumber != null" >
+        FDPRO_NUMBER = #{fdproNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fdproWarecount != null" >
+        FDPRO_WARECOUNT = #{fdproWarecount,jdbcType=DECIMAL},
+      </if>
+      <if test="fdproSumprice != null" >
+        FDPRO_SUMPRICE = #{fdproSumprice,jdbcType=DATE},
+      </if>
+      <if test="fdproTime != null" >
+        FDPRO_TIME = #{fdproTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproIsvo != null" >
+        FDPRO_ISVO = #{fdproIsvo,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+    </set>
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpFdproform" >
+    update erp_fdproform
+    set FDPRO_SERIAL = #{fdproSerial,jdbcType=VARCHAR},
+      ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      sta_id = #{staId,jdbcType=VARCHAR},
+      FDPRO_NUMBER = #{fdproNumber,jdbcType=INTEGER},
+      FDPRO_WARECOUNT = #{fdproWarecount,jdbcType=DECIMAL},
+      FDPRO_SUMPRICE = #{fdproSumprice,jdbcType=DATE},
+      FDPRO_TIME = #{fdproTime,jdbcType=VARCHAR},
+      FDPRO_ISVO = #{fdproIsvo,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+</mapper>

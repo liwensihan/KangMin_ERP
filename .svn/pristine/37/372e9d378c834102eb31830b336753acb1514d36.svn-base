@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpProindentDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpProindentDetail" >
+    <id column="ENTDE_ID" property="entdeId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="ENTDE_NUM" property="entdeNum" jdbcType="INTEGER" />
+    <result column="ENTDE_PRICE" property="entdePrice" jdbcType="DECIMAL" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="Column_9" property="column9" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ENTDE_ID, KIN_ID, INDENT_ID, ENTDE_NUM, ENTDE_PRICE, CREATER, CREATETIME, REMARK, 
+    Column_9
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_proindent_detail
+    where ENTDE_ID = #{entdeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_proindent_detail
+    where ENTDE_ID = #{entdeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpProindentDetail" >
+    insert into erp_proindent_detail (ENTDE_ID, KIN_ID, INDENT_ID, 
+      ENTDE_NUM, ENTDE_PRICE, CREATER, 
+      CREATETIME, REMARK, Column_9
+      )
+    values (#{entdeId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, 
+      #{entdeNum,jdbcType=INTEGER}, #{entdePrice,jdbcType=DECIMAL}, #{creater,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{column9,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpProindentDetail" >
+    insert into erp_proindent_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="entdeId != null" >
+        ENTDE_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="entdeNum != null" >
+        ENTDE_NUM,
+      </if>
+      <if test="entdePrice != null" >
+        ENTDE_PRICE,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="column9 != null" >
+        Column_9,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="entdeId != null" >
+        #{entdeId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="entdeNum != null" >
+        #{entdeNum,jdbcType=INTEGER},
+      </if>
+      <if test="entdePrice != null" >
+        #{entdePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="column9 != null" >
+        #{column9,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpProindentDetail" >
+    update erp_proindent_detail
+    <set >
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="entdeNum != null" >
+        ENTDE_NUM = #{entdeNum,jdbcType=INTEGER},
+      </if>
+      <if test="entdePrice != null" >
+        ENTDE_PRICE = #{entdePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="column9 != null" >
+        Column_9 = #{column9,jdbcType=CHAR},
+      </if>
+    </set>
+    where ENTDE_ID = #{entdeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpProindentDetail" >
+    update erp_proindent_detail
+    set KIN_ID = #{kinId,jdbcType=VARCHAR},
+      INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      ENTDE_NUM = #{entdeNum,jdbcType=INTEGER},
+      ENTDE_PRICE = #{entdePrice,jdbcType=DECIMAL},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      Column_9 = #{column9,jdbcType=CHAR}
+    where ENTDE_ID = #{entdeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

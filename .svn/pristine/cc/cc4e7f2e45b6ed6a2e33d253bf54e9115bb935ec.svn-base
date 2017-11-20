@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpRole" >
+    <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <result column="role_color" property="roleColor" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+    <result column="createR" property="creater" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="ERP_MODEL_ID" property="erpModelId" jdbcType="VARCHAR" />
+    <result column="MODEL_NAME" property="modelName" jdbcType="VARCHAR" />
+    <result column="MODEL_ID" property="modelId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_ID, role_color, ROLE_NAME, ISVA, createTime, createR, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_role
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <select id="findAll" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from erp_role where isva='1'
+  </select>
+  <delete id="deleteModel" parameterType="java.lang.String">
+  	DELETE  FROM erp_role_model WHERE role_id = #{roleId,jdbcType=VARCHAR};
+  </delete>
+  <select id="findAllRole" resultMap="BaseResultMap" parameterType="com.yidu.model.ErpRole">
+  	select
+  	<include refid="Base_Column_List" />
+  	from erp_role 
+  	<where>
+  	isva='1'
+  	<if test="roleName!=null and roleName!=''">
+  		and ROLE_NAME like concat('%',#{roleName},'%')
+  	</if>
+  	</where>
+  	limit #{page},#{limit}
+  </select>
+  
+  <select id="getRoleValue" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT * FROM erp_role role,erp_role_model rmodel,erp_model model WHERE role.ROLE_ID=rmodel.role_id AND rmodel.model_id = model.model_id AND role.ISVA='1' AND model.ISVA='1' AND role.ROLE_ID=#{roleId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findRowCount" resultType="int" parameterType="com.yidu.model.ErpRole">
+  	select count(*) from erp_role 
+  	<where>
+  	isva='1'
+  	<if test="roleName!=null and roleName!=''">
+  		and ROLE_NAME like concat('%',#{roleName},'%')
+  	</if>
+  	</where>
+  </select>
+  <update id="deleteRole" parameterType="java.lang.String">
+  		update erp_role set isva='0' where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_role
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpRole" >
+    insert into erp_role (ROLE_ID, role_color, ROLE_NAME, 
+      ISVA, createTime, createR, 
+      remark)
+    values (#{roleId,jdbcType=VARCHAR}, #{roleColor,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpRole" >
+    insert into erp_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="roleColor != null" >
+        role_color,
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="creater != null" >
+        createR,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleColor != null" >
+        #{roleColor,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpRole" >
+    update erp_role
+    <set >
+      <if test="roleColor != null" >
+        role_color = #{roleColor,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        createR = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpRole" >
+    update erp_role
+    set role_color = #{roleColor,jdbcType=VARCHAR},
+      ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      createR = #{creater,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,38 @@
+/**
+ * XLe1ؼ
+ * 2017��10��19�� 2017��8��1��16:02:52
+ */
+package com.yidu.action.ErpApply;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yidu.model.ErpApply;
+import com.yidu.service.ErpApply.ErpApplyService;
+
+/**
+ * 供货商
+ * @author 大晶儿
+ * 2017年10月22日
+ */
+@Controller
+@RequestMapping("EepApplyAction")
+public class EepApplyAction {
+	@Resource
+	private  ErpApplyService service;
+	/**
+	 * 查询所有供应商
+	 * @return 返回供应商list
+	 */
+	@RequestMapping("findErpApply")
+	@ResponseBody
+	public List<ErpApply> findErpApply(){
+		List<ErpApply> list =service.findErpApply();
+		return list;
+	}
+}

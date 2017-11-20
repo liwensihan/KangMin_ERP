@@ -1,0 +1,17 @@
+package com.yidu.dao;
+
+import com.yidu.model.ErpBank;
+
+public interface ErpBankMapper {
+    int deleteByPrimaryKey(String bankId);
+
+    int insert(ErpBank record);
+
+    int insertSelective(ErpBank record);
+
+    ErpBank selectByPrimaryKey(String bankId);
+
+    int updateByPrimaryKeySelective(ErpBank record);
+
+    int updateByPrimaryKey(ErpBank record);
+}

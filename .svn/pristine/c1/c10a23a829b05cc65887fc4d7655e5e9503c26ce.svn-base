@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpBurdenMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpBurden" >
+    <id column="BUR_ID" property="burId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="BUR_SERIAL" property="burSerial" jdbcType="VARCHAR" />
+     <result column="rawName" property="rawName" jdbcType="VARCHAR" />
+    <result column="BUR_G" property="burG" jdbcType="DECIMAL" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+   
+  </resultMap>
+  <sql id="Base_Column_List" >
+    BUR_ID, RAW_ID, KIN_ID, BUR_SERIAL, BUR_G, CREATETIME, CREATER, ISVA
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   SELECT b.*,r.RAW_NAME rawName FROM erp_burden b ,erp_kinds k ,erp_raw r WHERE b.KIN_ID=k.KIN_ID AND b.RAW_ID = r.RAW_ID AND b.KIN_ID = #{kindId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_burden
+    where BUR_ID = #{burId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpBurden" >
+    insert into erp_burden (BUR_ID, RAW_ID, KIN_ID, 
+      BUR_SERIAL, BUR_G, CREATETIME, 
+      CREATER, ISVA)
+    values (#{burId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, 
+      #{burSerial,jdbcType=VARCHAR}, #{burG,jdbcType=DECIMAL}, #{createtime,jdbcType=VARCHAR}, 
+      #{creater,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpBurden" >
+    insert into erp_burden
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="burId != null" >
+        BUR_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="burSerial != null" >
+        BUR_SERIAL,
+      </if>
+      <if test="burG != null" >
+        BUR_G,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="burId != null" >
+        #{burId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="burSerial != null" >
+        #{burSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="burG != null" >
+        #{burG,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpBurden" >
+    update erp_burden
+    <set >
+      <if test="rawId != null" >
+        RAW_ID = #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="burSerial != null" >
+        BUR_SERIAL = #{burSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="burG != null" >
+        BUR_G = #{burG,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BUR_ID = #{burId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpBurden" >
+    update erp_burden
+    set RAW_ID = #{rawId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR},
+      BUR_SERIAL = #{burSerial,jdbcType=VARCHAR},
+      BUR_G = #{burG,jdbcType=DECIMAL},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
+    where BUR_ID = #{burId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select BUR_SERIAL from erp_burden where BUR_SERIAL like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
+</mapper>

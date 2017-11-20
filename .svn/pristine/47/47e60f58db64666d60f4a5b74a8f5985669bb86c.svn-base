@@ -1,0 +1,64 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpFinance;
+
+import java.util.List;
+import java.util.Map;
+
+import com.yidu.model.ErpExpend;
+import com.yidu.model.ErpFinance;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+public interface ErpFinanceService {
+	/**
+	 * 删除
+	 * @param financeId 类型id
+	 * @return int
+	 */
+	int deleteByPrimaryKey(String financeId);
+	/**
+	 * 添加全部
+	 * @param record 类型对象
+	 * @return string
+	 */
+    int insert(ErpFinance record);
+    /**
+     * 选择性添加
+     * @param record 类型对象
+     * @return string
+     */
+    int insertSelective(ErpFinance record);
+    /**
+     * 查找单个对象
+     * @param financeId 类型id
+     * @return 返回类型对象
+     */
+    ErpFinance selectByPrimaryKey(String financeId);
+    /**
+     * 修改修改
+     * @param record 类型对象
+     * @return 返回数字
+     */
+    int updateByPrimaryKeySelective(ErpFinance record);
+    /**
+     * 修改全部
+     * @param record 类型对象
+     * @return 返回数字
+     */
+    int updateByPrimaryKey(ErpFinance record);
+    /**
+     * 查询所有
+     * @return 返回对象集合
+     */
+    List<ErpFinance> showLisFinance();
+    /**
+     * 模糊查询
+     * @param price 值
+     * @return 返回type对象的集合
+     */
+    public List<ErpFinance> findDimFinance(Map<String,Object> map);
+}

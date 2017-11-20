@@ -1,0 +1,17 @@
+package com.yidu.dao;
+
+import com.yidu.model.ErpQuality;
+
+public interface ErpQualityMapper {
+    int deleteByPrimaryKey(String quaId);
+
+    int insert(ErpQuality record);
+
+    int insertSelective(ErpQuality record);
+
+    ErpQuality selectByPrimaryKey(String quaId);
+
+    int updateByPrimaryKeySelective(ErpQuality record);
+
+    int updateByPrimaryKey(ErpQuality record);
+}

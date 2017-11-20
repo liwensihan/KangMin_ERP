@@ -1,0 +1,65 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpWarehouse;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.yidu.common.Tools;
+import com.yidu.dao.ErpKindsMapper;
+import com.yidu.dao.ErpRawMapper;
+import com.yidu.dao.ErpWarehouseMapper;
+import com.yidu.model.ErpKinds;
+import com.yidu.model.ErpRaw;
+import com.yidu.model.ErpWarehouse;
+
+/**
+ * 实现仓库Service
+ * @author Gjwen
+ * 2017年11月9日-下午2:41:36
+ */
+@Service
+public class ErpWarehouseServiceImpl implements ErpWarehouseService{
+	/**
+	 * 注入仓库Dao
+	 */
+	@Resource
+	private ErpWarehouseMapper erpWarehouseMapper;
+	
+	@Resource
+	private ErpRawMapper erpRawMapper;
+	
+	@Resource
+	private ErpKindsMapper erpKindsMapper;
+
+	@Override
+	public List<ErpWarehouse> selectAll(Map<String, Object> map) {
+		List<ErpWarehouse> warList = erpWarehouseMapper.selectAll(map);
+		List<ErpWarehouse> list = new ArrayList<ErpWarehouse>();
+		for (Iterator iterator = warList.iterator(); iterator.hasNext();) {
+			ErpWarehouse erpWarehouse = (ErpWarehouse) iterator.next();
+			if(Tools.isEmpty(erpWarehouse.getRawId())){
+				ErpKinds kinds = erpKindsMapper.findKindsByKindsId(erpWarehouse.getKinId());
+				erpWarehouse.setKucun("货品:"+kinds.getKinName());
+			}else{
+				ErpRaw raw = erpRawMapper.findRawByRawId(erpWarehouse.getRawId());
+				erpWarehouse.setKucun("材料:"+raw.getRawName());
+			}
+			
+			list.add(erpWarehouse);
+		}
+		return list;
+	}
+
+	@Override
+	public int warehouseFindRows(Map<String, Object> map) {
+		return erpWarehouseMapper.warehouseFindRows(map);
+	}
+}

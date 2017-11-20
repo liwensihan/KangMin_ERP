@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpProindentMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpProindent" >
+    <id column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="INDENT_NUMBER" property="indentNumber" jdbcType="VARCHAR" />
+    <result column="INDENT_MONEY" property="indentMoney" jdbcType="DECIMAL" />
+    <result column="INDENT_COUNT" property="indentCount" jdbcType="INTEGER" />
+    <result column="INDENT_urgency" property="indentUrgency" jdbcType="VARCHAR" />
+    <result column="INDENT_EMETIME" property="indentEmetime" jdbcType="VARCHAR" />
+    <result column="INDENT_WORKTIME" property="indentWorktime" jdbcType="DECIMAL" />
+    <result column="INDENT_ENDTIME" property="indentEndtime" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    INDENT_ID, INDENT_NUMBER, INDENT_MONEY, INDENT_COUNT, INDENT_urgency, INDENT_EMETIME, 
+    INDENT_WORKTIME, INDENT_ENDTIME, STATE, ISVA, CREATETIME, CREATER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_proindent
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_proindent
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpProindent" >
+    insert into erp_proindent (INDENT_ID, INDENT_NUMBER, INDENT_MONEY, 
+      INDENT_COUNT, INDENT_urgency, INDENT_EMETIME, 
+      INDENT_WORKTIME, INDENT_ENDTIME, STATE, 
+      ISVA, CREATETIME, CREATER
+      )
+    values (#{indentId,jdbcType=VARCHAR}, #{indentNumber,jdbcType=VARCHAR}, #{indentMoney,jdbcType=DECIMAL}, 
+      #{indentCount,jdbcType=INTEGER}, #{indentUrgency,jdbcType=VARCHAR}, #{indentEmetime,jdbcType=VARCHAR}, 
+      #{indentWorktime,jdbcType=DECIMAL}, #{indentEndtime,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{isva,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpProindent" >
+    insert into erp_proindent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="indentNumber != null" >
+        INDENT_NUMBER,
+      </if>
+      <if test="indentMoney != null" >
+        INDENT_MONEY,
+      </if>
+      <if test="indentCount != null" >
+        INDENT_COUNT,
+      </if>
+      <if test="indentUrgency != null" >
+        INDENT_urgency,
+      </if>
+      <if test="indentEmetime != null" >
+        INDENT_EMETIME,
+      </if>
+      <if test="indentWorktime != null" >
+        INDENT_WORKTIME,
+      </if>
+      <if test="indentEndtime != null" >
+        INDENT_ENDTIME,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentNumber != null" >
+        #{indentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="indentMoney != null" >
+        #{indentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="indentCount != null" >
+        #{indentCount,jdbcType=INTEGER},
+      </if>
+      <if test="indentUrgency != null" >
+        #{indentUrgency,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEmetime != null" >
+        #{indentEmetime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentWorktime != null" >
+        #{indentWorktime,jdbcType=DECIMAL},
+      </if>
+      <if test="indentEndtime != null" >
+        #{indentEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpProindent" >
+    update erp_proindent
+    <set >
+      <if test="indentNumber != null" >
+        INDENT_NUMBER = #{indentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="indentMoney != null" >
+        INDENT_MONEY = #{indentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="indentCount != null" >
+        INDENT_COUNT = #{indentCount,jdbcType=INTEGER},
+      </if>
+      <if test="indentUrgency != null" >
+        INDENT_urgency = #{indentUrgency,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEmetime != null" >
+        INDENT_EMETIME = #{indentEmetime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentWorktime != null" >
+        INDENT_WORKTIME = #{indentWorktime,jdbcType=DECIMAL},
+      </if>
+      <if test="indentEndtime != null" >
+        INDENT_ENDTIME = #{indentEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpProindent" >
+    update erp_proindent
+    set INDENT_NUMBER = #{indentNumber,jdbcType=VARCHAR},
+      INDENT_MONEY = #{indentMoney,jdbcType=DECIMAL},
+      INDENT_COUNT = #{indentCount,jdbcType=INTEGER},
+      INDENT_urgency = #{indentUrgency,jdbcType=VARCHAR},
+      INDENT_EMETIME = #{indentEmetime,jdbcType=VARCHAR},
+      INDENT_WORKTIME = #{indentWorktime,jdbcType=DECIMAL},
+      INDENT_ENDTIME = #{indentEndtime,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      ISVA = #{isva,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </update>
+</mapper>

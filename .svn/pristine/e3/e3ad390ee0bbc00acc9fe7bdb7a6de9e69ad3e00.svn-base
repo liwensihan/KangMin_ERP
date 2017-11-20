@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpKindsTypeMapper">
+
+	<resultMap id="BaseResultMap" type="com.yidu.model.ErpKindsType">
+		<id column="TYPE_ID" property="typeId" jdbcType="VARCHAR" />
+		<result column="TYPE_SERIAL" property="typeSerial" jdbcType="VARCHAR" />
+		<result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="CREATER" property="creater" jdbcType="VARCHAR" />
+		<result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		TYPE_ID, TYPE_SERIAL, TYPE_NAME, REMARK, CREATER, CREATETIME
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from erp_kinds_type
+		where TYPE_ID = #{typeId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from erp_kinds_type
+		where TYPE_ID = #{typeId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.yidu.model.ErpKindsType">
+		<selectKey keyProperty="TYPE_ID" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+		</selectKey>
+		insert into erp_kinds_type (typeId, TYPE_SERIAL, TYPE_NAME,
+		REMARK, CREATER, CREATETIME
+		)
+		values (#{typeId,jdbcType=VARCHAR}, #{typeSerial,jdbcType=VARCHAR},
+		#{typeName,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.yidu.model.ErpKindsType">
+		<selectKey keyProperty="typeId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+		</selectKey>
+		insert into erp_kinds_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				TYPE_ID,
+			</if>
+			<if test="typeSerial != null">
+				TYPE_SERIAL,
+			</if>
+			<if test="typeName != null">
+				TYPE_NAME,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="creater != null">
+				CREATER,
+			</if>
+			<if test="createtime != null">
+				CREATETIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="typeId != null">
+				#{typeId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeSerial != null">
+				#{typeSerial,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="creater != null">
+				#{creater,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpKindsType">
+		update erp_kinds_type
+		<set>
+			<if test="typeSerial != null">
+				TYPE_SERIAL = #{typeSerial,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null">
+				TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="creater != null">
+				CREATER = #{creater,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CREATETIME = #{createtime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where TYPE_ID = #{typeId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpKindsType">
+		update erp_kinds_type
+		set TYPE_SERIAL = #{typeSerial,jdbcType=VARCHAR},
+		TYPE_NAME = #{typeName,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		CREATER = #{creater,jdbcType=VARCHAR},
+		CREATETIME = #{createtime,jdbcType=VARCHAR}
+		where TYPE_ID = #{typeId,jdbcType=VARCHAR}
+	</update>
+	<select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select type_serial from erp_kinds_type where type_serial like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
+	<select id="findListType" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from erp_kinds_type where CREATER =0;
+	</select>
+	
+	<select id="findDimType" resultMap="BaseResultMap" parameterType="Map">
+		select
+		<include refid="Base_Column_List" />
+		from erp_kinds_type
+		<where>
+    	<if test="pricer != ''">
+    		(
+    			remark like CONCAT('%',#{pricer},'%' )
+    			or
+	    		type_serial like CONCAT('%',#{pricer},'%' ) 
+	    		or 
+	    		type_name like CONCAT('%',#{pricer},'%' )
+	    		
+    		)
+    	</if>
+    	
+    </where>
+		and CREATER =0;
+	</select>
+</mapper>

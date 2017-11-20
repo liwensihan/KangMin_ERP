@@ -1,0 +1,74 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpPay;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.yidu.dao.ErpPayMapper;
+import com.yidu.model.ErpPay;
+import com.yidu.util.Tools;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+@Service
+public class ErpPayServiceImpl implements ErpPayService{
+
+	@Resource
+	private ErpPayMapper erpPayMapper;
+	
+	public int deleteByPrimaryKey(String payId) {
+		
+		return erpPayMapper.deleteByPrimaryKey(payId);
+	}
+
+	public int insert(ErpPay record) {
+		
+		return erpPayMapper.insert(record);
+	}
+
+	public int insertSelective(ErpPay record) {
+		String data = erpPayMapper.paySerial(Tools.getDateStr(new Date()));//得到今天创建的最后一条数据
+		record.setPaySerial(Tools.getSerial(data, "LX"));//类型编号
+		Date date = new Date();
+		record.setCreatetime(Tools.getDateStr(date));
+		return erpPayMapper.insertSelective(record);
+	}
+
+	public ErpPay selectByPrimaryKey(String payId) {
+		
+		return erpPayMapper.selectByPrimaryKey(payId);
+	}
+
+	public int updateByPrimaryKeySelective(ErpPay record) {
+		
+		return erpPayMapper.updateByPrimaryKeySelective(record);
+	}
+
+	public int updateByPrimaryKey(ErpPay record) {
+		
+		return erpPayMapper.updateByPrimaryKey(record);
+	}
+
+	
+	public List<ErpPay> showLisPay() {
+		
+		return erpPayMapper.findListPay();
+	}
+
+	
+	public List<ErpPay> findDimPay(Map<String, Object> map) {
+		
+		return erpPayMapper.findDimPay(map);
+	}
+
+	
+}

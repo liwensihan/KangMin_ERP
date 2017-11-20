@@ -1,0 +1,73 @@
+/**
+ * 
+ */
+package com.yidu.service.ErpApplyasset;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.yidu.dao.ErpApplyassetMapper;
+import com.yidu.model.ErpApplyasset;
+import com.yidu.util.Tools;
+
+/**
+ * @author zhangwei
+ * 2017年10月19日
+ */
+@Service
+public class ErpApplyassetServiceImpl implements ErpApplyassetService{
+
+	@Resource
+	private ErpApplyassetMapper erpApplyassetMapper;
+	
+	public int deleteByPrimaryKey(String appassId) {
+		
+		return erpApplyassetMapper.deleteByPrimaryKey(appassId);
+	}
+
+	public int insert(ErpApplyasset record) {
+		
+		return erpApplyassetMapper.insert(record);
+	}
+
+	public int insertSelective(ErpApplyasset record) {
+		String data = erpApplyassetMapper.applyassetSerial(Tools.getDateStr(new Date()));//得到今天创建的最后一条数据
+		record.setAppassSerial(Tools.getSerial(data, "LX"));//类型编号
+		record.setIsva(0);//是否有效
+		Date date = new Date();
+		record.setAppassTime(Tools.getDateStr(date));
+		return erpApplyassetMapper.insertSelective(record);
+	}
+
+	public ErpApplyasset selectByPrimaryKey(String appassId) {
+		
+		return erpApplyassetMapper.selectByPrimaryKey(appassId);
+	}
+
+	public int updateByPrimaryKeySelective(ErpApplyasset record) {
+		
+		return erpApplyassetMapper.updateByPrimaryKeySelective(record);
+	}
+
+	public int updateByPrimaryKey(ErpApplyasset record) {
+		
+		return erpApplyassetMapper.updateByPrimaryKey(record);
+	}
+
+	public List<ErpApplyasset> showLisApplyasset() {
+		
+		return erpApplyassetMapper.findListApplyasset();
+	}
+
+	
+	public List<ErpApplyasset> findDimApplyasset(Map<String, Object> map) {
+		
+		return erpApplyassetMapper.findDimApplyasset(map);
+	}
+
+}

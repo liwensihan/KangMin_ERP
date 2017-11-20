@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpWarehouseMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpWarehouse" >
+    <id column="WARE_ID" property="wareId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+    
+     <result column="rawName" property="rawName" jdbcType="VARCHAR" />
+     <result column="kinName" property="kinName" jdbcType="VARCHAR" />
+     <result column="kinPrice" property="kinPrice" jdbcType="VARCHAR" />
+     <result column="rawPrice" property="rawPrice" jdbcType="VARCHAR" />
+         
+    <result column="WARE_NUM" property="wareNum" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+      
+  </resultMap>
+  <sql id="Base_Column_List" >
+    WARE_ID, KIN_ID, RAW_ID, WARE_NUM, CREATETIME, ISVA, CREATER, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_warehouse
+    where WARE_ID = #{wareId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllKind" resultMap="BaseResultMap" parameterType="Map">
+  		SELECT war.*,kinds.KIN_NAME kinName,kinds.KIN_PRICE kinPrice FROM erp_warehouse war ,erp_kinds kinds WHERE war.KIN_ID=kinds.KIN_ID AND war.ISVA=1 ORDER BY war.CREATETIME DESC LIMIT #{page},#{limit}
+  </select>
+  <select id="selectAllRaw" resultMap="BaseResultMap" parameterType="Map">
+  		SELECT war.*,raw.RAW_NAME rawName,raw.RAW_PRICE rawPrice FROM erp_warehouse war ,erp_raw raw  WHERE war.RAW_ID=raw.RAW_ID AND war.ISVA=1 ORDER BY war.CREATETIME DESC LIMIT #{page},#{limit}
+  </select>
+  <select id="warehouseFindKindRows" resultType="int" parameterType="map">
+  		SELECT count(*) FROM erp_warehouse war ,erp_kinds kinds WHERE war.KIN_ID=kinds.KIN_ID AND war.ISVA=1 
+  </select>
+  <select id="warehouseFindRawRows" resultType="int" parameterType="map">
+  		SELECT count(*) FROM erp_warehouse war ,erp_kinds kinds WHERE war.KIN_ID=kinds.KIN_ID AND war.ISVA=1 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_warehouse
+    where WARE_ID = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpWarehouse" >
+    insert into erp_warehouse (WARE_ID, KIN_ID,RAW_ID, WARE_NUM, 
+      CREATETIME, ISVA, CREATER, 
+      REMARK)
+    values (#{wareId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR},#{rawId,jdbcType=VARCHAR}, #{wareNum,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpWarehouse" >
+    insert into erp_warehouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wareId != null" >
+        WARE_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
+      </if>
+      <if test="wareNum != null" >
+        WARE_NUM,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wareId != null" >
+        #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="wareNum != null" >
+        #{wareNum,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpWarehouse" >
+    update erp_warehouse
+    <set >
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        RAW_ID = #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="wareNum != null" >
+        WARE_NUM = #{wareNum,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where WARE_ID = #{wareId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpWarehouse" >
+    update erp_warehouse
+    set KIN_ID = #{kinId,jdbcType=VARCHAR},
+      RAW_ID = #{rawId,jdbcType=VARCHAR},
+      WARE_NUM = #{wareNum,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where WARE_ID = #{wareId,jdbcType=VARCHAR}
+  </update>
+</mapper>

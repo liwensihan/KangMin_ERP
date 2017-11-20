@@ -1,0 +1,109 @@
+/**
+ * 
+ */
+package com.yidu.action.ErpPurchase;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yidu.common.Tools;
+import com.yidu.model.ErpPurchase;
+import com.yidu.service.ErpPurchase.ErpPurchaseService;
+
+
+/**
+ * 采购订单Action
+ * @author Gjwen
+ * 2017年10月19日-下午2:01:02
+ */
+@Controller
+@RequestMapping("Purchase")
+public class ErpPurchaseAction {
+	/**
+	 * 注入采购订单Service
+	 */
+	@Resource
+	private ErpPurchaseService erpPurchaseService;
+	/**
+	 * 显示和查询
+	 * @param purcId
+	 * @param keywords
+	 * @return map
+	 */
+	@RequestMapping("/showAll")
+	@ResponseBody
+	public Map<String,Object> showAll(ErpPurchase purcId , String keywords){
+		System.out.println("进入显示"+purcId+"得到前台传过来的值为"+keywords);
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(keywords==null && "".equals(keywords)){
+			map.put("keywords", "");
+		}else {
+			map.put("keywords", keywords);
+		}
+		List<ErpPurchase> list = erpPurchaseService.selectAll(map);
+		map.put("code", "");
+		map.put("msg", "");
+		map.put("count", 1000);
+		map.put("data", list);
+		
+		return map;
+	}
+	/**
+	 * 删除（修改状态）
+	 * @param state
+	 * @param purcId
+	 * @return eph
+	 */
+	@RequestMapping("/delete")
+	@ResponseBody
+	public ErpPurchase delete(ErpPurchase isva , String purcId){
+		System.out.println("进入删除——得到删除行ID"+purcId);
+		ErpPurchase eph = new ErpPurchase();
+		isva.setIsva(1);
+		isva.setPurcId(purcId);
+		int d_purcId = erpPurchaseService.updateByPrimaryKeySelective(isva);
+		System.out.println(d_purcId);
+		return eph;
+	}
+	/**
+	 * 根据ID显示修改信息
+	 * @param purcId
+	 * @return
+	 */
+	@RequestMapping("/showUpdate")
+	@ResponseBody
+	public ErpPurchase showUpdate(String purcId){
+		return erpPurchaseService.selectByPrimaryKey(purcId);
+	}
+	/**
+	 * 增加Or修改	
+	 * @param purcId
+	 * @return rows
+	 */
+	@RequestMapping("/addOrUpdate")
+	@ResponseBody
+	public int addOrUpdate(ErpPurchase record){
+		System.out.println("到达增加Or修改这里");
+		int rows =0;
+		if(record.getPurcId()!=null && !"".equals(record.getPurcId())){
+			rows = erpPurchaseService.update(record);
+		}else{
+			System.out.println("增加++++++++++++++++++++++++++++++++==");
+			String time = Tools.getCurDateTime();//获取当前时间
+			System.out.println("当前时间为"+time);
+			record.setPurcTime(time);//采购时间
+			record.setCreater("qwe");
+			record.setCreatetime(time);//创建时间
+			rows = erpPurchaseService.insert(record);
+		}
+		return rows;
+	}
+}

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpResuitMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpResuit" >
+    <id column="RES_ID" property="resId" jdbcType="VARCHAR" />
+    <result column="RES_SERIAL" property="resSerial" jdbcType="VARCHAR" />
+    <result column="RES_NAME" property="resName" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    RES_ID, RES_SERIAL, RES_NAME, ISVA, CREATER, CREATETIME, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_resuit
+    where RES_ID = #{resId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_resuit
+    where RES_ID = #{resId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpResuit" >
+    insert into erp_resuit (RES_ID, RES_SERIAL, RES_NAME, 
+      ISVA, CREATER, CREATETIME, 
+      REMARK)
+    values (#{resId,jdbcType=VARCHAR}, #{resSerial,jdbcType=VARCHAR}, #{resName,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpResuit" >
+  	<selectKey keyProperty="resId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
+    insert into erp_resuit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        RES_ID,
+      </if>
+      <if test="resSerial != null" >
+        RES_SERIAL,
+      </if>
+      <if test="resName != null" >
+        RES_NAME,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resId != null" >
+        #{resId,jdbcType=VARCHAR},
+      </if>
+      <if test="resSerial != null" >
+        #{resSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="resName != null" >
+        #{resName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpResuit" >
+    update erp_resuit
+    <set >
+      <if test="resSerial != null" >
+        RES_SERIAL = #{resSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="resName != null" >
+        RES_NAME = #{resName,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RES_ID = #{resId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpResuit" >
+    update erp_resuit
+    set RES_SERIAL = #{resSerial,jdbcType=VARCHAR},
+      RES_NAME = #{resName,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where RES_ID = #{resId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select RES_SERIAL from erp_resuit where RES_SERIAL like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
+	<select id="findErpResuit" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from erp_resuit where ISVA=0;
+	</select>
+	<select id="findDimRes" resultMap="BaseResultMap" parameterType="Map">
+		SELECT res.* FROM erp_drug_result d ,erp_resuit res ,erp_kinds kin
+		<where>
+		d.RES_ID=res.RES_ID AND d.KIN_ID=kin.KIN_ID  and
+    	<if test="pricer != ''">
+    		(
+    			res.RES_NAME like CONCAT('%',#{pricer},'%' )
+    			or
+	    		res.RES_SERIAL like CONCAT('%',#{pricer},'%' ) 
+	    		or 
+	    		res.REMARK like CONCAT('%',#{pricer},'%' )
+	    		or 
+	    		d.KIN_ID like CONCAT('%',#{pricer},'%' )
+    		)
+    	</if>
+    	and res.ISVA =0;
+    </where>
+	</select>
+</mapper>

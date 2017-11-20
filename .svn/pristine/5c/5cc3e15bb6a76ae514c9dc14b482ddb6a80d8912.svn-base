@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpApplyassetMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpApplyasset" >
+    <id column="APPASS_ID" property="appassId" jdbcType="VARCHAR" />
+    <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
+    <result column="FINANCE_ID" property="financeId" jdbcType="VARCHAR" />
+    <result column="APPASS_SERIAL" property="appassSerial" jdbcType="VARCHAR" />
+    <result column="APPASS_APPLY" property="appassApply" jdbcType="VARCHAR" />
+    <result column="APPASS_TYPE" property="appassType" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="APPASS_TIME" property="appassTime" jdbcType="VARCHAR" />
+    <result column="APPASS_NUM" property="appassNum" jdbcType="CHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    APPASS_ID, PURC_ID, APPASS_SERIAL, APPASS_APPLY, APPASS_TYPE, STATE, APPASS_TIME, 
+    APPASS_NUM, ISVA, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_applyasset
+    where APPASS_ID = #{appassId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_applyasset
+    where APPASS_ID = #{appassId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpApplyasset" >
+    insert into erp_applyasset (APPASS_ID, PURC_ID, APPASS_SERIAL, 
+      APPASS_APPLY, APPASS_TYPE, STATE, 
+      APPASS_TIME, APPASS_NUM, ISVA, 
+      REMARK)
+    values (#{appassId,jdbcType=VARCHAR}, #{purcId,jdbcType=VARCHAR}, #{appassSerial,jdbcType=VARCHAR}, 
+      #{appassApply,jdbcType=VARCHAR}, #{appassType,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{appassTime,jdbcType=VARCHAR}, #{appassNum,jdbcType=CHAR}, #{isva,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpApplyasset" >
+    insert into erp_applyasset
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appassId != null" >
+        APPASS_ID,
+      </if>
+      <if test="purcId != null" >
+        PURC_ID,
+      </if>
+      <if test="appassSerial != null" >
+        APPASS_SERIAL,
+      </if>
+      <if test="appassApply != null" >
+        APPASS_APPLY,
+      </if>
+      <if test="appassType != null" >
+        APPASS_TYPE,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="appassTime != null" >
+        APPASS_TIME,
+      </if>
+      <if test="appassNum != null" >
+        APPASS_NUM,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appassId != null" >
+        #{appassId,jdbcType=VARCHAR},
+      </if>
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="appassSerial != null" >
+        #{appassSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="appassApply != null" >
+        #{appassApply,jdbcType=VARCHAR},
+      </if>
+      <if test="appassType != null" >
+        #{appassType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="appassTime != null" >
+        #{appassTime,jdbcType=VARCHAR},
+      </if>
+      <if test="appassNum != null" >
+        #{appassNum,jdbcType=CHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpApplyasset" >
+    update erp_applyasset
+    <set >
+      <if test="purcId != null" >
+        PURC_ID = #{purcId,jdbcType=VARCHAR},
+      </if>
+      <if test="appassSerial != null" >
+        APPASS_SERIAL = #{appassSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="appassApply != null" >
+        APPASS_APPLY = #{appassApply,jdbcType=VARCHAR},
+      </if>
+      <if test="appassType != null" >
+        APPASS_TYPE = #{appassType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="appassTime != null" >
+        APPASS_TIME = #{appassTime,jdbcType=VARCHAR},
+      </if>
+      <if test="appassNum != null" >
+        APPASS_NUM = #{appassNum,jdbcType=CHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where APPASS_ID = #{appassId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpApplyasset" >
+    update erp_applyasset
+    set PURC_ID = #{purcId,jdbcType=VARCHAR},
+      APPASS_SERIAL = #{appassSerial,jdbcType=VARCHAR},
+      APPASS_APPLY = #{appassApply,jdbcType=VARCHAR},
+      APPASS_TYPE = #{appassType,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      APPASS_TIME = #{appassTime,jdbcType=VARCHAR},
+      APPASS_NUM = #{appassNum,jdbcType=CHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where APPASS_ID = #{appassId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据年份查询12月的支出金额 -->
+  <select id="showListPrice" parameterType="String" resultMap="BaseResultMap">
+  	 SELECT SUBSTRING(t.APPASS_TIME,6,2) AS appassTime,SUM(t.APPASS_NUM) AS appassNum FROM ERP_APPLYASSET t WHERE APPASS_TIME LIKE#{date} GROUP BY SUBSTRING(t.APPASS_TIME,6,2)
+  </select>
+  <!-- 模糊分页查询得到支出集合 -->
+  <select id="showList" resultMap="BaseResultMap" parameterType="map">
+  	select * from ERP_APPLYASSET t where t.isva=1
+  	<if test="keyWord !=null and keyWord !=''">
+  		and (  
+	  			t.APPASS_SERIAL like #{keyWord}
+	  			or t.APPASS_APPLY like #{keyWord}
+	  			or t.APPASS_TYPE like #{keyWord}
+	  			or t.REMARK like #{keyWord}
+  		    )
+  	</if>
+  	<if test="state !=null and state!=''">
+  		and t.STATE = #{state}
+  	</if>
+  	<if test="staTime !=null and staTime !=''">
+  		and (t.APPASS_TIME &gt;= #{staTime} and t.APPASS_TIME &lt;= #{endTime})
+  	</if>
+  	
+  	ORDER BY t.APPASS_TIME DESC limit #{pages.firstRows},#{pages.maxResult}
+  </select>
+
+  <!-- 模糊查询得到支出行数 -->
+  <select id="findCount" resultType="int" parameterType="map">
+  	select count(*) from ERP_APPLYASSET t where t.isva=1
+  	<if test="keyWord !=null and keyWord !=''">
+  		and (
+	  			t.APPASS_SERIAL like #{keyWord}
+	  			or t.APPASS_APPLY like #{keyWord}
+	  			or t.APPASS_TYPE like #{keyWord}
+	  			or t.REMARK like #{keyWord}
+  			)
+  	</if>
+  	<if test="state !=null and state!=''">
+  		and t.STATE = #{state}
+  	</if>
+  	<if test="staTime !=null and staTime !=''">
+  		and (t.APPASS_TIME &gt;= #{staTime} and t.APPASS_TIME &lt;= #{endTime})
+  	</if>
+  </select>
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpLogMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpLog" >
+    <id column="LOG_ID" property="logId" jdbcType="VARCHAR" />
+    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="LOG_SERIAL" property="logSerial" jdbcType="VARCHAR" />
+    <result column="LOG_TITLE" property="logTitle" jdbcType="VARCHAR" />
+    <result column="LOG_CONTENT" property="logContent" jdbcType="VARCHAR" />
+    <result column="LOG_NUM" property="logNum" jdbcType="INTEGER" />
+    <result column="LOG_COMPLET" property="logComplet" jdbcType="INTEGER" />
+    <result column="LOG_PERSON" property="logPerson" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LOG_ID, INDENT_ID, LOG_SERIAL, LOG_TITLE, LOG_CONTENT, LOG_NUM, LOG_COMPLET, LOG_PERSON, 
+    ISVA, STATE, CREATETIME, CREATER, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_log
+    where LOG_ID = #{logId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_log
+    where LOG_ID = #{logId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpLog" >
+    insert into erp_log (LOG_ID, INDENT_ID, LOG_SERIAL, 
+      LOG_TITLE, LOG_CONTENT, LOG_NUM, 
+      LOG_COMPLET, LOG_PERSON, ISVA, 
+      STATE, CREATETIME, CREATER, 
+      REMARK)
+    values (#{logId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, #{logSerial,jdbcType=VARCHAR}, 
+      #{logTitle,jdbcType=VARCHAR}, #{logContent,jdbcType=VARCHAR}, #{logNum,jdbcType=INTEGER}, 
+      #{logComplet,jdbcType=INTEGER}, #{logPerson,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpLog" >
+    insert into erp_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="logSerial != null" >
+        LOG_SERIAL,
+      </if>
+      <if test="logTitle != null" >
+        LOG_TITLE,
+      </if>
+      <if test="logContent != null" >
+        LOG_CONTENT,
+      </if>
+      <if test="logNum != null" >
+        LOG_NUM,
+      </if>
+      <if test="logComplet != null" >
+        LOG_COMPLET,
+      </if>
+      <if test="logPerson != null" >
+        LOG_PERSON,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="logSerial != null" >
+        #{logSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="logTitle != null" >
+        #{logTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="logContent != null" >
+        #{logContent,jdbcType=VARCHAR},
+      </if>
+      <if test="logNum != null" >
+        #{logNum,jdbcType=INTEGER},
+      </if>
+      <if test="logComplet != null" >
+        #{logComplet,jdbcType=INTEGER},
+      </if>
+      <if test="logPerson != null" >
+        #{logPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpLog" >
+    update erp_log
+    <set >
+      <if test="indentId != null" >
+        INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="logSerial != null" >
+        LOG_SERIAL = #{logSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="logTitle != null" >
+        LOG_TITLE = #{logTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="logContent != null" >
+        LOG_CONTENT = #{logContent,jdbcType=VARCHAR},
+      </if>
+      <if test="logNum != null" >
+        LOG_NUM = #{logNum,jdbcType=INTEGER},
+      </if>
+      <if test="logComplet != null" >
+        LOG_COMPLET = #{logComplet,jdbcType=INTEGER},
+      </if>
+      <if test="logPerson != null" >
+        LOG_PERSON = #{logPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LOG_ID = #{logId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpLog" >
+    update erp_log
+    set INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      LOG_SERIAL = #{logSerial,jdbcType=VARCHAR},
+      LOG_TITLE = #{logTitle,jdbcType=VARCHAR},
+      LOG_CONTENT = #{logContent,jdbcType=VARCHAR},
+      LOG_NUM = #{logNum,jdbcType=INTEGER},
+      LOG_COMPLET = #{logComplet,jdbcType=INTEGER},
+      LOG_PERSON = #{logPerson,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      STATE = #{state,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where LOG_ID = #{logId,jdbcType=VARCHAR}
+  </update>
+</mapper>
