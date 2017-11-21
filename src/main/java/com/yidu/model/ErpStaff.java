@@ -48,11 +48,23 @@ public class ErpStaff {
     
     private String annexId;
     
+    private String annexName;
     
     
     
     
-    public String getAnnexId() {
+    
+    
+    
+    public String getAnnexName() {
+		return annexName;
+	}
+
+	public void setAnnexName(String annexName) {
+		this.annexName = annexName;
+	}
+
+	public String getAnnexId() {
 		return annexId;
 	}
 

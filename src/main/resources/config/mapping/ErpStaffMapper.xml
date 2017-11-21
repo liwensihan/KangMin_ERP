@@ -22,10 +22,13 @@
     <result column="role_id" property="roleId" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="PER_ROLE_ID" property="perRoleId" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR" />
+    <result column="ANNEX_NAME" property="annexName" jdbcType="VARCHAR" />
+    
   </resultMap>
-  <sql id="Base_Column_List" >
+	<sql id="Base_Column_List" >
     sta_id, depa_id, sta_serial, sta_name, sta_email, sta_pwd, sta_age, sta_sex, sta_entryTime, 
-    sta_dimissionTime, sta_img, sta_backgd, ISVA, createTime, createR, remark
+    sta_dimissionTime, sta_img, sta_backgd, ISVA, createTime, createR, remark, ANNEX_ID
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -44,9 +47,9 @@
   
     <!-- 总行数 -->
   <select id="findRowCount" resultType="int" parameterType="com.yidu.model.ErpStaff">
-  	SELECT COUNT(*) FROM erp_staff sta,erp_depa depa ,erp_personel_role prole,erp_role role
+  	SELECT COUNT(*) FROM erp_staff sta,erp_depa depa ,erp_personel_role prole,erp_role role,erp_annex annex
   	<where>
-  	sta.depa_id = depa.depa_id AND sta.sta_id = prole.sta_id AND prole.ROLE_ID = role.ROLE_ID AND sta.isva='1' AND depa.isva='1' AND role.ISVA='1'
+  	sta.ANNEX_ID = annex.ANNEX_ID AND sta.depa_id = depa.depa_id AND sta.sta_id = prole.sta_id AND prole.ROLE_ID = role.ROLE_ID AND sta.isva='1' AND depa.isva='1' AND role.ISVA='1' AND annex.ISVA="1"
   		<if test="roleName!=null and roleName!=''">
   			 and role.role_name like concat('%',#{roleName},'%')
   		</if>
@@ -68,11 +71,8 @@
   		<if test="staSex!=null and staSex!=''">
   			 and sta.sta_sex like concat('%',#{staSex},'%')
   		</if>
-  		<if test="staEntrytime!=null and staEntrytime!=''">
-  			 and sta.sta_entryTime &gt;=#{staEntrytime}
-  		</if>
-  		<if test="staDimissiontime!=null and staDimissiontime!=''">
-  			 and sta.sta_dimissionTime &gt;=#{staDimissiontime}
+  		<if test="annexName!=null and annexName!=''">
+  			 and annex.ANNEX_NAME like concat('%',#{annexName},'%')
   		</if>
   	</where>
   </select>
@@ -82,9 +82,9 @@
   </select>
   
   <select id="findAll" resultMap="BaseResultMap" parameterType="com.yidu.model.ErpStaff">
-  	SELECT * FROM erp_staff sta,erp_depa depa ,erp_personel_role prole,erp_role role
+	SELECT * FROM erp_staff sta,erp_depa depa ,erp_personel_role prole,erp_role role,erp_annex annex
   	<where>
-  	sta.depa_id = depa.depa_id AND sta.sta_id = prole.sta_id AND prole.ROLE_ID = role.ROLE_ID AND sta.isva='1' AND depa.isva='1' AND role.ISVA='1'
+  	sta.ANNEX_ID = annex.ANNEX_ID AND sta.depa_id = depa.depa_id AND sta.sta_id = prole.sta_id AND prole.ROLE_ID = role.ROLE_ID AND sta.isva='1' AND depa.isva='1' AND role.ISVA='1' AND annex.ISVA="1"
   		<if test="roleName!=null and roleName!=''">
   			 and role.role_name like concat('%',#{roleName},'%')
   		</if>
@@ -106,11 +106,8 @@
   		<if test="staSex!=null and staSex!=''">
   			 and sta.sta_sex like concat('%',#{staSex},'%')
   		</if>
-  		<if test="staEntrytime!=null and staEntrytime!=''">
-  			 and sta.sta_entryTime &gt;=#{staEntrytime}
-  		</if>
-  		<if test="staDimissiontime!=null and staDimissiontime!=''">
-  			 and sta.sta_dimissionTime &gt;=#{staDimissiontime}
+  		<if test="annexName!=null and annexName!=''">
+  			 and annex.ANNEX_NAME like concat('%',#{annexName},'%')
   		</if>
   	</where>
   	 limit #{page},#{limit}
@@ -124,19 +121,19 @@
    <update id="updateById" parameterType="java.lang.String">
   	UPDATE erp_staff  SET isva = '0' WHERE sta_id = #{staId,jdbcType=VARCHAR}
   </update>
-  <insert id="insert" parameterType="com.yidu.model.ErpStaff" >
+   <insert id="insert" parameterType="com.yidu.model.ErpStaff" >
     insert into erp_staff (sta_id, depa_id, sta_serial, 
       sta_name, sta_email, sta_pwd, 
       sta_age, sta_sex, sta_entryTime, 
       sta_dimissionTime, sta_img, sta_backgd, 
       ISVA, createTime, createR, 
-      remark)
+      remark, ANNEX_ID)
     values (#{staId,jdbcType=VARCHAR}, #{depaId,jdbcType=VARCHAR}, #{staSerial,jdbcType=VARCHAR}, 
       #{staName,jdbcType=VARCHAR}, #{staEmail,jdbcType=VARCHAR}, #{staPwd,jdbcType=VARCHAR}, 
       #{staAge,jdbcType=DECIMAL}, #{staSex,jdbcType=VARCHAR}, #{staEntrytime,jdbcType=VARCHAR}, 
       #{staDimissiontime,jdbcType=VARCHAR}, #{staImg,jdbcType=VARCHAR}, #{staBackgd,jdbcType=VARCHAR}, 
       #{isva,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
+      #{remark,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpStaff" >
     insert into erp_staff
@@ -189,6 +186,9 @@
       <if test="remark != null" >
         remark,
       </if>
+      <if test="annexId != null" >
+        ANNEX_ID,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="staId != null" >
@@ -238,6 +238,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -289,6 +292,9 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="annexId != null" >
+        ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      </if>
     </set>
     where sta_id = #{staId,jdbcType=VARCHAR}
   </update>
@@ -311,7 +317,8 @@
       ISVA = #{isva,jdbcType=INTEGER},
       createTime = #{createtime,jdbcType=VARCHAR},
       createR = #{creater,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
+      remark = #{remark,jdbcType=VARCHAR},
+      ANNEX_ID = #{annexId,jdbcType=VARCHAR}
     where sta_id = #{staId,jdbcType=VARCHAR}
   </update>
   

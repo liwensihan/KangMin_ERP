@@ -67,6 +67,9 @@
 		        <input name="modelCode" id="modelCode" autocomplete="off" class="layui-input" type="tel" >
 		      </div>
 		    </div>
+		    <div class="layui-inline" style="margin-top: 15px;">
+		    <a  class="layui-btn layui-btn-danger" href="javascript:deleteModel()">删除</a>
+		    </div>
 		    </div>
 			<div style="height:30px;"></div>
                 <div style="text-align:center;">
