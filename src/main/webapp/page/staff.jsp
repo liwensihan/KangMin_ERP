@@ -644,7 +644,7 @@ table = layui.table;
 </form>
 </div>
 
-<div id="div2">   
+<div id="div2">
 	<form id="oneForm">
 		<div class="layui-layer-title" style="cursor: move;margin-bottom: 10px;" >上传图片</div>
     	<div>&nbsp;</div>
