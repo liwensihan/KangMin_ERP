@@ -63,10 +63,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="bodyDiv" style="width:1000px;margin: auto;">
 				
 				<div style="text-align: center;">
-					日期：<input class="inputText" type="text" value="${times}">
+					日期：<input class="inputText" type="text" value="${times}" readonly>
 					订单编号：<input class="inputText" type="text" value="${kinordSerial}" readonly>
-					分店：<input class="inputText" type="text">
-					经办人：<input class="inputText" type="text" value="${staName}">
+					分店：<input class="inputText" type="text" value="${annexName}" readonly>
+					经办人：<input class="inputText" type="text" value="${staName}" readonly>
 					<hr>
 					会员编号：<input class="inputText" type="text">
 					<span class="layui-badge-dot layui-bg-green"></span>
@@ -103,9 +103,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<hr>
 					<div class="footDiv" align="right">
 						<input type="checkbox" name="on-off" lay-filter="on-off" lay-skin="switch" lay-text="批发|零售">
-						应付金额(元)：<input id="sumPrice" name="kinordNum" class="inputText" type="text">
+						应付金额(元)：<input id="sumPrice" name="kinordNum" class="inputText" type="text" readonly>
 						实付金额(元)：<input id="sumPrice1" class="inputText" type="text">
-						找零(元)：<input id="sumPrice2" class="inputText" >
+						找零(元)：<input id="sumPrice2" class="inputText" readonly>
 						<hr>
 						<button class="layui-btn layui-btn-small" lay-submit lay-filter="submit"><i class="layui-icon">&#xe609;</i>保存</button>
 						<button class="layui-btn layui-btn-primary layui-btn-small" lay-submit lay-filter="reset"><i class="layui-icon">&#x1007;</i>清空</button>
