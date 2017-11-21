@@ -29,8 +29,8 @@
 	}
 	#div{
 		z-index: 19891015; 
-		top:15%;
-		left:32%;
+		top:10%;
+		left:25%;
 		display: none;
 		position: fixed;
 		background-color: #fff;
@@ -58,6 +58,39 @@
 		width:300px;
 	}
 	
+	/*a  upload */
+.a-upload {
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
   </style>
 </head>
 <body> 
@@ -89,6 +122,11 @@
 							  <option value="">权限</option>
 							</select>
 		  				</td>
+		  				<td>
+			  				<select id="annexName1" name="annexName" lay-verify="required" lay-search="" width="50px">
+							  <option value="">分店</option>
+							</select>
+		  				</td>
 		  			</tr>
 		  		</table>
 			</form>
@@ -103,6 +141,7 @@
       <th lay-data="{field:'staName', width:110, fixed: true, align:'center'}">员工姓名</th>
       <th lay-data="{field:'staImg', width:110, align:'center',templet:'#staImgs'}">员工照片</th>
       <th lay-data="{field:'depaName', width:110, align:'center'}">部门</th>
+      <th lay-data="{field:'annexName', width:110, align:'center'}">分店</th>
       <th lay-data="{field:'roleName', width:110, align:'center'}">权限</th>
       <th lay-data="{field:'staSerial', width:110, align:'center'}">编号</th>
       <th lay-data="{field:'staEmail', width:110, align:'center'}">电话号码</th>
@@ -115,7 +154,7 @@
   </thead>
 </table>
 <script type="text/html" id="staImgs">
-	<img alt="暂无图片" src="{{ d.staImg }}" style="width:30px;height:30px;" />
+	<img alt="暂无图片" src="{{ d.staImg }}" style="height:30px;"/>
 </script>
 
 
@@ -141,6 +180,13 @@
 		},"json")
 		
 		
+		url="staff/getAnnex.action";
+		$.post(url,null,function(m){
+			for(i=0;i<m.length;i++){
+				$("#annexName1").append("<option value='"+m[i].annexName+"'>"+m[i].annexName+"</option>");
+			}
+		},"json")
+		
 		 url="staff/getRole.action";
 	 	 $.post(url,null,function(m){
 	 	 for(i=0;i<m.length;i++){
@@ -161,6 +207,13 @@
 					$("#depaId").append("<option value='"+m[i].depaId+"'>"+m[i].depaName+"</option>");
 				}
 			},"json");
+			 
+			 url="staff/getAnnex.action";
+				$.post(url,null,function(m){
+					for(i=0;i<m.length;i++){
+						$("#annexName").append("<option value='"+m[i].annexName+"'>"+m[i].annexName+"</option>");
+					}
+				},"json")
 			 
 			 url="staff/getRole.action";
 	 		 $.post(url,null,function(m){
@@ -264,13 +317,15 @@ table = layui.table;
 					      var demoReload2 = $('#staSex1');
 					      var demoReload4 = $('#staName1');
 					      var demoReload5 = $('#roleName1');
+					      var demoReload6 = $('#annexName1');
 					      table.reload('testReload', {
 					        where: {
 					         
 					        	depaName: demoReload.val(),
 					         	staSex: demoReload2.val(),
 					         	staName: demoReload4.val(),
-					         	roleName: demoReload5.val()
+					         	roleName: demoReload5.val(),
+					         	annexName: demoReload6.val()
 					        }
 					      });
 							$("#div1").fadeOut(200);
@@ -281,13 +336,15 @@ table = layui.table;
 						      var demoReload2 = $('#staSex1');
 						      var demoReload4 = $('#staName1');
 						      var demoReload5 = $('#roleName1');
+						      var demoReload6 = $('#annexName1');
 						      table.reload('testReload', {
 						        where: {
 						         
 						        	depaName: demoReload.val(),
 						         	staSex: demoReload2.val(),
 						         	staName: demoReload4.val(),
-						         	roleName: demoReload5.val()
+						         	roleName: demoReload5.val(),
+						         	annexName: demoReload6.val()
 						        }
 						      });
 							$("#div1").fadeOut(200);
@@ -348,6 +405,20 @@ table = layui.table;
  				}
  			 }
  		 },"json")
+ 		 
+ 		 
+ 		 url="staff/getAnnex.action";
+ 		 $.post(url,null,function(m){
+ 			$("#annexName").html("<option value=''>分店名称</option>");
+ 			 for(i=0;i<m.length;i++){
+ 				if(data.annexId==m[i].annexId){
+ 					$("#annexName").append("<option value='"+m[i].annexId+"' selected = 'selected'>"+m[i].annexName+"</option>");
+ 				}else{
+ 					$("#annexName").append("<option value='"+m[i].annexId+"'>"+m[i].annexName+"</option>");
+ 				}
+ 			 }
+ 		 },"json")
+ 		 
  		 $("#staName").val(data.staName);
  		 $("#staSerial").val(data.staSerial);
  		 $("#staEmail").val(data.staEmail);
@@ -372,13 +443,15 @@ table = layui.table;
 		      var demoReload2 = $('#staSex1');
 		      var demoReload4 = $('#staName1');
 		      var demoReload5 = $('#roleName1');
+		      var demoReload6 = $('#annexName1');
 		      table.reload('testReload', {
 		        where: {
 		         
 		        	depaName: demoReload.val(),
 		         	staSex: demoReload2.val(),
 		         	staName: demoReload4.val(),
-		         	roleName: demoReload5.val()
+		         	roleName: demoReload5.val(),
+		         	annexName: demoReload6.val()
 		        }
 		      });
 		    }
@@ -429,6 +502,7 @@ table = layui.table;
 						   	$("#div2").fadeOut(200);
 				           	layer.msg("上传成功");
 				           	$("#file").val("");
+				           	$(".showFileName").html("");
 				        },
 				        error:function(e){
 				        	layer.msg("上传失败");
@@ -441,7 +515,6 @@ table = layui.table;
 	    	  });
 		
 	}
-	
 	
 	
 </script>
@@ -459,9 +532,11 @@ table = layui.table;
       </div>
     </div>
     <div class="layui-inline">
-      <label class="layui-form-label">员工编号</label>
+      <label class="layui-form-label"><span style="color:red;">*</span>分店</label>
       <div class="layui-input-inline">
-        <input name="staSerial" id="staSerial" autocomplete="off" class="layui-input" type="text">
+         <select id="annexName" name="annexName" lay-verify="required" lay-search="" width="50px">
+			<option value="">分店名称</option>
+	 	</select>
       </div>
     </div>
   </div>
@@ -573,14 +648,28 @@ table = layui.table;
 	<form id="oneForm">
 		<div class="layui-layer-title" style="cursor: move;margin-bottom: 10px;" >上传图片</div>
     	<div>&nbsp;</div>
-    	<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="file" name="file" id="file"></div>
+    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" class="a-upload">选择文件<input type="file" name="file" id="file"></a>&nbsp;&nbsp;<div class="showFileName"></div>
     	<span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:quxiao2();"></a></span>
 		<div style="height:10px;"></div>
 		<div class="layui-layer-btn layui-layer-btn-" id="pian"></div>
 		<span class="layui-layer-resize"></span>
     </form>
 </div>
-
+<script type="text/javascript">
+$(".a-upload").on("change","input[type='file']",function(){
+    var filePath=$(this).val();
+    if(filePath.indexOf("jpg")!=-1 || filePath.indexOf("png")!=-1){
+        $(".fileerrorTip").html("").hide();
+        var arr=filePath.split('\\');
+        var fileName=arr[arr.length-1];
+        $(".showFileName").html(fileName);
+    }else{
+        $(".showFileName").html("");
+        $(".fileerrorTip").html("您未上传文件，或者您上传文件类型有误！").show();
+        return false 
+    }
+})
+</script>
 </body>
 	
 </html>

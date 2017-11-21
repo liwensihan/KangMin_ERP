@@ -58,4 +58,12 @@ public interface AnnexService {
 	 * @version 1.1
      */
     public int updateByPrimaryKeySelective(ErpAnnex record);
+    
+    
+    
+    /**
+     * 查询所有isva为1的数据
+     * @return
+     */
+    public List<ErpAnnex> getAnnex();
 }

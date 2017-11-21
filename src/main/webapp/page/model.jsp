@@ -193,7 +193,7 @@ layui.use('table', function(){
 			type:2,
 			skin: 'layui-layer-molv',//样式
 			content:'model/addBelow.action?modelId='+data.modelId,
-			area: ['744px', '500px'],
+			area: ['744px', '60%'],
 			title: '编辑下级模块',
 			
 		});	

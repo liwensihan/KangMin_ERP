@@ -55,4 +55,10 @@ public interface ErpAnnexMapper {
     public int updateByPrimaryKeySelective(ErpAnnex record);
 
     int updateByPrimaryKey(ErpAnnex record);
+    
+    /**
+     * 查询所有isva为1的数据
+     * @return
+     */
+    public List<ErpAnnex> getAnnex();
 }
