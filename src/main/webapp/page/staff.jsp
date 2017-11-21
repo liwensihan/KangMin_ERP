@@ -654,7 +654,7 @@ table = layui.table;
 		<div class="layui-layer-btn layui-layer-btn-" id="pian"></div>
 		<span class="layui-layer-resize"></span>
     </form>
-</div>
+</div>  
 <script type="text/javascript">
 $(".a-upload").on("change","input[type='file']",function(){
     var filePath=$(this).val();
