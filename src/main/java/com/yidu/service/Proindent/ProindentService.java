@@ -96,6 +96,19 @@ public interface ProindentService {
 	  * @param indentId
 	  * @return
 	  */
-	 List<Map<String, Object>> findByshow(String indentId);
+	 List<Map<String, Object>> findByshow(Map<String, Object> map);
 
+	 /**
+	  * 订单明细总行数
+	  * @param indentId
+	  * @return
+	  */
+	 int findcount(String indentId);
+	 
+	 /**
+	  * 根据ID修改生产状态
+	  * @param map
+	  * @return
+	  */
+	 int updateId(Map<String, Object> map);
 }

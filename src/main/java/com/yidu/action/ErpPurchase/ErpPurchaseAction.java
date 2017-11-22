@@ -95,16 +95,16 @@ public class ErpPurchaseAction {
 		System.out.println(d_purcId);
 		return eph;
 	}
-	/**
-	 * 根据ID显示修改信息
-	 * @param purcId
-	 * @return
-	 */
-	@RequestMapping("/selectByPrimaryKey")
-	@ResponseBody
-	public ErpPurchase selectByPrimaryKey(String purcId){
-		return erpPurchaseService.selectByPrimaryKey(purcId);
-	}
+//	/**
+//	 * 根据ID显示修改信息
+//	 * @param purcId
+//	 * @return
+//	 */
+//	@RequestMapping("/showUpdate")
+//	@ResponseBody
+//	public ErpPurchase showUpdate(String purcId){
+//		return erpPurchaseService.selectByPrimaryKey(purcId);
+//	}
 	/**
 	 * 增加Or修改	
 	 * @param purcId

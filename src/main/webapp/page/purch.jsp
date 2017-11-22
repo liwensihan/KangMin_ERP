@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <button class="layui-btn" data-type="reload" onclick="solo()">搜索</button>
    <a class="layui-btn" lay-event="edit" onclick="addtype()">增加</a>
 </div>
-<table class="layui-table" lay-data="{url:'dent/showPro.action', page:true, id:'idTest'}" lay-filter="demo">
+<table class="layui-table" lay-data="{url:'Purchase/showAll.action', page:true, id:'idTest'}" lay-filter="demo">
   <thead>
     <tr>
       <th lay-data="{field:'indentId', width:80, sort: true, fixed: true, align:'center'},hidden:'true'"></th>

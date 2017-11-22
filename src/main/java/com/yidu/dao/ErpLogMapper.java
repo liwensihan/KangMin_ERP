@@ -5,6 +5,7 @@ import com.yidu.model.ErpLog;
 public interface ErpLogMapper {
     int deleteByPrimaryKey(String logId);
 
+    //增加
     int insert(ErpLog record);
 
     int insertSelective(ErpLog record);
