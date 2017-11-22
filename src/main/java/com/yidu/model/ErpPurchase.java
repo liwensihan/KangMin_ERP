@@ -1,4 +1,7 @@
 package com.yidu.model;
+
+import java.util.List;
+
 /**
  * 采购订单Model
  * @author Gjwen
@@ -26,7 +29,15 @@ public class ErpPurchase {
     
     private Double purcTotalPrice;//总数价格
     
+    private List<ErpPurchaseDetails> det;
    
+	public List<ErpPurchaseDetails> getDet() {
+		return det;
+	}
+
+	public void setDet(List<ErpPurchaseDetails> det) {
+		this.det = det;
+	}
 
 	public Double getPurcTotalPrice() {
 		return purcTotalPrice;

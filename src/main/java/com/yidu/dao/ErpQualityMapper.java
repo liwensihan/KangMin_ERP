@@ -1,5 +1,8 @@
 package com.yidu.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.yidu.model.ErpQuality;
 /**
  * 质检表的导
@@ -43,4 +46,22 @@ public interface ErpQualityMapper {
      * @return int
      */
     int updateByPrimaryKey(ErpQuality record);
+    /**
+     * 查询今天生产最大的编号
+     * @param data 当前日期
+     * @return 最大的编号
+     */
+    String selectSerial(String data);
+    /**
+     * 查询质检对象
+     * @param map 参数 分页的参数
+     * @return 质检对象的集合
+     */
+    List<ErpQuality>selectByPrimaryNew(Map<String,Object> map);
+    /**
+     * 查询质检的总行数
+     * @param map 参数
+     * @return
+     */
+    int selectByPrimaryNewCount(Map<String,Object> map);
 }

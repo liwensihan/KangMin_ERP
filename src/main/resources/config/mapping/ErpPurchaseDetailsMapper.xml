@@ -6,8 +6,10 @@
     <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
     <result column="RAW_ID" property="rowId" jdbcType="VARCHAR" />
     <result column="PUR_DET_SERIAL" property="purDetSerial" jdbcType="VARCHAR" />
+    
     <result column="PUR_TOTAL_NUMBER" property="purcTotalNumber" jdbcType="INTEGER" />
     <result column="PUR_TOTAL_PRICE" property="purcTotalPrice" jdbcType="DOUBLE" />
+    
   </resultMap>
   <sql id="Base_Column_List" >
     PUR_DET_ID, PURC_ID, RAW_ID, PUR_DET_SERIAL, PUR_TOTAL_NUMBER, PUR_TOTAL_PRICE

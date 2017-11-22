@@ -6,6 +6,8 @@
     <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
     <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
     <result column="QUA_SREIAL" property="quaSreial" jdbcType="VARCHAR" />
+    <result column="PURC_SERIAL" property="purcSerial" jdbcType="VARCHAR" />
+     <result column="INDENT_NUMBER" property="indentNumber" jdbcType="VARCHAR" />
     <result column="QUA_QC" property="quaQc" jdbcType="VARCHAR" />
     <result column="QUA_GOOD" property="quaGood" jdbcType="INTEGER" />
     <result column="QUA_BAB" property="quaBab" jdbcType="INTEGER" />
@@ -19,7 +21,54 @@
     QUA_ID, INDENT_ID, PURC_ID, QUA_SREIAL, QUA_QC, QUA_GOOD, QUA_BAB, QUA_ISVA, ISVA, 
     CREATER, CREATETIME, REMARK
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select QUA_SREIAL from erp_quality where QUA_SREIAL like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+  </select>
+  <select id="selectByPrimaryNew" resultMap="BaseResultMap" parameterType="map" >
+    select *  from erp_quality q
+    	<if test="typePri==1">
+    		,erp_purchase pu where q.PURC_ID = pu.PURC_ID  
+    		<if test="pricer!=null">
+	    		(
+	    			q.QUA_ISVA= like CONCAT('%',#{pricer},'%' )
+	    		)
+    		</if>
+    		 and q.ISVA=1 ORDER BY q.CREATETIME  DESC  LIMIT #{page},#{limit};
+    	</if>
+    	<if test="typePri==2">
+    		,erp_proindent pr where q.INDENT_ID = pr.INDENT_ID  
+    		<if test="pricer!=null">
+	    		(
+	    			q.QUA_ISVA= like CONCAT('%',#{pricer},'%' )
+	    		)
+    		</if>
+    		 and q.ISVA=1 ORDER BY q.CREATETIME  DESC  LIMIT #{page},#{limit};
+    	</if>
+  </select>
+  <select id="selectByPrimaryNewCount" resultType="int" parameterType="map" >
+    select count(*) from erp_quality q 
+    	<if test="typePri==1">
+    		,erp_purchase pu where q.PURC_ID = pu.PURC_ID  
+    		<if test="pricer!=null">
+	    		(
+	    			q.QUA_ISVA= like CONCAT('%',#{pricer},'%' )
+	    		)
+    		</if>
+    		 and q.ISVA=1;
+    	</if>
+    	<if test="typePri==2">
+    		,erp_proindent pr where q.INDENT_ID = pr.INDENT_ID  
+    		<if test="pricer!=null">
+	    		(
+	    			q.QUA_ISVA= like CONCAT('%',#{pricer},'%' )
+	    		)
+    		</if>
+    		 and q.ISVA=1;
+    	</if>
+  </select>
+ 	<!-- 查询单个对象 -->
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from erp_quality

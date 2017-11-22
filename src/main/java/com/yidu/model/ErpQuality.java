@@ -25,7 +25,27 @@ public class ErpQuality {
 
     private String remark;
 
-    public String getQuaId() {
+    private String purcSerial;//采购编号
+    private String indentNumber;//生产编号
+    
+    
+    public String getIndentNumber() {
+		return indentNumber;
+	}
+
+	public void setIndentNumber(String indentNumber) {
+		this.indentNumber = indentNumber;
+	}
+
+	public String getPurcSerial() {
+		return purcSerial;
+	}
+
+	public void setPurcSerial(String purcSerial) {
+		this.purcSerial = purcSerial;
+	}
+
+	public String getQuaId() {
         return quaId;
     }
 
