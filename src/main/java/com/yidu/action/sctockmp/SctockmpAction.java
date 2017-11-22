@@ -24,7 +24,7 @@ import com.yidu.service.annex.AnnexService;
  * @data 2017年11月8日08:46:24
  */
 @Controller
-@RequestMapping("/sctock")
+@RequestMapping("/sctockmp")
 public class SctockmpAction {
 	@Resource
 	AnnexService service;
