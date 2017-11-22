@@ -229,7 +229,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#sumPrice1").text(0);
 				$("#sumPrice2").val("");
 				$("#sumPrice3").text(0);
-				return;
+				return false;
 			}
 			//更改应付金额
 			if($("#memberZheko").text()=="非会员"){
