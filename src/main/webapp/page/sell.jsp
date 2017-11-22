@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</head>
 	<body>
 		<div class="bigDiv">
-			<div class="headDiv">前端POS销售</div>
+			<div class="headDiv">康源医药分店销售</div>
 			<div class="bodyDiv" style="width:1000px;margin: auto;">
 				
 				<div style="text-align: center;">
@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					分店：<input class="inputText" type="text" value="${annexName}" readonly>
 					经办人：<input class="inputText" type="text" value="${staName}" readonly>
 					<hr>
-					会员编号：<input class="inputText" type="text">
+					会员编号：<input id="memberId" class="inputText" type="text">
 					<span class="layui-badge-dot layui-bg-green"></span>
 					产品条形码：<input id="kinBarcode" class="inputText" type="text">
 					<form class="layui-form" action="">
@@ -103,9 +103,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<hr>
 					<div class="footDiv" align="right">
 						<input type="checkbox" name="on-off" lay-filter="on-off" lay-skin="switch" lay-text="批发|零售">
-						应付金额(元)：<input id="sumPrice" name="kinordNum" class="inputText" type="text" readonly>
-						实付金额(元)：<input id="sumPrice1" class="inputText" type="text">
-						找零(元)：<input id="sumPrice2" class="inputText" readonly>
+						原金额：<span style="margin-right:20px;text-decoration:line-through;">
+							<span id="sumPrice0" style="font-size: 22px;">180</span>元</span>
+						会员折扣：<span id="memberZheko" style="margin-right:20px;color:red;">非会员</span>
+						应付金额：<span style="margin-right:20px;color:red;">
+						<span style="font-size: 22px;" id="sumPrice1">120</span>元</span>
+						实付金额：<input id="sumPrice2" class="inputText" maxlength="8" type="text" style="width:80px">
+						找零：<span style="margin-right:20px;color:red;">
+						<span style="font-size: 22px;" id="sumPrice3">80</span>元</span>
 						<hr>
 						<button class="layui-btn layui-btn-small" lay-submit lay-filter="submit"><i class="layui-icon">&#xe609;</i>保存</button>
 						<button class="layui-btn layui-btn-primary layui-btn-small" lay-submit lay-filter="reset"><i class="layui-icon">&#x1007;</i>清空</button>
@@ -165,7 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						tr.remove();
 						layer.msg('删除成功！');
 						showNum();//更改显示记录数
-						showPrice1();//更改总金额
+						showPrice();//更改总金额
 					});
 					layer.close(index);
 				});
@@ -193,14 +198,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			showPrice();
 		}
 		//更改应付金额
-		$("#sumPrice1").keyup(function(){
-			var price = $("#sumPrice").val();
+		$("#sumPrice2").keyup(function(){
+			clearNoNum(this);
+			var price = $("#sumPrice1").text();
 		 	var price1 = $(this).val();
-		 	clearNoNum(this);
-		 	var subtractPrice = price1-price;
-		 	$("#sumPrice2").val(subtractPrice);
+		 	var subtractPrice = decimal(price1-price,2);
+		 	$("#sumPrice3").text(subtractPrice);
 			if($(this).val()==""){
-				$("#sumPrice2").val("");
+				$("#sumPrice3").text(0);
 			}
 		});
 		//更改记录数
@@ -211,17 +216,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function showPrice(){
 			var tr = $("#kinList tbody tr");
 			if(tr.length>0){
-				var sumPrice =0;
+				var sumPrice0 =0;
 				$.each(tr,function(i,element){
 					var price = $(this).children().eq(5).text();
 					var num = $(this).children().eq(6).children().val();
-					$(this).children().eq(7).text(price*num);
-					sumPrice = sumPrice+price*num;
+					$(this).children().eq(7).text(decimal(price*num,2));
+					sumPrice0 = decimal(sumPrice0+price*num,2);
 				});
-				$("#sumPrice").val(sumPrice);
+				$("#sumPrice0").text(sumPrice0);//更改原金额
+			}else{//如果没有商品
+				$("#sumPrice0").text(0);
+				$("#sumPrice1").text(0);
+				$("#sumPrice2").val("");
+				$("#sumPrice3").text(0);
+				return;
 			}
-			if($("#sumPrice1").val()!=""){
-				$("#sumPrice2").val($("#sumPrice1").val()-$("#sumPrice").val());
+			//更改应付金额
+			if($("#memberZheko").text()=="非会员"){
+				$("#sumPrice1").text($("#sumPrice0").text());
+			}else{
+				var memberZheko = $("#memberZheko").text().replace("折","");
+				$("#sumPrice1").text(decimal(memberZheko/10*$("#sumPrice0").text(),2));
+			}
+			//更改找零金额
+			if($("#sumPrice2").val()!=""){
+				$("#sumPrice3").text(decimal($("#sumPrice2").val()-$("#sumPrice1").text(),2));
 			}
 		}
 		//增加
@@ -266,6 +285,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		$("#kinBarcode").val("");
 		});
 		
+		//更改会员号
+		$("#memberId").change(function(){
+			var url = "member/findById.action";
+	  		var data = {"memberId":$(this).val()}
+			$.post(url, data, function(member){
+				var sumPrice0 = $("#sumPrice0").text();//原价
+				if(member==""){
+					layer.msg("该会员不存在！");
+					$("#memberZheko").html("非会员");
+					$("#sumPrice1").text(sumPrice0);
+				}else{
+					$("#memberZheko").html(member.memberZheko+"折");
+				}
+				showPrice();
+			});
+		});
+		
 		//限制数字的输入
 		function clearNoNum(obj){ 
 		    obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
@@ -278,7 +314,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    if(obj.value.indexOf(".")==0){//第一个字符不能为.
 		    	 obj.value="";
 		    }
-		}  
+		}
+		//计算金钱四舍五入
+		function decimal(num,v){
+			var vv = Math.pow(10,v);
+			return Math.round(num*vv)/vv;
+		}
 	</script>
 	
 	
