@@ -1,14 +1,11 @@
 package com.yidu.model;
-/**
- * 质检表
- * @author 大晶儿
- * @Date 
- */
+
 public class ErpQuality {
-	
     private String quaId;
 
     private String indentId;
+
+    private String purcId;
 
     private String quaSreial;
 
@@ -42,6 +39,14 @@ public class ErpQuality {
 
     public void setIndentId(String indentId) {
         this.indentId = indentId == null ? null : indentId.trim();
+    }
+
+    public String getPurcId() {
+        return purcId;
+    }
+
+    public void setPurcId(String purcId) {
+        this.purcId = purcId == null ? null : purcId.trim();
     }
 
     public String getQuaSreial() {

@@ -9,6 +9,8 @@ public class ErpPact {
 
     private String applyId;
 
+    private String patypeId;
+
     private String pactTitle;
 
     private String pactNumber;
@@ -55,6 +57,14 @@ public class ErpPact {
 
     public void setApplyId(String applyId) {
         this.applyId = applyId == null ? null : applyId.trim();
+    }
+
+    public String getPatypeId() {
+        return patypeId;
+    }
+
+    public void setPatypeId(String patypeId) {
+        this.patypeId = patypeId == null ? null : patypeId.trim();
     }
 
     public String getPactTitle() {
