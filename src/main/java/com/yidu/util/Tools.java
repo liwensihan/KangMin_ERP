@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.yidu.common.CommomUtils;
+
 public class Tools {
 	
 	/**
@@ -95,4 +97,15 @@ public class Tools {
 		return serial;
 		
 	}
+	
+	/**
+	 * 得到当前日期时间
+	 * yyyy-MM-dd HH:mm:ss
+	 * @return 格式化的r日期字符串
+	 */
+	public static String getCurDateTime(){
+		Date date = new Date();
+		return CommomUtils.SDF_TIME.format(date);
+	}
+	
 }

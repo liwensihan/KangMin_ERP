@@ -2,8 +2,10 @@ package com.yidu.model;
 
 public class ErpAudit {
     private String audId;
+    
+    private String businessId;
 
-    private String purcId;
+	private String purcId;
 
     private String indentId;
 
@@ -36,7 +38,13 @@ public class ErpAudit {
 	public void setAudId(String audId) {
 		this.audId = audId;
 	}
+	public String getBusinessId() {
+		return businessId;
+	}
 
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
 	public String getPurcId() {
 		return purcId;
 	}

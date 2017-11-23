@@ -85,7 +85,7 @@ public class ErpApplyassetAction {
 	public SsmMessage auditFeedback(String appassId,String feedBack,String state){
 		SsmMessage mes = new SsmMessage();
 		Map<String,Object>map = new HashMap<String,Object>();//定义一个map集合
-		if(Tools.isEmpty(appassId)){//判断字符串是否为空
+		if(Tools.isEmpty(feedBack)){//判断字符串是否为空
 			map.put("feedBack", "暂无反馈信息");
 		}else{
 			map.put("feedBack", feedBack);//map集合中存入 反馈消息

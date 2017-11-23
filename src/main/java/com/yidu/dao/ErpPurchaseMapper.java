@@ -60,4 +60,12 @@ public interface ErpPurchaseMapper {
 	 * @return
 	 */
 	ErpPurchase findById(String purcId);
+	/**
+	 * 用于审核采购
+	 * @author 胡鑫
+	 * @date 2017年11月21日14:32:45
+	 * @param map 存放的参数
+	 * @return 返回执行的行数
+	 */
+	int auditPurchase(Map<String, Object> map);
 }

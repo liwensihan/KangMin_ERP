@@ -23,6 +23,7 @@ import com.yidu.service.ErpPurchase.ErpPurchaseService;
 import com.yidu.service.ErpPurchaseDetails.ErpPurchaseDetailsService;
 import com.yidu.service.ErpRaw.ErpRawService;
 import com.yidu.util.Pages;
+import com.yidu.util.SsmMessage;
 
 
 /**
@@ -158,5 +159,30 @@ public class ErpPurchaseAction {
 	@ResponseBody
 	public List<ErpRaw> showRawAll(){
 		return erpRawService.findRawList();
+	}
+	
+	/**
+	 * 用于审核采购
+	 * @author 胡鑫
+	 * @date 2017年11月20日16:02:49
+	 * @param purcId 采购订单id
+	 * @param state 状态信息
+	 * @param feedBack 回馈信息
+	 * @return 返回消息类
+	 */
+	@ResponseBody
+	@RequestMapping("/auditPurchase")
+	public SsmMessage auditPurchase(String purcId,String state,String feedBack){
+		SsmMessage mes = new SsmMessage();//定义一个消息类用于返回jsp
+		Map<String,Object>map = new HashMap<String,Object>();//定义一个map集合
+		if(Tools.isEmpty(feedBack)){//判断字符串是否为空
+			map.put("feedBack", "暂无反馈信息");
+		}else{
+			map.put("feedBack", feedBack);//map集合中存入 反馈消息
+		}
+		map.put("purcId", purcId);//map集合中存入财务id
+		map.put("state", state);//map集合中存入 审核是否通过   state=2 通过 state=0 不通过
+		int rows = erpPurchaseService.auditPurchase(map);
+		return mes;
 	}
 }

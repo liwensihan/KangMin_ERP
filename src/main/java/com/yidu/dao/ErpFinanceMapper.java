@@ -46,7 +46,7 @@ public interface ErpFinanceMapper {
      * 得到所有类型
      * @return
      */
-	List<ErpFinance> findListFinance();
+    ErpFinance findListFinance();
 	/**
 	 * 得到今天最大的编号
 	 * @param dateStr
