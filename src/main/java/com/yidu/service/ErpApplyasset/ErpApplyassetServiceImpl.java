@@ -115,6 +115,6 @@ public class ErpApplyassetServiceImpl implements ErpApplyassetService{
 		audit.setAudTime(Tools.getCurDateTime());//设置审核时间
 		audit.setState(Integer.valueOf(state));//设置审核状态  0未通过 2通过
 		int rows = auditMapper.updateByPrimaryKeySelective(audit);//执行审核表修改
-		return erpApplyassetMapper.auditApplyasset(map);
+		return erpApplyassetMapper.auditApplyasset(map);   
 	}
 }
