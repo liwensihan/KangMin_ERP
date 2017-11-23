@@ -75,7 +75,7 @@
  
   
   <div class="layui-form-item">
-    <label class="layui-form-label">单行选择框</label>
+    <label class="layui-form-label">订单编号</label>
     <div class="layui-input-block">
       <select name="indentId" id="indentId" lay-filter="aihao">
         <option value=""></option>
@@ -84,7 +84,7 @@
   </div>
   
   <div class="layui-form-item">
-    <label class="layui-form-label">单行输入框</label>
+    <label class="layui-form-label">日志标题</label>
     <div class="layui-input-block">
       <input name="logTitle" id="logTitle" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" type="text">
     </div>
@@ -113,7 +113,7 @@
   </div>
   
   <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">普通文本域</label>
+    <label class="layui-form-label">内容</label>
     <div class="layui-input-block">
       <textarea placeholder="请输入内容" name="logContent" id="logContent" class="layui-textarea"></textarea>
     </div>
