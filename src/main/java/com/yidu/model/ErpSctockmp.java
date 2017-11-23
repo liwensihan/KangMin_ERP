@@ -22,7 +22,7 @@ public class ErpSctockmp {
     private String remark;			//备注
     
     /**
-     * 主键ID
+     * 主键ID 
      * @return
      */
     public String getSaleId() {
