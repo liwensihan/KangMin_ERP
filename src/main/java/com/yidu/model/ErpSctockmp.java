@@ -14,14 +14,45 @@ public class ErpSctockmp {
     private String memberId;		//会员ID
     private BigDecimal saleNum;		//销售总数量
     private Date saleDate;			//订单时间
-    private BigDecimal saleMoney;	//应付金额
+    private String saleMoney;		//原金额
+    private String saleDiscount;	//折扣
+    private BigDecimal saleMoney1;	//应付金额
     private BigDecimal saleMoney2;	//实付金额
     private BigDecimal saleMoney3;	//找零
     private String creater;			//创建人
     private String createtime;		//创建时间
     private String remark;			//备注
     
+    
     /**
+     * 原金额
+     * @return
+     */
+    public String getSaleMoney() {
+		return saleMoney;
+	}
+    /**
+     * 原金额
+     * @param saleMoney
+     */
+	public void setSaleMoney(String saleMoney) {
+		this.saleMoney = saleMoney;
+	}
+	/**
+	 * 折扣
+	 * @return
+	 */
+	public String getSaleDiscount() {
+		return saleDiscount;
+	}
+	/**
+	 * 折扣
+	 * @param saleDiscount
+	 */
+	public void setSaleDiscount(String saleDiscount) {
+		this.saleDiscount = saleDiscount;
+	}
+	/**
      * 主键ID 
      * @return
      */
@@ -109,15 +140,15 @@ public class ErpSctockmp {
      * 应付金额
      * @return
      */
-    public BigDecimal getSaleMoney() {
-        return saleMoney;
+    public BigDecimal getSaleMoney1() {
+        return saleMoney1;
     }
     /**
      * 应付金额
      * @param saleMoney
      */
-    public void setSaleMoney(BigDecimal saleMoney) {
-        this.saleMoney = saleMoney;
+    public void setSaleMoney1(BigDecimal saleMoney1) {
+        this.saleMoney1 = saleMoney1;
     }
     /**
      * 实付金额
