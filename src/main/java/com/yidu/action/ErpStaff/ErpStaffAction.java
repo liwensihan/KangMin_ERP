@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yidu.model.ErpAnnex;
 import com.yidu.model.ErpDepa;
 import com.yidu.model.ErpModel;
 import com.yidu.model.ErpModelSubordinate;
@@ -41,6 +42,7 @@ import com.yidu.service.ErpModelSubordinate.ErpModelSubordinateServiceImpl;
 import com.yidu.service.ErpPersonelRole.ErpPersonelRoleService;
 import com.yidu.service.ErpRole.ErpRoleService;
 import com.yidu.service.ErpStaff.ErpStaffService;
+import com.yidu.service.annex.AnnexService;
 import com.yidu.util.Pages;
 import com.yidu.util.SsmMessage;
 
@@ -70,6 +72,9 @@ public class ErpStaffAction {
 	
 	@Resource
 	private ErpPersonelRoleService personelRoleService;
+	
+	@Resource
+	private AnnexService annexService;
 	
 	
 	@RequestMapping("login")
@@ -235,4 +240,15 @@ public class ErpStaffAction {
 		}
 		return mes;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("getAnnex")
+	public List<ErpAnnex> getAnnex(){
+		System.out.println("进来了。。。。。。。。。。。。。。。");
+		List<ErpAnnex>list = annexService.getAnnex();
+		return list;
+	}
+	
+	
 }

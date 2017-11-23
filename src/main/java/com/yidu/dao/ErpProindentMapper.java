@@ -12,8 +12,14 @@ import com.yidu.model.ErpProindent;
 public interface ErpProindentMapper {
     int deleteByPrimaryKey(String indentId);
 
+    //根据ID修改生产状态 
+    int updateId(Map<String, Object> map);
+    
+    //订单明细总行数
+    int findcount(String indentId);
+    
    //查询产品，订单，订单明细，订单生产日志，订单生产日志明细，根据订单ID查询
-    List<Map<String, Object>> findByshow(String indentId);
+    List<Map<String, Object>> findByshow(Map<String, Object> map);
     
     //下拉框查询
     List<ErpProindent> findStation();

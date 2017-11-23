@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<head>
 		<base href="<%=basePath%>">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>康民医药管理系统</title>
+		<title>康源医药管理系统</title>
 		<link rel="stylesheet" href="res/layui/css/layui.css">
 		<script src="res/js/jquery-2.1.3.min.js" type="text/javascript" ></script>
 		<script src="res/layui/layui.js"></script>
@@ -112,11 +112,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    </div>
 			  </div>
 			</div>
-		  </div>
-		  
-		  <div class="layui-footer">
-		    <!-- 底部固定区域 -->
-		    © ehuoyuan.com - 底部固定区域
 		  </div>
 		</div>
 		

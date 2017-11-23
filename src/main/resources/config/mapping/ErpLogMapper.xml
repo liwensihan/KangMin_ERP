@@ -20,6 +20,7 @@
     LOG_ID, INDENT_ID, LOG_SERIAL, LOG_TITLE, LOG_CONTENT, LOG_NUM, LOG_COMPLET, LOG_PERSON, 
     ISVA, STATE, CREATETIME, CREATER, REMARK
   </sql>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -30,7 +31,59 @@
     delete from erp_log
     where LOG_ID = #{logId,jdbcType=VARCHAR}
   </delete>
+  
+  
+  <!-- 查询所有 -->
+  <select id="selectshow" parameterType="map" resultMap="BaseResultMap" >
+  	select * from erp_log
+   <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	LOG_SERIAL like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_TITLE like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_CONTENT like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_COMPLET like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	CREATETIME like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		and ISVA=1
+  	</where>
+  	limit #{page},#{limit}
+  </select>
+  
+   <!-- 总行数-->
+  <select id="select" parameterType="map" resultType="int" >
+  	select COUNT(*) from erp_log
+   <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	LOG_SERIAL like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_TITLE like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_CONTENT like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	LOG_COMPLET like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	CREATETIME like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		and ISVA=1
+  	</where>
+  </select>
+  
+  
+  
+  <!-- 增加 -->
   <insert id="insert" parameterType="com.yidu.model.ErpLog" >
+	<!-- ID操生成UUID --> 
+  <selectKey keyProperty="logId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
     insert into erp_log (LOG_ID, INDENT_ID, LOG_SERIAL, 
       LOG_TITLE, LOG_CONTENT, LOG_NUM, 
       LOG_COMPLET, LOG_PERSON, ISVA, 

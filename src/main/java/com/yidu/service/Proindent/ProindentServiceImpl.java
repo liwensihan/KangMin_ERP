@@ -119,9 +119,27 @@ public class ProindentServiceImpl implements ProindentService{
 	 * 查询产品，订单，订单明细，订单生产日志，订单生产日志明细，根据订单ID查询
 	 */
 	@Override
-	public List<Map<String, Object>> findByshow(String indentId) {
+	public List<Map<String, Object>> findByshow(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return erpProindentMapper.findByshow(indentId);
+		return erpProindentMapper.findByshow(map);
+	}
+
+	/**
+	 * 订单明细总行数
+	 */
+	@Override
+	public int findcount(String indentId) {
+		// TODO Auto-generated method stub
+		return erpProindentMapper.findcount(indentId);
+	}
+
+	/**
+	 * 根据ID修改生产状态
+	 */
+	@Override
+	public int updateId(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpProindentMapper.updateId(map);
 	}
 
 }

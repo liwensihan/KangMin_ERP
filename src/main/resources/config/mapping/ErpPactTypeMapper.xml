@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpPactTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpPactType" >
+    <id column="PATYPE_ID" property="patypeId" jdbcType="VARCHAR" />
+    <result column="PATYPE_SREIAL" property="patypeSreial" jdbcType="VARCHAR" />
+    <result column="PATYPE_NAME" property="patypeName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CRATENR" property="cratenr" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PATYPE_ID, PATYPE_SREIAL, PATYPE_NAME, REMARK, CRATENR, CREATER
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_pact_type
+    where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_pact_type
+    where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpPactType" >
+    insert into erp_pact_type (PATYPE_ID, PATYPE_SREIAL, PATYPE_NAME, 
+      REMARK, CRATENR, CREATER
+      )
+    values (#{patypeId,jdbcType=VARCHAR}, #{patypeSreial,jdbcType=VARCHAR}, #{patypeName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{cratenr,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpPactType" >
+    insert into erp_pact_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="patypeId != null" >
+        PATYPE_ID,
+      </if>
+      <if test="patypeSreial != null" >
+        PATYPE_SREIAL,
+      </if>
+      <if test="patypeName != null" >
+        PATYPE_NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="cratenr != null" >
+        CRATENR,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="patypeId != null" >
+        #{patypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="patypeSreial != null" >
+        #{patypeSreial,jdbcType=VARCHAR},
+      </if>
+      <if test="patypeName != null" >
+        #{patypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cratenr != null" >
+        #{cratenr,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpPactType" >
+    update erp_pact_type
+    <set >
+      <if test="patypeSreial != null" >
+        PATYPE_SREIAL = #{patypeSreial,jdbcType=VARCHAR},
+      </if>
+      <if test="patypeName != null" >
+        PATYPE_NAME = #{patypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cratenr != null" >
+        CRATENR = #{cratenr,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpPactType" >
+    update erp_pact_type
+    set PATYPE_SREIAL = #{patypeSreial,jdbcType=VARCHAR},
+      PATYPE_NAME = #{patypeName,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CRATENR = #{cratenr,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

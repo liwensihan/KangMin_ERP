@@ -23,21 +23,34 @@
   </sql>
  
  <!-- 查询产品，订单，订单明细，订单生产日志，订单生产日志明细，根据订单ID查询 -->
-  <select id="findByshow" resultType="map" parameterType="java.lang.String">
-		SELECT kin.KIN_NAME,ail.ENTDE_NUM,dlog.num 
+ <!--  <select id="findByshow" resultType="map" parameterType="map">
+		SELECT kin.KIN_ID,kin.KIN_NAME,ail.ENTDE_NUM,dlog.num 
 		FROM erp_log plog,erp_log_detail dlog,erp_proindent dent,
 		erp_proindent_detail ail,erp_kinds kin
 		WHERE dent.INDENT_ID=ail.INDENT_ID AND ail.KIN_ID=kin.KIN_ID
 		AND plog.INDENT_ID=dent.INDENT_ID AND dlog.LOG_ID=plog.LOG_ID
 		AND dlog.KIN_ID=kin.KIN_ID
 		AND dent.INDENT_ID= #{indentId,jdbcType=VARCHAR}
-	</select>
+		AND dlog.ISVA=1
+		ORDER BY
+			dlog.num DESC
+		LIMIT 
+			#{int,jdbcType=VARCHAR}
+		
+	</select> -->
  
- 
+ 	
+ <!-- 根据ID修改生产状态 -->
+ <update id="updateId" parameterType="map">
+ 	update erp_proindent set INDENT_STATE=#{indentState} where INDENT_ID=#{indentId}
+ </update>
+
  <!-- 根据ID查询订单 -->
   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select * from erp_proindent where indent_Id = #{indentId}
 	</select>
+ 
+ 
  
    <!-- 查询所有订单，下拉框 -->
    <select id="findStation" resultMap="BaseResultMap">
@@ -56,10 +69,10 @@
 	   AND pro.INDENT_ID = #{indentId,jdbcType=VARCHAR}
   </select>
   
-  <!-- 根据订单id查询明细，和商品表查看明细 -->
+  <!-- 根据订单id查询明细，和商品表  查看明细 -->
   <select id="showid" resultType="map" parameterType="java.lang.String" >
-	   SELECT kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
-	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE
+	   SELECT kin.KIN_ID,kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
+	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE,det.NUM
 	   FROM 
 	   ERP_PROINDENT pro,
 	   ERP_PROINDENT_DETAIL det,

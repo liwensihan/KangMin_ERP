@@ -97,6 +97,7 @@ public class ProindentDetailAction {
 			BigDecimal deprice=new BigDecimal(str3[6]);//把String转换成BigDecimal
 			detail.setEntdePrice(deprice);//金额
 			detail.setIsva("1");//是否显示
+			detail.setNum(0);//已生产数量，默认0
 			ProindentDetailService.insert(detail);//明细增加
 		}
 		

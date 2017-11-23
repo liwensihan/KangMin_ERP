@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.yidu.model.ErpQuality" >
     <id column="QUA_ID" property="quaId" jdbcType="VARCHAR" />
     <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
     <result column="QUA_SREIAL" property="quaSreial" jdbcType="VARCHAR" />
     <result column="QUA_QC" property="quaQc" jdbcType="VARCHAR" />
     <result column="QUA_GOOD" property="quaGood" jdbcType="INTEGER" />
@@ -15,8 +16,8 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    QUA_ID, INDENT_ID, QUA_SREIAL, QUA_QC, QUA_GOOD, QUA_BAB, QUA_ISVA, ISVA, CREATER, 
-    CREATETIME, REMARK
+    QUA_ID, INDENT_ID, PURC_ID, QUA_SREIAL, QUA_QC, QUA_GOOD, QUA_BAB, QUA_ISVA, ISVA, 
+    CREATER, CREATETIME, REMARK
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -29,14 +30,16 @@
     where QUA_ID = #{quaId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.yidu.model.ErpQuality" >
-    insert into erp_quality (QUA_ID, INDENT_ID, QUA_SREIAL, 
-      QUA_QC, QUA_GOOD, QUA_BAB, 
-      QUA_ISVA, ISVA, CREATER, 
-      CREATETIME, REMARK)
-    values (#{quaId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, #{quaSreial,jdbcType=VARCHAR}, 
-      #{quaQc,jdbcType=VARCHAR}, #{quaGood,jdbcType=INTEGER}, #{quaBab,jdbcType=INTEGER}, 
-      #{quaIsva,jdbcType=INTEGER}, #{isva,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    insert into erp_quality (QUA_ID, INDENT_ID, PURC_ID, 
+      QUA_SREIAL, QUA_QC, QUA_GOOD, 
+      QUA_BAB, QUA_ISVA, ISVA, 
+      CREATER, CREATETIME, REMARK
+      )
+    values (#{quaId,jdbcType=VARCHAR}, #{indentId,jdbcType=VARCHAR}, #{purcId,jdbcType=VARCHAR}, 
+      #{quaSreial,jdbcType=VARCHAR}, #{quaQc,jdbcType=VARCHAR}, #{quaGood,jdbcType=INTEGER}, 
+      #{quaBab,jdbcType=INTEGER}, #{quaIsva,jdbcType=INTEGER}, #{isva,jdbcType=INTEGER}, 
+      #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpQuality" >
     insert into erp_quality
@@ -46,6 +49,9 @@
       </if>
       <if test="indentId != null" >
         INDENT_ID,
+      </if>
+      <if test="purcId != null" >
+        PURC_ID,
       </if>
       <if test="quaSreial != null" >
         QUA_SREIAL,
@@ -82,6 +88,9 @@
       <if test="indentId != null" >
         #{indentId,jdbcType=VARCHAR},
       </if>
+      <if test="purcId != null" >
+        #{purcId,jdbcType=VARCHAR},
+      </if>
       <if test="quaSreial != null" >
         #{quaSreial,jdbcType=VARCHAR},
       </if>
@@ -117,6 +126,9 @@
       <if test="indentId != null" >
         INDENT_ID = #{indentId,jdbcType=VARCHAR},
       </if>
+      <if test="purcId != null" >
+        PURC_ID = #{purcId,jdbcType=VARCHAR},
+      </if>
       <if test="quaSreial != null" >
         QUA_SREIAL = #{quaSreial,jdbcType=VARCHAR},
       </if>
@@ -150,6 +162,7 @@
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpQuality" >
     update erp_quality
     set INDENT_ID = #{indentId,jdbcType=VARCHAR},
+      PURC_ID = #{purcId,jdbcType=VARCHAR},
       QUA_SREIAL = #{quaSreial,jdbcType=VARCHAR},
       QUA_QC = #{quaQc,jdbcType=VARCHAR},
       QUA_GOOD = #{quaGood,jdbcType=INTEGER},

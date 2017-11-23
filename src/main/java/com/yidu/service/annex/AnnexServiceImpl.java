@@ -48,5 +48,10 @@ public class AnnexServiceImpl implements AnnexService{
 	public int updateByPrimaryKeySelective(ErpAnnex record) {
 		return dao.updateByPrimaryKeySelective(record);
 	}
+
+	@Override
+	public List<ErpAnnex> getAnnex() {
+		return dao.getAnnex();
+	}
 	
 }

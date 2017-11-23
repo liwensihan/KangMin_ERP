@@ -10,7 +10,7 @@
 <head>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>会员增加</title>
+<title>生产日志增加</title>
 		<link rel="stylesheet" href="<%=basePath%>res/layui/css/layui.css" media="all">
 	<script src="<%=basePath%>res/js/jquery-2.1.3.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>res/layui/layui.js" charset="utf-8"></script>
@@ -75,7 +75,7 @@
  
   
   <div class="layui-form-item">
-    <label class="layui-form-label">单行选择框</label>
+    <label class="layui-form-label">订单编号</label>
     <div class="layui-input-block">
       <select name="indentId" id="indentId" lay-filter="aihao">
         <option value=""></option>
@@ -84,9 +84,9 @@
   </div>
   
   <div class="layui-form-item">
-    <label class="layui-form-label">单行输入框</label>
+    <label class="layui-form-label">日志标题</label>
     <div class="layui-input-block">
-      <input name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" type="text">
+      <input name="logTitle" id="logTitle" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" type="text">
     </div>
   </div>
   
@@ -101,6 +101,7 @@
 					      <th>商品总数量</th>
 					      <th>以生产数量</th>
 					       <th>今日生产数量</th>
+					       <th style="display:none">ID</th>
 					    </tr>
 					  </thead>
 					  <tbody id="tbody">
@@ -112,20 +113,22 @@
   </div>
   
   <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">普通文本域</label>
+    <label class="layui-form-label">内容</label>
     <div class="layui-input-block">
-      <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+      <textarea placeholder="请输入内容" name="logContent" id="logContent" class="layui-textarea"></textarea>
     </div>
   </div>
   
   
-   <div class="layui-form-item">
+   
+</form>
+
+<div class="layui-form-item">
     <div class="layui-input-block">
-      <input type="button" class="layui-btn" lay-submit="" lay-filter="demo1" value="立即提交">
+      <button class="layui-btn layui-btn-small" onclick="getTableContent('kinList')" lay-submit="" lay-filter="demo1"><i class="layui-icon">&#xe609;</i>立即提交</button>
       <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
     </div>
   </div>
-</form>
 
 <script type="text/javascript">
 
@@ -148,7 +151,7 @@ function total(obj,id){
 <!-- 表单验证 -->
 <script>
 
-//循环出站点复选框
+//循环出商品复选框
 $(function(){
 	var url = 'dent/findByxl.action';
 	$.post(url,null,function(m){
@@ -172,31 +175,15 @@ layui.use(['form', 'layedit', 'laydate'], function(){
   
   //下拉框监听
   form.on('select(aihao)', function(data){
-	  
-	  
-	 
-  
-	 var url="dent/show.action?indentId="+data.value;
-	  $.post(url,null,function(mes){
-		 if(mes.indentState==1){
+	
 			 $("#tbody").html("");
-			 alert("来了1");
 			 var url="dent/findByshowId.action?indentId="+data.value;
 			 $.post(url,null,function(mes){
 				 for(i=0;i<mes.length;i++){	
-						$("#tbody").append("<tr><td>"+mes[i].KIN_NAME+"</td><td>"+mes[i].ENTDE_NUM+"</td><td>"+0+"</td><td><input class='inputText num' type='text' onkeyup='total(this,0);'  value='0' maxlength='10'></td></tr>");
+						$("#tbody").append("<tr><td>"+mes[i].KIN_NAME+"</td><td>"+mes[i].ENTDE_NUM+"</td><td>"+mes[i].NUM+"</td><td><input class='inputText num' type='text' onkeyup='total(this,"+mes[i].NUM+");'  value='0' maxlength='10'></td><td style='display:none'>"+mes[i].KIN_ID+"</td></tr>");
 					}
 			  },"json");
-		 }else{
-			 $("#tbody").html("");
-			 var url="dent/findByshow.action?indentId="+data.value;
-			 $.post(url,null,function(mes){
-				 for(i=0;i<mes.length;i++){	
-						$("#tbody").append("<tr><td>"+mes[i].KIN_NAME+"</td><td>"+mes[i].ENTDE_NUM+"</td><td>"+mes[i].num+"</td><td><input class='inputText num' type='text' onkeyup='total(this,"+mes[i].num+");'  value='0' maxlength='10'></td></tr>");
-					}
-			  },"json");
-		 }
-	  },"json");
+		 
 	}); 
   
  
@@ -204,53 +191,50 @@ layui.use(['form', 'layedit', 'laydate'], function(){
   
 
 	
-	
-//监听提交
-	form.on('submit(demo1)', function(data){
-		  //注意：parent 是 JS 自带的全局对象，可用于操作父页面
-		  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		  
-		  var url="member/addOrUpdate.action";
-		  var date =$("#express").serialize();
-		  $.post(url,date,function(mes){
-			  if(mes.state==1){
-				  parent.layer.close(index);
-				  parent.layer.msg(mes.mes);
-				  parent.table.reload('testReload');
-				}else{
-					 parent.layer.close(index);
-					 parent.layer.msg(mes.mes);
-					parent.table.reload('testReload');
-				}
-		  },"json");
-	});
+
 });
 
-//取网址上的ID
-function GetQueryString(id){
-    var reg = new RegExp("(^|&)"+ id +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  unescape(r[2]); return null;
-}
 
-	//当页面加载时运行，给文本复职
-	$(function(){
-			var id = GetQueryString("memberId");
-			var data = {"memberId":id};
-			var url = "member/findById.action";
-			if(id!=null & id!=""){
-				$.post(url, data, function(mes){
-					$("#memberId").val(mes.memberId);
-					$("#memberName").val(mes.memberName);
-					$("#memberPhone").val(mes.memberPhone);
-					$("#memberEmail").val(mes.memberEmail);
-					$("#express").find("input[type='radio'][name='memberSex'][value="+mes.memberSex+"]").prop("checked","checked");//单选框赋值
-					form.render("radio");
-				});
+
+//提交
+function getTableContent(id){
+	//注意：parent 是 JS 自带的全局对象，可用于操作父页面
+	  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	  var indentId=$("#indentId").val();
+	var logTitle=$("#logTitle").val();
+	 var logContent=$("#logContent").val();
+	 var url="<%=basePath%>/log/add.action?logTitle="+logTitle+"&logContent="+logContent+"&indentId="+indentId;
+     var mytable = document.getElementById(id);
+    var data = "";
+    for(var i=1,rows=mytable.rows.length; i<rows; i++){
+        for(var j=1,cells=mytable.rows[i].cells.length; j<cells; j++){
+            if(!data[i]){
+                data[i] = new Array();
+            }
+            if(j==3){
+            	data += mytable.rows[i].cells[j].childNodes[0].value+"_";
+            }else{
+            	data += mytable.rows[i].cells[j].innerHTML+"_";
+            }
+        }
+        data+="&";
+    }
+  if(data==null || data==""){
+	  layer.msg("请认真输入");
+  }else{
+	  $.post(url,{str:data},function(m){
+	    	
+  		if(m.state==1){
+  			parent.layer.msg("操作成功");
+				parent.layer.close(index);
+				parent.table.reload('testReload');
 			}
-			
-			
-		});
+		});  
+  }
+   
+   
+
+}
 	
 	
 	           

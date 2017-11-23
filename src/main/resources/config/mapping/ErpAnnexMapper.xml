@@ -34,6 +34,9 @@
      </if>
      limit #{firstRows},#{limit}
   </select>
+  <select id="getAnnex" resultMap="BaseResultMap">
+   SELECT * FROM erp_annex WHERE ISVA=1
+  </select>
   
    <select id="findAllSize" parameterType="map"  resultType="java.lang.Integer">
   	SELECT count(*) FROM erp_annex WHERE ISVA=1
