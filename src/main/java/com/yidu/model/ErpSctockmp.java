@@ -25,7 +25,7 @@ public class ErpSctockmp {
     
     
     /**
-     * 原金额
+     * 原金额 
      * @return
      */
     public String getSaleMoney() {
