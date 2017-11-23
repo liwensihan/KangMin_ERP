@@ -8,7 +8,9 @@
     <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
     <result column="SALE_NUM" property="saleNum" jdbcType="DECIMAL" />
     <result column="SALE_DATE" property="saleDate" jdbcType="DATE" />
-    <result column="SALE_MONEY" property="saleMoney" jdbcType="DECIMAL" />
+    <result column="SALE_MONEY" property="saleMoney" jdbcType="CHAR" />
+    <result column="SALE_DISCOUNT" property="saleDiscount" jdbcType="CHAR" />
+    <result column="SALE_MONEY1" property="saleMoney1" jdbcType="DECIMAL" />
     <result column="SALE_MONEY2" property="saleMoney2" jdbcType="DECIMAL" />
     <result column="SALE_MONEY3" property="saleMoney3" jdbcType="DECIMAL" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
@@ -16,8 +18,8 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    SALE_ID, STAFF_ID, ANNEX_ID, MEMBER_ID, SALE_NUM, SALE_DATE, SALE_MONEY, SALE_MONEY2, 
-    SALE_MONEY3, CREATER, CREATETIME, REMARK
+    SALE_ID, STAFF_ID, ANNEX_ID, MEMBER_ID, SALE_NUM, SALE_DATE, SALE_MONEY, SALE_DISCOUNT, 
+    SALE_MONEY1, SALE_MONEY2, SALE_MONEY3, CREATER, CREATETIME, REMARK
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -32,14 +34,14 @@
   <insert id="insert" parameterType="com.yidu.model.ErpSctockmp" >
     insert into erp_sctockmp (SALE_ID, STAFF_ID, ANNEX_ID, 
       MEMBER_ID, SALE_NUM, SALE_DATE, 
-      SALE_MONEY, SALE_MONEY2, SALE_MONEY3, 
-      CREATER, CREATETIME, REMARK
-      )
+      SALE_MONEY, SALE_DISCOUNT, SALE_MONEY1, 
+      SALE_MONEY2, SALE_MONEY3, CREATER, 
+      CREATETIME, REMARK)
     values (#{saleId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, 
       #{memberId,jdbcType=VARCHAR}, #{saleNum,jdbcType=DECIMAL}, #{saleDate,jdbcType=DATE}, 
-      #{saleMoney,jdbcType=DECIMAL}, #{saleMoney2,jdbcType=DECIMAL}, #{saleMoney3,jdbcType=DECIMAL}, 
-      #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
+      #{saleMoney,jdbcType=CHAR}, #{saleDiscount,jdbcType=CHAR}, #{saleMoney1,jdbcType=DECIMAL}, 
+      #{saleMoney2,jdbcType=DECIMAL}, #{saleMoney3,jdbcType=DECIMAL}, #{creater,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpSctockmp" >
     insert into erp_sctockmp
@@ -64,6 +66,12 @@
       </if>
       <if test="saleMoney != null" >
         SALE_MONEY,
+      </if>
+      <if test="saleDiscount != null" >
+        SALE_DISCOUNT,
+      </if>
+      <if test="saleMoney1 != null" >
+        SALE_MONEY1,
       </if>
       <if test="saleMoney2 != null" >
         SALE_MONEY2,
@@ -101,7 +109,13 @@
         #{saleDate,jdbcType=DATE},
       </if>
       <if test="saleMoney != null" >
-        #{saleMoney,jdbcType=DECIMAL},
+        #{saleMoney,jdbcType=CHAR},
+      </if>
+      <if test="saleDiscount != null" >
+        #{saleDiscount,jdbcType=CHAR},
+      </if>
+      <if test="saleMoney1 != null" >
+        #{saleMoney1,jdbcType=DECIMAL},
       </if>
       <if test="saleMoney2 != null" >
         #{saleMoney2,jdbcType=DECIMAL},
@@ -139,7 +153,13 @@
         SALE_DATE = #{saleDate,jdbcType=DATE},
       </if>
       <if test="saleMoney != null" >
-        SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
+        SALE_MONEY = #{saleMoney,jdbcType=CHAR},
+      </if>
+      <if test="saleDiscount != null" >
+        SALE_DISCOUNT = #{saleDiscount,jdbcType=CHAR},
+      </if>
+      <if test="saleMoney1 != null" >
+        SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
       </if>
       <if test="saleMoney2 != null" >
         SALE_MONEY2 = #{saleMoney2,jdbcType=DECIMAL},
@@ -166,7 +186,9 @@
       MEMBER_ID = #{memberId,jdbcType=VARCHAR},
       SALE_NUM = #{saleNum,jdbcType=DECIMAL},
       SALE_DATE = #{saleDate,jdbcType=DATE},
-      SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
+      SALE_MONEY = #{saleMoney,jdbcType=CHAR},
+      SALE_DISCOUNT = #{saleDiscount,jdbcType=CHAR},
+      SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
       SALE_MONEY2 = #{saleMoney2,jdbcType=DECIMAL},
       SALE_MONEY3 = #{saleMoney3,jdbcType=DECIMAL},
       CREATER = #{creater,jdbcType=VARCHAR},
