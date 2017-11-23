@@ -71,8 +71,8 @@
   
   <!-- 根据订单id查询明细，和商品表  查看明细 -->
   <select id="showid" resultType="map" parameterType="java.lang.String" >
-	   SELECT det.NUM,kin.KIN_ID,kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
-	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE
+	   SELECT kin.KIN_ID,kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
+	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE,det.NUM
 	   FROM 
 	   ERP_PROINDENT pro,
 	   ERP_PROINDENT_DETAIL det,

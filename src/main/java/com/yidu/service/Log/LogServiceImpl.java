@@ -3,6 +3,9 @@
  */
 package com.yidu.service.Log;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -28,6 +31,24 @@ public class LogServiceImpl implements LogService{
 	public int insert(ErpLog record) {
 		// TODO Auto-generated method stub
 		return erpLogMapper.insert(record);
+	}
+
+	/**
+	 * 查询所有
+	 */
+	@Override
+	public List<ErpLog> selectshow(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpLogMapper.selectshow(map);
+	}
+
+	/**
+	 * 总行数
+	 */
+	@Override
+	public int select(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpLogMapper.select(map);
 	}
 
 }
