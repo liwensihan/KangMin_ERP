@@ -216,7 +216,6 @@
 						
 					}
 				})
-				alert("查看");
 			}
 		});
 		
@@ -454,7 +453,6 @@
 			} ] ],
 			id : 'testReload3',
 			page : true,
-			height : 413,
 			done : function(res, curr, count) {
 				layer.close(loadIndex);//加载层关闭  
 			}
@@ -515,7 +513,7 @@
 						  '</div>'+
 						'<form>'
 						,yes: function(index, layero){
-							$("#feedState").val("2");
+							$("#feedState").val("3");
 							loadIndex = layer.load();//出现加载层
 							$.ajax({
 								url :'applyasset/auditFeedback.action',
@@ -569,11 +567,13 @@
 </script>
 <script type="text/html" id="state">	
   {{#  if(d.state == 1){ }}
-    <span>审核中</span>
+    <span class="layui-badge layui-bg-orange">审核中</span>
   {{#  } else if(d.state == 2) { }}
-    <span style="color: #87CEFA;">审核通过</span>
+    <span class="layui-badge layui-bg-green">审核通过</span>
+  {{#  } else if(d.state == 3) { }}
+    <span class="layui-badge layui-bg-green">已提交总经理审核</span>
   {{#  } else if(d.state == 0) { }}
-    <span style="color: red;">审核未通过</span>
+    <span class="layui-badge">审核未通过</span>
   {{#  } }}
 
 </script>

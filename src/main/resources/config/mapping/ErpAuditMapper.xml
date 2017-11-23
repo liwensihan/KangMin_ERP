@@ -3,6 +3,7 @@
 <mapper namespace="com.yidu.dao.ErpAuditMapper" >
   <resultMap id="BaseResultMap" type="com.yidu.model.ErpAudit" >
     <id column="AUD_ID" property="audId" jdbcType="VARCHAR" />
+    <result column="BUSINESS_ID" property="businessId" jdbcType="VARCHAR" />
     <result column="PURC_ID" property="purcId" jdbcType="VARCHAR" />
     <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
     <result column="PACT_ID" property="pactId" jdbcType="VARCHAR" />
@@ -18,7 +19,7 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    AUD_ID, PURC_ID, INDENT_ID, PACT_ID, BANK_ID, AUD_SERIAL, AUD_NAME, AUD_TIME, STATE, FEEDBACK,
+    AUD_ID,BUSINESS_ID, PURC_ID, INDENT_ID, PACT_ID, BANK_ID, AUD_SERIAL, AUD_NAME, AUD_TIME, STATE, FEEDBACK,
     CREATETIME, CREATER, ISVA, REMARK
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -51,6 +52,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="audId != null" >
         AUD_ID,
+      </if>
+      <if test="businessId != null">
+        BUSINESS_ID
       </if>
       <if test="purcId != null" >
         PURC_ID,
@@ -96,6 +100,9 @@
       <if test="audId != null" >
         #{audId,jdbcType=VARCHAR},
       </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=VARCHAR},
+      </if>
       <if test="purcId != null" >
         #{purcId,jdbcType=VARCHAR},
       </if>
@@ -140,6 +147,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpAudit" >
     update erp_audit
     <set >
+      <if test="audId != null">
+      	AUD_ID = #{audId,jdbcType=VARCHAR}
+      </if>
       <if test="purcId != null" >
         PURC_ID = #{purcId,jdbcType=VARCHAR},
       </if>
@@ -177,7 +187,7 @@
         REMARK = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where AUD_ID = #{audId,jdbcType=VARCHAR}
+    where BUSINESS_ID = #{businessId,jdbcType=VARCHAR},
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpAudit" >
     update erp_audit

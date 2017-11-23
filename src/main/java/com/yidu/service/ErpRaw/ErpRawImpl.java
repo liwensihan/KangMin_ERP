@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.yidu.dao.ErpAuditMapper;
 import com.yidu.dao.ErpRawMapper;
+import com.yidu.model.ErpAudit;
 import com.yidu.model.ErpDrugResult;
 import com.yidu.model.ErpImg;
 import com.yidu.model.ErpRaw;
@@ -36,6 +38,7 @@ public class ErpRawImpl implements ErpRawService{
 	private ErpDrugResultService dresService; //药品药效service
 	@Resource
 	private ErpImgService imgService;//原材料的图片
+	
 	
 	public int insertSelective(ErpRaw record,List<ErpDrugResult> res) throws BackException {
 		String data = mapper.selectSerial(Tools.getDateStr(new Date()));//得到今天创建的最后一条数据
@@ -116,6 +119,8 @@ public class ErpRawImpl implements ErpRawService{
 	public List<ErpRaw> findRawList() {
 		return mapper.findRawList();
 	}
+
+	
 
 
 }

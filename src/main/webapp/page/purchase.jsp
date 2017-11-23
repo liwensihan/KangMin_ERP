@@ -100,18 +100,87 @@
 				var tr = obj.tr; //获得当前行 tr 的DOM对象
 
 				if (layEvent === 'del') { //删除
-					layer.confirm('真的删除行么', function(index) {
-						obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-						layer.close(index);
-						//向服务端发送删除指令.
-						var url = "Purchase/delete.action";
-						var data2 = {
-							'purcId' : data.purcId
-						};
-						$.post(url, data2, function() {
-
-						})
-					});
+					if(data.state == '1'){
+						layer.confirm('真的删除行么', function(index) {
+							obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+							layer.close(index);
+							//向服务端发送删除指令.
+							var url = "Purchase/delete.action";
+							var data2 = {
+								'purcId' : data.purcId
+							};
+							$.post(url, data2, function(){
+								
+							})
+						});
+					}else{
+						layer.msg("已审核订单无法删除!");
+					}
+				}else if(layEvent === 'audit'){
+					if(data.state == '1'){
+						layer.open({
+							type: 1
+							,title: false //不显示标题栏
+							,btn: ['通过', '打回']
+							,btnAlign: 'c'
+							,area: ['500px', '300px']
+							,moveType: 1 //拖拽模式，0或者1
+							,content:'<form class="layui-form" style="margin:20px;" id="duitFeedback">'+
+							 '<input type="hidden" name="purcId" value="'+data.purcId+'">'+
+							 '<input type="hidden" name="state" value="" id="feedState">'+
+							 '<div class="layui-form-item layui-form-text">回馈内容 :'+
+							      '<textarea style="margin-right:20px;height:150px;" name="feedBack" placeholder="请输入内容" class="layui-textarea"></textarea>'+
+							  '</div>'+
+							'<form>'
+							,yes: function(index, layero){
+								$("#feedState").val("3");
+								loadIndex = layer.load();//出现加载层
+								$.ajax({
+									url :'Purchase/auditPurchase.action',
+									type:'POST',
+									data:new FormData($("#duitFeedback")[0]),
+									async: false,  
+							        cache: false,  
+							        contentType: false,  
+							        processData: false,  
+									success:function(returnData){
+										layer.close(index);
+										layer.close(loadIndex);//加载层关闭
+										$(".layui-laypage-skip .layui-laypage-btn",window.document).click();//刷新父页面数据表格的当前页
+										layer.msg("提交成功!");
+									},
+									error:function(returnData){
+										layer.close(loadIndex);//加载层关闭
+										layer.msg("数据异常!");
+									}
+								})
+							}
+							,btn2:function(index,layero){
+								$("#feedState").val("0");
+								$.ajax({
+									url :'applyasset/auditFeedback.action',
+									type:'POST',
+									data:new FormData($("#duitFeedback")[0]),
+									async: false,  
+							        cache: false,  
+							        contentType: false,  
+							        processData: false,  
+									success:function(returnData){
+										layer.close(index);
+										layer.close(loadIndex);//加载层关闭
+										$(".layui-laypage-skip .layui-laypage-btn",window.document).click();//刷新父页面数据表格的当前页
+										layer.msg("提交成功!");
+									},
+									error:function(returnData){
+										layer.close(loadIndex);//加载层关闭
+										layer.msg("数据异常!");
+									}
+								})
+							}
+						}); 
+					}else{
+						layer.msg("该数据已审核,请勿重复审核");
+					}
 				}
 				//else if (layEvent === 'edit') {
 				//var title = '编辑采购表';
@@ -187,6 +256,8 @@
     <span class="layui-badge layui-bg-orange">审核中</span>
   {{#  } else if(d.state == 2) { }}
     <span class="layui-badge layui-bg-green">审核通过</span>
+  {{#  } else if(d.state == 3) { }}
+    <span class="layui-badge layui-bg-orange">已提交至财务审核</span>
   {{#  } else if(d.state == 0) { }}
     <span class="layui-badge">审核未通过</span>
   {{#  } }}
