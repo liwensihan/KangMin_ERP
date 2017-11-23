@@ -8,8 +8,8 @@
     <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
     <result column="SALE_NUM" property="saleNum" jdbcType="DECIMAL" />
     <result column="SALE_DATE" property="saleDate" jdbcType="DATE" />
-    <result column="SALE_MONEY" property="saleMoney" jdbcType="CHAR" />
-    <result column="SALE_DISCOUNT" property="saleDiscount" jdbcType="CHAR" />
+    <result column="SALE_MONEY" property="saleMoney" jdbcType="DECIMAL" />
+    <result column="SALE_DISCOUNT" property="saleDiscount" jdbcType="DECIMAL" />
     <result column="SALE_MONEY1" property="saleMoney1" jdbcType="DECIMAL" />
     <result column="SALE_MONEY2" property="saleMoney2" jdbcType="DECIMAL" />
     <result column="SALE_MONEY3" property="saleMoney3" jdbcType="DECIMAL" />
@@ -39,7 +39,7 @@
       CREATETIME, REMARK)
     values (#{saleId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, 
       #{memberId,jdbcType=VARCHAR}, #{saleNum,jdbcType=DECIMAL}, #{saleDate,jdbcType=DATE}, 
-      #{saleMoney,jdbcType=CHAR}, #{saleDiscount,jdbcType=CHAR}, #{saleMoney1,jdbcType=DECIMAL}, 
+      #{saleMoney,jdbcType=DECIMAL}, #{saleDiscount,jdbcType=DECIMAL}, #{saleMoney1,jdbcType=DECIMAL}, 
       #{saleMoney2,jdbcType=DECIMAL}, #{saleMoney3,jdbcType=DECIMAL}, #{creater,jdbcType=VARCHAR}, 
       #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   </insert>
@@ -109,10 +109,10 @@
         #{saleDate,jdbcType=DATE},
       </if>
       <if test="saleMoney != null" >
-        #{saleMoney,jdbcType=CHAR},
+        #{saleMoney,jdbcType=DECIMAL},
       </if>
       <if test="saleDiscount != null" >
-        #{saleDiscount,jdbcType=CHAR},
+        #{saleDiscount,jdbcType=DECIMAL},
       </if>
       <if test="saleMoney1 != null" >
         #{saleMoney1,jdbcType=DECIMAL},
@@ -153,10 +153,10 @@
         SALE_DATE = #{saleDate,jdbcType=DATE},
       </if>
       <if test="saleMoney != null" >
-        SALE_MONEY = #{saleMoney,jdbcType=CHAR},
+        SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
       </if>
       <if test="saleDiscount != null" >
-        SALE_DISCOUNT = #{saleDiscount,jdbcType=CHAR},
+        SALE_DISCOUNT = #{saleDiscount,jdbcType=DECIMAL},
       </if>
       <if test="saleMoney1 != null" >
         SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
@@ -186,8 +186,8 @@
       MEMBER_ID = #{memberId,jdbcType=VARCHAR},
       SALE_NUM = #{saleNum,jdbcType=DECIMAL},
       SALE_DATE = #{saleDate,jdbcType=DATE},
-      SALE_MONEY = #{saleMoney,jdbcType=CHAR},
-      SALE_DISCOUNT = #{saleDiscount,jdbcType=CHAR},
+      SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
+      SALE_DISCOUNT = #{saleDiscount,jdbcType=DECIMAL},
       SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
       SALE_MONEY2 = #{saleMoney2,jdbcType=DECIMAL},
       SALE_MONEY3 = #{saleMoney3,jdbcType=DECIMAL},
