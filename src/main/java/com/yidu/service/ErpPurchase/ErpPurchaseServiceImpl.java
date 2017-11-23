@@ -126,7 +126,7 @@ public class ErpPurchaseServiceImpl implements ErpPurchaseService{
 			int rows = applyassetMapper.insertSelective(applyasset);//资金申请增加
 		}
 		ErpAudit audit = new ErpAudit();//定义一个审核实体类
-		audit.setPurcId(purcId);//采购订单id
+		audit.setBusinessId(purcId);//采购订单id
 		audit.setFeedBack(feedBack);//设置反馈信息
 		audit.setAudTime(Tools.getCurDateTime());//设置审核时间
 		if(state.equals("0")){
