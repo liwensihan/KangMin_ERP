@@ -39,6 +39,9 @@
       #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpApplyasset" >
+  	<selectKey keyProperty="appassId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
     insert into erp_applyasset
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="appassId != null" >
@@ -154,7 +157,7 @@
   
   <!-- 根据年份查询12月的支出金额 -->
   <select id="showListPrice" parameterType="String" resultMap="BaseResultMap">
-  	 SELECT SUBSTRING(t.APPASS_TIME,6,2) AS appassTime,SUM(t.APPASS_NUM) AS appassNum FROM ERP_APPLYASSET t WHERE APPASS_TIME LIKE#{date} GROUP BY SUBSTRING(t.APPASS_TIME,6,2)
+  	 SELECT SUBSTRING(t.APPASS_TIME,6,2) AS appassTime,SUM(t.APPASS_NUM) AS appassNum FROM ERP_APPLYASSET t WHERE APPASS_TIME LIKE#{date} AND state=2 GROUP BY SUBSTRING(t.APPASS_TIME,6,2)
   </select>
   <!-- 模糊分页查询得到支出集合 -->
   <select id="showList" resultMap="BaseResultMap" parameterType="map">

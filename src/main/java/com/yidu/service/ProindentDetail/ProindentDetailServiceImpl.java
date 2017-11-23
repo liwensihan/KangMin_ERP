@@ -3,6 +3,8 @@
  */
 package com.yidu.service.ProindentDetail;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -46,6 +48,15 @@ public class ProindentDetailServiceImpl implements ProindentDetailService{
 	public int update(ErpProindentDetail record) {
 		// TODO Auto-generated method stub
 		return erpProindentDetailMapper.update(record);
+	}
+
+	/**
+	 * 根据订单ID和商品ID修改已生产数量
+	 */
+	@Override
+	public int updateId(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpProindentDetailMapper.updateId(map);
 	}
 
 }

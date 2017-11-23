@@ -70,6 +70,7 @@
 		  		</table>
 			</form>
 			<button class="layui-btn" style="margin-top: 5px;" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+		 	<button class="layui-btn layui-btn-warm" onclick="add()"><i class="layui-icon">&#xe608;</i>增加订单日志</button>
 		  </div>
 		</div>
 
@@ -218,7 +219,17 @@ layui.use('table', function(){
   });
 });
 
+function add(){
+	
+	layer.open({
+		type:2,
+		skin: 'layui-layer-molv',//样式
+		content:'page/Logadd.jsp',
+		area: ['98%', '80%'],
+		title: '增加会员',
+	});
 
+}
 
 
 </script>

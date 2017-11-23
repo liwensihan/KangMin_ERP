@@ -23,7 +23,12 @@
     delete from erp_log_detail
     where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
   </delete>
+  
+  <!-- 增加 -->
   <insert id="insert" parameterType="com.yidu.model.ErpLogDetail" >
+  <selectKey keyProperty="detailId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	</selectKey>
     insert into erp_log_detail (DETAIL_ID, LOG_ID, KIN_ID, 
       DETAIL_NUM, NUM, CREATETIME, 
       ISVA)
@@ -31,6 +36,14 @@
       #{detailNum,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, 
       #{isva,jdbcType=INTEGER})
   </insert>
+  
+  
+  <!-- 根据商品ID和订单ID修改订单日志明细状态 -->
+   <update id="update" parameterType="map">
+  		UPDATE erp_log_detail SET isva=2 WHERE log_id=#{logId,jdbcType=VARCHAR} AND kin_id=#{kinId,jdbcType=VARCHAR}
+  </update>
+  
+  
   <insert id="insertSelective" parameterType="com.yidu.model.ErpLogDetail" >
     insert into erp_log_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -104,6 +117,9 @@
     </set>
     where DETAIL_ID = #{detailId,jdbcType=VARCHAR}
   </update>
+  
+ 
+  
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpLogDetail" >
     update erp_log_detail
     set LOG_ID = #{logId,jdbcType=VARCHAR},

@@ -11,6 +11,8 @@ public class ErpProindentDetail {
 
     private Integer entdeNum;
 
+    private Integer num;
+
     private BigDecimal entdePrice;
 
     private String creater;
@@ -18,21 +20,10 @@ public class ErpProindentDetail {
     private String createtime;
 
     private String remark;
-    
+
     private String isva;
 
-    
-    
-    
-    public String getIsva() {
-		return isva;
-	}
-
-	public void setIsva(String isva) {
-		this.isva = isva;
-	}
-
-	public String getEntdeId() {
+    public String getEntdeId() {
         return entdeId;
     }
 
@@ -62,6 +53,14 @@ public class ErpProindentDetail {
 
     public void setEntdeNum(Integer entdeNum) {
         this.entdeNum = entdeNum;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 
     public BigDecimal getEntdePrice() {
@@ -94,5 +93,13 @@ public class ErpProindentDetail {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getIsva() {
+        return isva;
+    }
+
+    public void setIsva(String isva) {
+        this.isva = isva == null ? null : isva.trim();
     }
 }

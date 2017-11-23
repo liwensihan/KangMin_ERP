@@ -199,7 +199,15 @@ public class ProindentAction {
 	@RequestMapping("/findByshow")
 	@ResponseBody
 	public List<Map<String, Object>> findByshow(ErpProindent dent){
-		List<Map<String, Object>> map=proindentService.findByshow(dent.getIndentId());
+		
+		int num=proindentService.findcount(dent.getIndentId());//订单明细总行数
+		
+		Map<String, Object> m=new HashMap<String,Object>();
+		
+		m.put("indentId", dent.getIndentId());
+		m.put("int", num);
+		
+		List<Map<String, Object>> map=proindentService.findByshow(m);//查询产品，订单，订单明细，订单生产日志，订单生产日志明细，根据订单ID查询和订单明细总行数查询
 		
 		return map;
 		

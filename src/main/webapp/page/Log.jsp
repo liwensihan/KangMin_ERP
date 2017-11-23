@@ -10,7 +10,7 @@
 <head>
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>会员管理</title>
+<title>订单日志管理</title>
 	<link rel="stylesheet" href="<%=basePath%>res/layui/css/layui.css" media="all">
 	<script src="<%=basePath%>res/js/jquery-2.1.3.min.js" type="text/javascript"></script>
 	<script src="<%=basePath%>res/layui/layui.js" charset="utf-8"></script>
@@ -32,6 +32,9 @@
 	#sousuo .layui-input {
  		height: 40px;
 	}
+	.layui-table-cell .layui-table-link {
+   		color: #FC3A06;
+	}
   </style>
 </head>
 <body> 
@@ -42,47 +45,38 @@
 		  		<table>
 		  			<tr>
 		  				<td>
-		  				    <input class="layui-input" name="memberName" id="memberName" maxlength="50" placeholder="姓名" autocomplete="off">
-		  				</td>
-		  				<td>
-			  				<input class="layui-input" name="memberPhone" id="memberPhone" maxlength="50" placeholder="电话" autocomplete="off">
-		  				</td>
-		  				<td>
-			  				<select id="memberSex" name="memberSex" lay-verify="" width="50px">
-							  <option value="">性别</option>
-							   <option value="男">男</option>
-							    <option value="女">女</option>
-							</select>
+		  				    <input class="layui-input" name="key" id="key" maxlength="50" placeholder="关键字" autocomplete="off">
 		  				</td>
 		  			</tr>
 		  		</table>
 			</form>
 			<button class="layui-btn" style="margin-top: 5px;" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
-		 	<button class="layui-btn layui-btn-warm" onclick="add()"><i class="layui-icon">&#xe608;</i>增加数据</button>
 		  </div>
 		</div>
 
 
 
-<table class="layui-table" lay-data="{width: 818 , height:495, url:'member/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 818 , height:495, url:'log/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
   <thead>
     <tr>
-      <th lay-data="{field:'memberId', width:140, sort: true, fixed: true},hidden:'true'">ID</th>
-      <th lay-data="{field:'memberName', width:130}">会员姓名</th>
-   	  <th lay-data="{field:'memberSex', width:150}">会员性别</th>
-      <th lay-data="{field:'memberPhone', width:130}">会员电话号码</th>
-   	  <th lay-data="{field:'memberEmail', width:200}">会员邮箱</th>
-   	  <th lay-data="{field:'memberStarttime', width:200, sort: true, templet:'#logoTpl'}">会员开卡日期</th>
-      <th lay-data="{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}"></th>
-    </tr>
+      <th lay-data="{field:'logId', width:140, sort: true, fixed: true},hidden:'true'">ID</th>
+      <th lay-data="{field:'indentId', width:130},hidden:'true'">订单ID</th>
+   	  <th lay-data="{field:'logSerial', width:150}">日志编号</th>
+   	  <th lay-data="{field:'logComplet', width:130,templet:'#wcd', align:'center'}">订单完成度</th>
+   	  <th lay-data="{field:'createtime', width:200, align:'center'}">时间</th>
+      <th lay-data="{field:'logTitle', width:130}">日志标题</th>
+   	  <th lay-data="{field:'logContent', width:200}">生产内容</th>
+     </tr>
   </thead>
 </table>
 
-
-<script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+ 
+ <!-- 给订单完成度加上% -->
+<script type="text/html" id="wcd">
+  <a class="layui-table-link" target="_blank">{{ d.logComplet }}%</a>
 </script>
+
+
 
          
           
@@ -135,15 +129,11 @@ layui.use('table', function(){
  
   var $ = layui.$, active = {
 		    reload: function(){
-		      var demoReload = $('#memberName');
-			  var demoReload1 = $('#memberPhone');
-		      var demoReload2 = $('#memberSex');
+		      var demoReload = $('#key');
 		      table.reload('testReload', {
 		        where: {
 		         
-		        	memberName: demoReload.val(),
-		        	memberPhone:demoReload1.val(),
-		        	memberSex:demoReload2.val()
+		        	key: demoReload.val()
 		        }
 		      });
 		    }
@@ -155,17 +145,6 @@ layui.use('table', function(){
   });
 });
 
-function add(){
-	
-	layer.open({
-		type:2,
-		skin: 'layui-layer-molv',//样式
-		content:'page/memberadd.jsp',
-		area: ['500px', '390px'],
-		title: '增加生成日志',
-	});
-
-}
 
 
 </script>

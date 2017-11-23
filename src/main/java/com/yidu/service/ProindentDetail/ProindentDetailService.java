@@ -3,6 +3,8 @@
  */
 package com.yidu.service.ProindentDetail;
 
+import java.util.Map;
+
 import com.yidu.model.ErpProindentDetail;
 
 /**
@@ -33,4 +35,11 @@ public interface ProindentDetailService {
 	  * @return
 	  */
 	 int update(ErpProindentDetail record);
+	 
+	 /**
+	  * 根据订单ID和商品ID修改已生产数量
+	  * @param map
+	  * @return
+	  */
+	 int updateId(Map<String, Object> map);
 }
