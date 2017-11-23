@@ -65,7 +65,7 @@ public class LogAction {
 			quantity=quantity+Integer.valueOf(str1[1]);//生成数量相加
 		}
 		int number=(int) (quantity/num*100);
-		
+		 
 		log.setIndentId(indentId);//生成订单ID
 		log.setLogSerial("RZ-"+Tools.getCurDate()+Tools.getRandomNumber(1000));//编号，先加SZ在取当前时间，在取随机数1000
 		log.setLogTitle(log.getLogTitle());//日志标题
