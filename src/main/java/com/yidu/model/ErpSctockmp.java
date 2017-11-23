@@ -14,8 +14,8 @@ public class ErpSctockmp {
     private String memberId;		//会员ID
     private BigDecimal saleNum;		//销售总数量
     private Date saleDate;			//订单时间
-    private String saleMoney;		//原金额
-    private String saleDiscount;	//折扣
+    private BigDecimal saleMoney;	//原金额
+    private BigDecimal saleDiscount;//折扣
     private BigDecimal saleMoney1;	//应付金额
     private BigDecimal saleMoney2;	//实付金额
     private BigDecimal saleMoney3;	//找零
@@ -28,28 +28,28 @@ public class ErpSctockmp {
      * 原金额
      * @return
      */
-    public String getSaleMoney() {
+    public BigDecimal getSaleMoney() {
 		return saleMoney;
 	}
     /**
      * 原金额
      * @param saleMoney
      */
-	public void setSaleMoney(String saleMoney) {
+	public void setSaleMoney(BigDecimal saleMoney) {
 		this.saleMoney = saleMoney;
 	}
 	/**
 	 * 折扣
 	 * @return
 	 */
-	public String getSaleDiscount() {
+	public BigDecimal getSaleDiscount() {
 		return saleDiscount;
 	}
 	/**
 	 * 折扣
 	 * @param saleDiscount
 	 */
-	public void setSaleDiscount(String saleDiscount) {
+	public void setSaleDiscount(BigDecimal saleDiscount) {
 		this.saleDiscount = saleDiscount;
 	}
 	/**
