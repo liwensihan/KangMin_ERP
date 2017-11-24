@@ -40,10 +40,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</style>
 	</head>
 	<body>
-		<div class="bigDiv">
-			<div class="bodyDiv" style="width:1000px;margin: auto;">
-				<div style="text-align: center;">
-					<table id="kinList" class="layui-table" lay-size="sm">
+	
+	
+	<div class="layui-tab">
+  <ul class="layui-tab-title">
+    <li class="layui-this">商品详情</li>
+    <li>订单日志详情</li>
+    <li>订单详情</li>
+  </ul>
+  <div class="layui-tab-content">
+  <!-- 第一层 -->
+    <div class="layui-tab-item layui-show">
+    <div class="bigDiv">
+    <div style="text-align: center;">
+     	<table id="kinList" class="layui-table" lay-size="sm">
 					  <thead>
 					    <tr>
 					      <th colspan="5">商品信息</th>
@@ -63,9 +73,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					   
 					  </tbody>
 					</table>
-				</div>
-			</div>
-		</div>
+					</div>
+					</div>
+    </div>
+    
+    <!-- 第二层 -->
+    <div class="layui-tab-item">
+
+		
+		<ul class="layui-timeline" id="rz">
+		  
+		</ul>  
+
+	</div>
+	
+	<!-- 第三层 -->
+    <div class="layui-tab-item">
+
+		<blockquote class="layui-elem-quote layui-quote-nm" id="dd">
+		
+		</blockquote>
+		
+	</div>
+   
+  </div>
+</div>
+	
+	
+	
+	 
+	
+	
+		
 	</body>
 	<script type="text/javascript">
 	//取网址上的ID
@@ -75,8 +114,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    if(r!=null)return  unescape(r[2]); return null;
 	}
 	
+	
 		$(function(){
 			var id = GetQueryString("indentId");
+			
+			
+			//商品详情查询
 			url = "dent/findByshowId.action?indentId="+id;
 	        $.post(url,null,function(mes){
 	        	for(i=0;i<mes.length;i++){
@@ -87,7 +130,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            
 	        },"json")
 			
+	        
+	        //日志详情查询
+	        url="dent/findByrz.action?indentId="+id;
+	        $.post(url,null,function(mes){
+	        	for(i=0;i<mes.length;i++){
+	        		$("#rz").append("<li class='layui-timeline-item'><i class='layui-icon layui-timeline-axis'></i><div class='layui-timeline-content layui-text'><h3 class='layui-timeline-title'>"+mes[i].CREATETIME+"</h3><p>药品名称:"+mes[i].kin_name+"<br>生产数量:"+mes[i].DETAIL_NUM+"<br>完成度:<font color='red'>"+mes[i].LOG_COMPLET+"%</font></p></div></i>");
+	    		} 
+	        	
+	            
+	        },"json")
+	        
+	        
+	        //订单详情查询
+	        url="dent/show.action?indentId="+id;
+	        $.post(url,null,function(mes){
+	        		$("#dd").append("生产订单编号:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentNumber+"<br ><br >生产订单金额:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentMoney+"元<br ><br >生产订单数量:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentCount+"件<br ><br >生产订单生成时间:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentEmetime+"<br ><br >本次订单需要花费的时间:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentWorktime+"<br ><br >预计完成时间:&nbsp;&nbsp;&nbsp;&nbsp;"+mes.indentEndtime+"");      
+	        },"json")
+	        
+	       
 		})
+		
+		
+		
+		
+		 //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+        layui.use('element',
+        function() {
+          var element = layui.element;
+
+        });
+      
 		
 		
 	</script>

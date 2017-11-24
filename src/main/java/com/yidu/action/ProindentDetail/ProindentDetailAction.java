@@ -76,7 +76,7 @@ public class ProindentDetailAction {
 			dent.setIndentWorktime(ss);//本次订单需要花费的时间
 			dent.setRemark(Remark);//备注
 			dent.setIndentEndtime(dent.getIndentEndtime());//预计完成时间
-			dent.setState(0);//审核状态
+			dent.setState(1);//审核状态
 			dent.setIsva("1");//是否显示
 			dent.setIndentState("1");//生成状态
 			proindentService.insert(dent);//增加

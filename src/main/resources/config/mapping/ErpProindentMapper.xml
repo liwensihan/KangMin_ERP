@@ -39,6 +39,18 @@
 		
 	</select> -->
  
+ 
+ 	<!-- 订单日志查询,根据商品，订单，日志，日志明细 -->
+ 	<select id="findByrz" resultType="map" parameterType="java.lang.String">
+ 		SELECT kin.kin_name,deta.DETAIL_NUM,deta.CREATETIME,plog.LOG_COMPLET FROM 
+		erp_proindent pro,erp_log plog,
+		erp_log_detail deta,erp_kinds kin
+		WHERE plog.indent_id=pro.indent_id
+		AND deta.LOG_ID=plog.LOG_ID
+		AND deta.KIN_ID=kin.KIN_ID
+		AND pro.indent_id=#{indentId}
+		ORDER BY plog.LOG_COMPLET ASC 
+ 	</select>
  	
  <!-- 根据ID修改生产状态 -->
  <update id="updateId" parameterType="map">
@@ -54,7 +66,7 @@
  
    <!-- 查询所有订单，下拉框 -->
    <select id="findStation" resultMap="BaseResultMap">
-   		select * from erp_proindent where isva=1 AND INDENT_STATE=1 or INDENT_STATE=2
+   		SELECT * FROM erp_proindent WHERE STATE=2  AND isva=1 AND INDENT_STATE=1 OR INDENT_STATE=2
    </select>
   
    <!-- 根据订单id查询明细，和商品表 -->
@@ -97,18 +109,48 @@
   		  )
   		</if>
   		<if test="indentUrgency != null and indentUrgency!=''">
-  		 INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		and INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
   		</if>
   		<if test="state != null and state!=''">
-  		 STATE like CONCAT('%',#{state},'%' )
+  		and STATE like CONCAT('%',#{state},'%' )
   		</if>
   		<if test="indentState != null and indentState!=''">
-  		 INDENT_STATE like CONCAT('%',#{indentState},'%' )
+  		and INDENT_STATE like CONCAT('%',#{indentState},'%' )
   		</if>
   		and ISVA=1
   	</where>
   	limit #{page},#{limit}
   </select>
+  
+  
+  
+  <!-- 总行数 -->
+   <select id="findRowCount" parameterType="map" resultType="int" >
+    select COUNT(*) from erp_proindent
+     <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	INDENT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_MONEY like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_COUNT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		<if test="indentUrgency != null and indentUrgency!=''">
+  		and INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		</if>
+  		<if test="state != null and state!=''">
+  		and STATE like CONCAT('%',#{state},'%' )
+  		</if>
+  		<if test="indentState != null and indentState!=''">
+  		and INDENT_STATE like CONCAT('%',#{indentState},'%' )
+  		</if>
+  		and ISVA=1
+  	</where>
+  </select>
+  
+  
   
     <!-- 查询所有 -->
   <select id="showPro" parameterType="map" resultMap="BaseResultMap" >
@@ -129,41 +171,13 @@
   		<if test="state != null and state!=''">
   		 STATE like CONCAT('%',#{state},'%' )
   		</if>
-  		<if test="indentState != null and indentState!=''">
+  		<if test="indentState != null and indentState !=''">
   		 INDENT_STATE like CONCAT('%',#{indentState},'%' )
   		</if>
   		and ISVA=4
   	</where>
   	limit #{page},#{limit}
   </select>
-  
-  <!-- 总行数 -->
-   <select id="findRowCount" parameterType="map" resultType="int" >
-    select COUNT(*) from erp_proindent
-     <where>
-  		<if test="key != null and key!=''">
-  		 ( 
-  		 	INDENT_NUMBER like CONCAT('%',#{key},'%' )
-  		 	or
-  		 	INDENT_MONEY like CONCAT('%',#{key},'%' )
-  		 	or
-  		 	INDENT_COUNT like CONCAT('%',#{key},'%' )
-  		  )
-  		</if>
-  		<if test="indentUrgency != null and indentUrgency!=''">
-  		 INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
-  		</if>
-  		<if test="state != null and state!=''">
-  		 STATE like CONCAT('%',#{state},'%' )
-  		</if>
-  		<if test="indentState != null and indentState!=''">
-  		 INDENT_STATE like CONCAT('%',#{indentState},'%' )
-  		</if>
-  		and ISVA=1
-  	</where>
-  </select>
-  
-  
   <!-- <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap" >
     select *,(SELECT isva FROM erp_log WHERE INDENT_ID=dent.INDENT_ID)logComplet from erp_proindent dent LEFT JOIN ERP_LOG lo ON dent.INDENT_ID=lo.INDENT_ID
    <where>

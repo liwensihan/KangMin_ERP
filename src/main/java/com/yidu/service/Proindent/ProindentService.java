@@ -111,4 +111,11 @@ public interface ProindentService {
 	  * @return
 	  */
 	 int updateId(Map<String, Object> map);
+	 
+	 /**
+	  * 订单日志查询,根据商品，订单，日志，日志明细
+	  * @param indentId
+	  * @return
+	  */
+	 List<Map<String, Object>> findByrz(String indentId);
 }

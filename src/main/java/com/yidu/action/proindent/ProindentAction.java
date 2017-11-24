@@ -55,6 +55,9 @@ public class ProindentAction {
 	}
 	
 	
+	
+	
+	
 	/**
 	 * 下拉框查询所有订单
 	 * @param express
@@ -69,6 +72,24 @@ public class ProindentAction {
 		return map;
 		
 	}
+	
+	
+	
+	/**
+	 * 订单日志查询,根据商品，订单，日志，日志明细 
+	 * @param express
+	 * @return
+	 */
+	@RequestMapping("/findByrz")
+	@ResponseBody
+	public List<Map<String, Object>> findByrz(ErpProindent dent){
+		
+		List<Map<String, Object>> map=proindentService.findByrz(dent.getIndentId());
+		
+		return map;
+		
+	}
+	
 	
 	
 	/**
@@ -91,7 +112,7 @@ public class ProindentAction {
 		pagmap.put("key", key);//关键字
 		pagmap.put("indentUrgency", dent.getIndentUrgency());//是否紧急
 		pagmap.put("state", dent.getState());//审核状态
-		pagmap.put("indentState", dent.getIndentEmetime());//订单状态
+		pagmap.put("indentState", dent.getIndentState());//订单状态
 		
 		
 		List<ErpProindent> list=proindentService.selectByPrimaryKey(pagmap);

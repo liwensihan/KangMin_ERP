@@ -54,8 +54,8 @@
 		  				<td>
 			  				<select id="state" name="state" lay-verify="" width="50px">
 							  <option value="">审核状态</option>
-							   <option value="1">已审核</option>
-							    <option value="0">未审核</option>
+							   <option value="2">已审核</option>
+							    <option value="1">未审核</option>
 							</select>
 		  				</td>
 		  				<td>
@@ -76,11 +76,11 @@
 
 
 
-<table class="layui-table" lay-data="{width: 948 , height:495, url:'dent/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1010, height:495, url:'dent/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
   <thead>
     <tr>
       <th lay-data="{field:'indentId', width:140, sort: true, fixed: true},hidden:'true'">ID</th>
-      <th lay-data="{field:'indentNumber', width:130}">生产订单编号</th>
+      <th lay-data="{field:'indentNumber', width:160}">生产订单编号</th>
    	  <th lay-data="{field:'indentMoney', width:150}">生产订单金额</th>
       <th lay-data="{field:'indentCount', width:130}">生产订单数量</th>
    	  <th lay-data="{field:'indentUrgency', width:100,templet:'#urg', align:'center'}">是否紧急</th>
@@ -90,7 +90,7 @@
    	  <th lay-data="{field:'indentEmetime', width:200, sort: true}">生产订单生成时间</th>
    	  <th lay-data="{field:'indentWorktime', width:200, sort: true}">本次订单需要花费的时间</th>
    	  <th lay-data="{field:'indentEndtime', width:200, sort: true}">预计完成时间</th>
-      <th lay-data="{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}"></th>
+      <th lay-data="{fixed: 'right', width:230, align:'center', toolbar: '#barDemo'}"></th>
     </tr>
   </thead>
 </table>
@@ -98,9 +98,9 @@
 <!-- 判断是否审核 -->
 <script type="text/html" id="state1">
 	  {{#  if(d.state==1){ }}
-    		<span class="layui-btn layui-btn-warm layui-btn-small">以审核</span>
-  	{{# }else if(d.state==0) { }}
-    	   <span class="layui-btn layui-btn-danger layui-btn-small">未审核</span>
+    		  <span class="layui-btn layui-btn-danger layui-btn-small">未审核</span>
+  	{{# }else if(d.state==2) { }}
+			 <span class="layui-btn layui-btn-warm layui-btn-small">以审核</span>
 	{{#  } }}
 </script>
 
@@ -125,7 +125,6 @@
 </script>
 
 <script type="text/html" id="barDemo">
-
   <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
   <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="show">查看</a>
@@ -148,7 +147,7 @@ layui.use('table', function(){
     if(obj.event === 'detail'){
       layer.msg('ID：'+ data.id + ' 的查看操作');
     } else if(obj.event === 'del'){
-    	if(data.isva==1){
+    	if(data.indentState==1){
     	layer.confirm('真的删除行么', function(index){
     	 obj.del();
         layer.close(index);
@@ -172,7 +171,7 @@ layui.use('table', function(){
 		} 
      
 	} else if(obj.event === 'edit'){
-		if(data.isva==1){
+		if(data.indentState==1){
 			layer.open({
 				type:2,
 				skin: 'layui-layer-molv',//样式
@@ -188,7 +187,7 @@ layui.use('table', function(){
 			type:2,
 			skin: 'layui-layer-molv',//样式
 			content:'page/proindentupdateshow.jsp?indentId='+data.indentId,
-			area: ['80%', '50%'],
+			area: ['80%', '80%'],
 			title: '查看订单',
 		});	
     }
@@ -207,7 +206,7 @@ layui.use('table', function(){
 		        	key: demoReload.val(),
 		        	indentUrgency:demoReload1.val(),
 		        	state:demoReload2.val(),
-		        	indentState:demoReload3.val()
+		        	indentState :demoReload3.val()
 		        }
 		      });
 		    }
