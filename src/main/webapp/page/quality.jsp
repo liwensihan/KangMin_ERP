@@ -47,6 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </tr>
   </thead>
 </table>
+<<<<<<< HEAD
 	<div id="from-div" style="display: none; margin: 2%;">
 		<table class="layui-table"  lay-skin="nob" >
 		  <tbody id="purSkin">
@@ -72,8 +73,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		      <td>人生就像是一场修行</td>
 		      <td>人生就像是一场修行</td>
 		    </tr>
+=======
+	<div id="from-div" style="display: none; margin: 2%;">
+		<table class="layui-table"  lay-skin="nob" >
+		  <tbody id="purSkin">
+		    
+>>>>>>> branch 'master' of https://gitee.com/cs_ouyang/KangMin_ERP.git
 		  </tbody>
 		</table>
+<<<<<<< HEAD
+=======
+		<table class="layui-table"  lay-skin="nob" id="proTab">
+		  
+		</table>
+>>>>>>> branch 'master' of https://gitee.com/cs_ouyang/KangMin_ERP.git
 		
 		<div id="but-shen"  style=" position:fixed; bottom:6%;width:53.5%; padding-left: 22%;background-color: #f3f5f399;">
 				<button class="layui-btn" style="margin-right: 23%;" onclick="yes()">
@@ -131,6 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/html" id="TypeName">
   {{d.typer.typeName}}
 </script>	
+<<<<<<< HEAD
 <script>
 	layui.use('table', function(){
  	 var table = layui.table;
@@ -200,6 +214,9 @@ function addtype(){
     		  }
 			  
 		});
+=======
+<script>
+>>>>>>> branch 'master' of https://gitee.com/cs_ouyang/KangMin_ERP.git
 	//通过的方法
 	function yes(){
 		$("input[type$='text']").each(function(n){  
