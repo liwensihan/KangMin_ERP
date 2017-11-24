@@ -43,6 +43,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <th lay-data="{field:'rawSerial',width:200, sort: true}">编号</th>
       <th lay-data="{field:'rawName' ,width:100}">药品名</th>
       <th lay-data="{field:'rawPrice' ,width:100}">价格</th>
+      <th lay-data="{field:'rawContent' ,width:100}">净含量</th>
+      <th lay-data="{field:'rawUnit' ,width:100}">单位</th>
       <th lay-data="{field:'typer' ,width:150, sort: true ,templet: '#TypeName'}">类型</th>
       <th lay-data="{field:'app' ,width:150, sort: true ,templet: '#lyName'}">供货商</th>
       <th lay-data="{field:'res' ,width:150, sort: true ,templet: '#resr'}">药效</th>
@@ -72,11 +74,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 
 				</select>
 		    </div>
-		     <div class="am-form-group" >
+		    <div class="am-form-group" >
 		    	<input name="rawPrice" id="rawPrice" placeholder="价格￥" type="text" pattern="\d{1,5}" required data-foolish-msg="请输入正确价格！" >
 		    </div>
-		  
-			<div class="am-form-group" style="margin-left:20%;margin-top: 4%;">  
+		    <div class="am-form-group" >
+		    	<div style="width: 70%; float:left;">
+		    	  <input name="rawContent"  id="rawContent" placeholder="净含量" type="text" pattern="\d{1,5}" required data-foolish-msg="请输入正确净含量！" >
+		   		
+		    	</div>
+		    	<div style="width: 20%; float: right;">
+		   			<select   name="rawUnit" placeholder="单位" id="rawUnit" >
+					 <option value="g">g</option>
+					 <option value="ml">ml</option>
+					 <option value="qg">qg</option>
+					</select>
+		   		</div>
+		    </div>
+			<div class="am-form-group" style="margin-left:20%;margin-top: 10%;">  
 			<button class="am-btn am-btn-primary am-btn-xl" type="button" onclick="tijiao()">提交</button>
 			<button class="am-btn am-btn-default am-btn-xl" type="button" style="margin-left: 10%;" onclick="qiongkong()">重置</button>
 			</div>
@@ -163,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		  type: 1,
     		  title: ['编辑', '<i class="layui-icon" style="color: #5FB878;">&#xe642;</i>'],
     		  content: $('#from-div'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-    		  area: ['75%'],
+    		  area: ['75%','80%'],
 			  cancel:function(){
 				  qiongkong();//清空表单
 			  }
@@ -175,6 +189,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	   $("#rawId").val(list[0].rawId);
 			$("#rawName").val(list[0].rawName);
 			$("#rawPrice").val(list[0].rawPrice);
+			$("#rawContent").val(list[0].rawContent);
+			$("#rawUnit").val(list[0].rawUnit);
 			var option = $('#creater option');
 			//给下拉框赋值
 			$(option).each(function(i,ele){
@@ -308,7 +324,7 @@ function addtype(){
 			  type: 1,
 			  title: ['添加', '<i class="layui-icon" style="color: #5FB878;">&#xe63c;</i>'],
 			  content: $('#from-div'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-			  area: ['75%'],
+			  area: ['75%','80%'],
 			  cancel:function(){
 				  qiongkong();//清空表单
 			  }
@@ -340,6 +356,7 @@ function tijiao(){
 	 }else{
 		 layer.msg('<i class="layui-icon" style="font-size: 20px; color: #FF5722;">&#x1006;</i>请填写正确');
 	 }
+	 qiongkong();//清空表单
 	 layer.close();
 }
 
@@ -375,7 +392,9 @@ function ajxaTable(){
 				  rawName:"rawName",
 				  typer:"typer",
 				  app:"app",
-				  res:"res"
+				  res:"res",
+				  rawContent:"rawContent",
+				  rawUnit:"rawUnit"
 			  }
 		  	
 		});
@@ -395,6 +414,8 @@ function solo(){
 				  typer:"typer",
 				  app:"app",
 				  res:"res",
+				  rawContent:"rawContent",
+				  rawUnit:"rawUnit",
 				  price:pricer
 			  }
 		  	, method: 'post'

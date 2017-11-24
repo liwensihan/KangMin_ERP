@@ -47,16 +47,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<table class="layui-table"  lay-skin="nob" id="proTab">
 		  
 		</table>
-		<div id="shengpi" class="layui-anim-upbit" style="padding:2%; display:none; position: fixed;bottom: 11%;width: 71.5%;background-color: #f3f5f3;">
-			<i class="layui-icon" id="qx" style="font-size:20px; color: #14151499; margin-left: 97%;" >&#x1006;</i>
+		
+		<div id="but-shen"  style=" position:fixed; bottom:6%;width:53.5%; padding-left: 22%;background-color: #f3f5f399;">
+				<button class="layui-btn" style="margin-right: 23%;" onclick="yes()">
+				  <i class="layui-icon">&#xe6af;</i>通过
+				</button>
+				<button class="layui-btn layui-btn-danger" onclick="no()">
+				  <i class="layui-icon">&#xe69c;</i>打回
+				</button>
+		</div>
+		<div id="add" style="position: fixed;bottom: 17%;width: 55px;height: 55px;background-color: #41406e33;margin-left: 67%;">
+		 
+				 <i class="layui-icon" style="font-size:55px; color: #fbf3f3e6" >&#xe654;</i>
+		</div>
+	</div>
+	<div id="shengpi"style="padding:2%; display:none;">
 			<!-- 质检表单开始 -->
 			<form id="qualit-form">
+				<div id="qualit-form-det">
+				
+				</div>
 				<input type="hidden" id="qualityId" name="quaId">
 				<div class="layui-form-item">
 				    <div class="layui-inline">
 				      <label class="layui-form-label">产品合格率</label>
 				      <div class="layui-input-inline" style="width: 100px;">
-				        <input name="quaGood" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') "placeholder="良品" autocomplete="off" class="layui-input" id="good" type="text">
+				        <input name="quaGood" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'') "placeholder="良品" autocomplete="off" class="layui-input" id= type="text">
 				      </div>
 				      <div class="layui-form-mid">-</div>
 				      <div class="layui-input-inline" style="width: 100px;">
@@ -74,19 +90,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 </form>
 			 <!-- 质检表单结束 -->
 		</div>
-		<div id="but-shen"  style=" position:fixed; bottom:6%;width:53.5%; padding-left: 22%;background-color: #f3f5f399;">
-				<button class="layui-btn" style="margin-right: 23%;" onclick="yes()">
-				  <i class="layui-icon">&#xe6af;</i>通过
-				</button>
-				<button class="layui-btn layui-btn-danger" onclick="no()">
-				  <i class="layui-icon">&#xe69c;</i>打回
-				</button>
-		</div>
-		<div id="add" style="position: fixed;bottom: 17%;width: 55px;height: 55px;background-color: #41406e33;margin-left: 67%;">
-		 
-				 <i class="layui-icon" style="font-size:55px; color: #fbf3f3e6" >&#xe654;</i>
-		</div>
-	</div>
 <!-- 自定义模板  药效-->
 <script type="text/html" id="resr">
   {{#  layui.each(d.res, function(index, item){ }}
@@ -140,6 +143,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			layer.msg('<i class="layui-icon" style="font-size: 40px; color: #FF5722;">&#x1006;</i>良品不能大于总数量,请重新输入。。。');
 		}
 	});
+	function babv(obj){
+		var ps=obj.prev() ;
+		//alert(ps.);
+	}
 	$("#bab").blur(function(){
 		var a = $("#good").val();
 		var c = $("#bab").val();
@@ -151,7 +158,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	});
 	//点击添加质检信息的时候打开表单隐藏点击按钮
 	$("#add").click(function(){
-		$("#shengpi").show();
+		layer.open({
+	  		  type: 1,
+	  		  title: ['质检单'],
+	  		  content: $('#shengpi'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+	  		 // btn: ['确定'], //可以无限个按钮
+	  		  area: ['40%','90%'],
+	  		  cancel:function(){
+	  		  }
+	  		  
+	    });
 		$("#add").hide();
 	});
 	//点击×的时候关闭质检表单打开点击按钮
@@ -264,17 +280,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						   //计算采购总数
 						   $.each(bri.det,function(o,b){
 							  q+=b.purcTotalNumber;
+							  $("#qualit-form-det").append("<div class='layui-form-item'>"+
+									   " <div class='layui-inline'><label class='layui-form-label'>"+b.rawName+"</label><div class='layui-input-inline' style='width: 100px;'>"+
+							       " <input name='quaGood' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.purcTotalNumber+"' disabled>"+
+							      "</div><div class='layui-form-mid'>-</div> <div class='layui-input-inline' style='width: 100px;'>"+
+							       " <input name='quaBab' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'') ' autocomplete='off' class='layui-input' onblur='babv(this)' type='text'>"+
+							      "</div></div></div>");
 						   });
 						   var a = bri.remark;
 						   if(a==null){//备注为空就等于“”
 							   a="";
 						   }
+						  
+						   //采购详情
 						   $("#purSkin").html("<tr><td>采购单号:</td>"
 									+"<td>"+bri.purcSerial+"</td><td>采购标题:</td><td>"+bri.purcTitle+"</td></tr><tr><td>采购人:</td><td>"+bri.purcName+"</td><td>采购总价:</td> <td>"+bri.purcTotalPrice+"</td> </tr><tr>"
 									+"<td>创建时间:</td><td>"+bri.createtime+"</td><td>完成时间:</td>"
 									+"<td>"+bri.purcTime+"</td></tr><tr><td>采购总数:</td><td id='qNum'>"+q+"</td><td>备注:</td><td>"+a+"</td></tr>"
 								);
-							   
 					   });
 					   layer.open({
 					  		  type: 1,

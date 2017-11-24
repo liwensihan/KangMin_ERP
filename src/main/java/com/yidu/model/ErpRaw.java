@@ -21,10 +21,30 @@ public class ErpRaw {
     private String creater;
 
     private String createtime;
-
+    
     private Integer isva;
     
-    private ErpApply app;
+    private BigDecimal rawContent;
+
+    private String rawUnit;
+    
+    public BigDecimal getRawContent() {
+		return rawContent;
+	}
+
+	public void setRawContent(BigDecimal rawContent) {
+		this.rawContent = rawContent;
+	}
+
+	public String getRawUnit() {
+		return rawUnit;
+	}
+
+	public void setRawUnit(String rawUnit) {
+		this.rawUnit = rawUnit;
+	}
+
+	private ErpApply app;
     
     private List<ErpResuit> res;
     
