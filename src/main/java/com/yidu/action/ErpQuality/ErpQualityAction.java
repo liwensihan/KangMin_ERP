@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yidu.model.ErpQuality;
+import com.yidu.model.ErpStaff;
 import com.yidu.service.ErpQuality.ErpQualityService;
 import com.yidu.util.Pages;
+import com.yidu.util.SsmMessage;
 
 /**
  * 质检表的action
@@ -54,4 +57,26 @@ public class ErpQualityAction {
 		map.put("data", list);
 		return map;
 	};
+	/**
+	 * 审批的方法
+	 * @param session 取采购人
+	 * @param qua 注释对象
+	 * @return 信息类
+	 */
+	@RequestMapping("updateByPrimaryKeySelective")
+	@ResponseBody
+	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua){
+		SsmMessage mes = new SsmMessage();
+		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到用户对象
+		qua.setQuaQc(staff.getStaName());//把当前用户名放入质检里
+		int rows = service.updateByPrimaryKeySelective(qua);
+		if(rows>-1){ 
+			mes.setMes("成功");
+			mes.setState(1);
+		}else{
+			mes.setMes("失败");
+			mes.setState(0);
+		}
+		return mes;
+	}
 }

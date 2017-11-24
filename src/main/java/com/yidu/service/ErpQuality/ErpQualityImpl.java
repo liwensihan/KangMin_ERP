@@ -31,7 +31,6 @@ public class ErpQualityImpl implements ErpQualityService{
 
 	@Override
 	public int insert(ErpQuality record) {
-		
 		return 0;
 	}
 
