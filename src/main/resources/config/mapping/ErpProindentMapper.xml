@@ -39,6 +39,13 @@
 		
 	</select> -->
  
+ 	<!-- 订单明细，商品，配方，原材料，查询配方 -->
+ 	<select id="showpf" resultType="map" parameterType="java.lang.String">
+ 		SELECT raw.RAW_ID,kin.KIN_NAME,bur.BUR_G,raw.RAW_NAME FROM erp_proindent_detail det ,erp_kinds kin,erp_burden bur,erp_raw raw
+		WHERE det.KIN_ID = kin.KIN_ID AND bur.KIN_ID = kin.KIN_ID AND bur.RAW_ID = raw.RAW_ID
+		AND det.INDENT_ID=#{indentId} 	
+ 	</select>
+ 
  
  	<!-- 订单日志查询,根据商品，订单，日志，日志明细 -->
  	<select id="findByrz" resultType="map" parameterType="java.lang.String">

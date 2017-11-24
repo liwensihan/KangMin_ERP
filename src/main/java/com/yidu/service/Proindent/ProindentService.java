@@ -118,4 +118,12 @@ public interface ProindentService {
 	  * @return
 	  */
 	 List<Map<String, Object>> findByrz(String indentId);
+	 
+	 
+	 /**
+	  * 订单明细，商品，配方，原材料，查询配方 
+	  * @param indentId
+	  * @return
+	  */
+	  List<Map<String, Object>>  showpf(String indentId);
 }

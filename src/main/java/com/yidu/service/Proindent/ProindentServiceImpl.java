@@ -151,5 +151,16 @@ public class ProindentServiceImpl implements ProindentService{
 		return erpProindentMapper.findByrz(indentId);
 	}
 
+	 /**
+	  * 订单明细，商品，配方，原材料，查询配方 
+	  * @param indentId
+	  * @return
+	  */
+	@Override
+	public List<Map<String, Object>> showpf(String indentId) {
+		// TODO Auto-generated method stub
+		return erpProindentMapper.showpf(indentId);
+	}
+
 }
 	

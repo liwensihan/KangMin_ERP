@@ -90,6 +90,21 @@ public class ProindentAction {
 		
 	}
 	
+	/**
+	 * 订单明细，商品，配方，原材料，查询配方 
+	 * @param express
+	 * @return
+	 */
+	@RequestMapping("/showpf")
+	@ResponseBody
+	public List<Map<String, Object>> showpf(ErpProindent dent){
+		
+		List<Map<String, Object>> map=proindentService.showpf(dent.getIndentId());
+		
+		return map;
+		
+	}
+	
 	
 	
 	/**

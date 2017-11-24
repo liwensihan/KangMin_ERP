@@ -78,7 +78,7 @@ public class ProindentDetailAction {
 			dent.setIndentEndtime(dent.getIndentEndtime());//预计完成时间
 			dent.setState(1);//审核状态
 			dent.setIsva("1");//是否显示
-			dent.setIndentState("1");//生成状态
+			dent.setIndentState("4");//生成状态
 			proindentService.insert(dent);//增加
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

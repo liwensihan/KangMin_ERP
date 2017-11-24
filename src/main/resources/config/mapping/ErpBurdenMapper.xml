@@ -3,6 +3,7 @@
 <mapper namespace="com.yidu.dao.ErpBurdenMapper" >
   <resultMap id="BaseResultMap" type="com.yidu.model.ErpBurden" >
     <id column="BUR_ID" property="burId" jdbcType="VARCHAR" />
+    <result column="BUR_UNIT" property="burUnit" jdbcType="VARCHAR" />
     <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
     <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
     <result column="BUR_SERIAL" property="burSerial" jdbcType="VARCHAR" />
@@ -14,7 +15,7 @@
    
   </resultMap>
   <sql id="Base_Column_List" >
-    BUR_ID, RAW_ID, KIN_ID, BUR_SERIAL, BUR_G, CREATETIME, CREATER, ISVA
+    BUR_ID, RAW_ID, KIN_ID, BUR_SERIAL, BUR_UNIT, BUR_G, CREATETIME, CREATER, ISVA
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
    SELECT b.*,r.RAW_NAME rawName FROM erp_burden b ,erp_kinds k ,erp_raw r WHERE b.KIN_ID=k.KIN_ID AND b.RAW_ID = r.RAW_ID AND b.KIN_ID = #{kindId,jdbcType=VARCHAR}
@@ -25,16 +26,19 @@
   </delete>
   <insert id="insert" parameterType="com.yidu.model.ErpBurden" >
     insert into erp_burden (BUR_ID, RAW_ID, KIN_ID, 
-      BUR_SERIAL, BUR_G, CREATETIME, 
-      CREATER, ISVA)
+      BUR_SERIAL, BUR_UNIT, BUR_G, 
+      CREATETIME, CREATER, ISVA
+      )
     values (#{burId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, 
-      #{burSerial,jdbcType=VARCHAR}, #{burG,jdbcType=DECIMAL}, #{createtime,jdbcType=VARCHAR}, 
-      #{creater,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER})
+      #{burSerial,jdbcType=VARCHAR}, #{burUnit,jdbcType=VARCHAR}, #{burG,jdbcType=DECIMAL}, 
+      #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}
+      )
+       
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpBurden" >
-  <selectKey keyProperty="burId" order="BEFORE" resultType="java.lang.String">
-			select UUID()
-		</selectKey>
+  	<selectKey keyProperty="burId" order="BEFORE" resultType="java.lang.String">
+		select UUID()
+	</selectKey>
     insert into erp_burden
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="burId != null" >
@@ -48,6 +52,9 @@
       </if>
       <if test="burSerial != null" >
         BUR_SERIAL,
+      </if>
+      <if test="burUnit != null" >
+        BUR_UNIT,
       </if>
       <if test="burG != null" >
         BUR_G,
@@ -75,6 +82,9 @@
       <if test="burSerial != null" >
         #{burSerial,jdbcType=VARCHAR},
       </if>
+      <if test="burUnit != null" >
+        #{burUnit,jdbcType=VARCHAR},
+      </if>
       <if test="burG != null" >
         #{burG,jdbcType=DECIMAL},
       </if>
@@ -101,6 +111,9 @@
       <if test="burSerial != null" >
         BUR_SERIAL = #{burSerial,jdbcType=VARCHAR},
       </if>
+      <if test="burUnit != null" >
+        BUR_UNIT = #{burUnit,jdbcType=VARCHAR},
+      </if>
       <if test="burG != null" >
         BUR_G = #{burG,jdbcType=DECIMAL},
       </if>
@@ -121,6 +134,7 @@
     set RAW_ID = #{rawId,jdbcType=VARCHAR},
       KIN_ID = #{kinId,jdbcType=VARCHAR},
       BUR_SERIAL = #{burSerial,jdbcType=VARCHAR},
+      BUR_UNIT = #{burUnit,jdbcType=VARCHAR},
       BUR_G = #{burG,jdbcType=DECIMAL},
       CREATETIME = #{createtime,jdbcType=VARCHAR},
       CREATER = #{creater,jdbcType=VARCHAR},

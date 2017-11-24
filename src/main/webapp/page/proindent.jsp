@@ -121,10 +121,17 @@
     	   <span class="layui-btn layui-btn-warm layui-btn-small">订单生产中</span>
 	{{# }else if(d.indentState==3) { }}
     	   <span class="layui-btn layui-btn-normal layui-btn-small">订单已完成</span>
+	{{# }else if(d.indentState==4) { }}
+			<span class="layui-btn layui-btn-danger layui-btn-small">申请配料中</span>
 	{{#  } }}
 </script>
 
 <script type="text/html" id="barDemo">
+{{#  if(d.indentState==4){ }}
+  <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="pf">配料</a>
+{{# }else { }}
+	<a class="layui-btn layui-btn-disabled layui-btn-mini">配料</a>
+{{#  } }}
   <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
   <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="show">查看</a>
@@ -147,7 +154,7 @@ layui.use('table', function(){
     if(obj.event === 'detail'){
       layer.msg('ID：'+ data.id + ' 的查看操作');
     } else if(obj.event === 'del'){
-    	if(data.indentState==1){
+    	if(data.indentState==1 || data.indentState==4){
     	layer.confirm('真的删除行么', function(index){
     	 obj.del();
         layer.close(index);
@@ -171,7 +178,7 @@ layui.use('table', function(){
 		} 
      
 	} else if(obj.event === 'edit'){
-		if(data.indentState==1){
+		if(data.indentState==1 || data.indentState==4){
 			layer.open({
 				type:2,
 				skin: 'layui-layer-molv',//样式
@@ -190,6 +197,15 @@ layui.use('table', function(){
 			area: ['80%', '80%'],
 			title: '查看订单',
 		});	
+    }else if(obj.event==='pf'){
+    	layer.open({
+			type:2,
+			skin: 'layui-layer-molv',//样式
+			content:'page/proindentpf.jsp?indentId='+data.indentId,
+			area: ['80%', '80%'],
+			title: '配置配方',
+		});
+    	
     }
   });
   

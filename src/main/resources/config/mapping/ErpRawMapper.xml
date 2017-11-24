@@ -6,6 +6,8 @@
     <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
     <result column="RAW_SERIAL" property="rawSerial" jdbcType="VARCHAR" />
     <result column="RAW_NAME" property="rawName" jdbcType="VARCHAR" />
+    <result column="RAW_CONTENT" property="rawContent" jdbcType="DECIMAL" />
+    <result column="RAW_UNIT" property="rawUnit" jdbcType="VARCHAR" />
     <result column="RAW_PRICE" property="rawPrice" jdbcType="DECIMAL" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
     <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
@@ -44,7 +46,8 @@
      
   </resultMap>
   <sql id="Base_Column_List" >
-   	RAW_ID, APPLY_ID, RAW_SERIAL, RAW_NAME, RAW_PRICE, CREATER, CREATETIME, ISVA
+    RAW_ID, APPLY_ID, RAW_SERIAL, RAW_NAME, RAW_CONTENT, RAW_PRICE, RAW_UNIT, CREATER, 
+    CREATETIME, ISVA
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 		SELECT * FROM erp_raw raw ,erp_apply app ,erp_drug_result ug,erp_resuit res ,erp_kinds_type typed WHERE 
@@ -58,17 +61,18 @@
     delete from erp_raw
     where RAW_ID = #{rawId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.yidu.model.ErpRaw" >
-  	
+ <insert id="insert" parameterType="com.yidu.model.ErpRaw" >
     insert into erp_raw (RAW_ID, APPLY_ID, RAW_SERIAL, 
-      RAW_NAME, RAW_PRICE, CREATER, 
-      CREATETIME, ISVA)
+      RAW_NAME, RAW_CONTENT, RAW_PRICE, 
+      RAW_UNIT, CREATER, CREATETIME, 
+      ISVA)
     values (#{rawId,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{rawSerial,jdbcType=VARCHAR}, 
-      #{rawName,jdbcType=VARCHAR}, #{rawPrice,jdbcType=DECIMAL}, #{creater,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER})
+      #{rawName,jdbcType=VARCHAR}, #{rawContent,jdbcType=DECIMAL}, #{rawPrice,jdbcType=DECIMAL}, 
+      #{rawUnit,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpRaw" >
-  	insert into erp_raw
+    insert into erp_raw
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="rawId != null" >
         RAW_ID,
@@ -82,8 +86,14 @@
       <if test="rawName != null" >
         RAW_NAME,
       </if>
+      <if test="rawContent != null" >
+        RAW_CONTENT,
+      </if>
       <if test="rawPrice != null" >
         RAW_PRICE,
+      </if>
+      <if test="rawUnit != null" >
+        RAW_UNIT,
       </if>
       <if test="creater != null" >
         CREATER,
@@ -108,8 +118,14 @@
       <if test="rawName != null" >
         #{rawName,jdbcType=VARCHAR},
       </if>
+      <if test="rawContent != null" >
+        #{rawContent,jdbcType=DECIMAL},
+      </if>
       <if test="rawPrice != null" >
         #{rawPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="rawUnit != null" >
+        #{rawUnit,jdbcType=VARCHAR},
       </if>
       <if test="creater != null" >
         #{creater,jdbcType=VARCHAR},
@@ -123,7 +139,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpRaw" >
-   update erp_raw
+    update erp_raw
     <set >
       <if test="applyId != null" >
         APPLY_ID = #{applyId,jdbcType=VARCHAR},
@@ -134,8 +150,14 @@
       <if test="rawName != null" >
         RAW_NAME = #{rawName,jdbcType=VARCHAR},
       </if>
+      <if test="rawContent != null" >
+        RAW_CONTENT = #{rawContent,jdbcType=DECIMAL},
+      </if>
       <if test="rawPrice != null" >
         RAW_PRICE = #{rawPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="rawUnit != null" >
+        RAW_UNIT = #{rawUnit,jdbcType=VARCHAR},
       </if>
       <if test="creater != null" >
         CREATER = #{creater,jdbcType=VARCHAR},
@@ -150,11 +172,13 @@
     where RAW_ID = #{rawId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpRaw" >
-     update erp_raw
+    update erp_raw
     set APPLY_ID = #{applyId,jdbcType=VARCHAR},
       RAW_SERIAL = #{rawSerial,jdbcType=VARCHAR},
       RAW_NAME = #{rawName,jdbcType=VARCHAR},
+      RAW_CONTENT = #{rawContent,jdbcType=DECIMAL},
       RAW_PRICE = #{rawPrice,jdbcType=DECIMAL},
+      RAW_UNIT = #{rawUnit,jdbcType=VARCHAR},
       CREATER = #{creater,jdbcType=VARCHAR},
       CREATETIME = #{createtime,jdbcType=VARCHAR},
       ISVA = #{isva,jdbcType=INTEGER}

@@ -12,6 +12,9 @@ import com.yidu.model.ErpProindent;
 public interface ErpProindentMapper {
     int deleteByPrimaryKey(String indentId);
 
+    //订单明细，商品，配方，原材料，查询配方 
+   List<Map<String, Object>>  showpf(String indentId);
+    
     //订单日志查询,根据商品，订单，日志，日志明细
     List<Map<String, Object>> findByrz(String indentId);
     

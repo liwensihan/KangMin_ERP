@@ -152,20 +152,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    <div class="layui-tab-item">
 			    		<form class="layui-form layui-form-pane" id="Burd-from" style="width: 91%;float: left;">
 			    			<input type="hidden" id="kinsId" name="kinId">
-		    				<div class="layui-inline" style="width: 65%;">
+		    				<div class="layui-inline" style="width: 30%;">
 							    <label class="layui-form-label">原材料</label>
 							    <div class="layui-input-block">
 							      <select name="rawId" lay-filter="aihao" id="rawIda" lay-search>
 							        
 							      </select>
 							    </div>
-							  </div>          
+							  </div> 
+							 
 						  	<div class="layui-inline">
 						      <label class="layui-form-label">用量</label>
 						      <div class="layui-input-inline" style="width: 100px;">
 						        <input name="burG" placeholder="/g" autocomplete="off" class="layui-input" type="text">
 						      </div>
 						    </div>
+						     <div class="layui-inline" style="width: 26%;">
+							    <label class="layui-form-label">单位</label>
+							    <div class="layui-input-block">
+							      <select name="burUnit" lay-verify="">
+									  <option value="g">g</option>
+									  <option value="ml">ml</option>
+									  <option value="qg">qg</option>
+								  </select>
+							    </div>
+							  </div>
 						    <input type="reset" style="display:none;" /> 
 		    			</form>
 			    		 <button class="layui-btn" data-type="reload" onclick="burdAdd()">添加</button>
@@ -176,6 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						      <th lay-data="{field:'burSerial',width:200, sort: true}">编号</th>
 						      <th lay-data="{field:'rawName' ,width:100}">药品名</th>
 						      <th lay-data="{field:'burG' ,width:100}">用量</th>
+						      <th lay-data="{field:'burUnit' ,width:50}">单位</th>
 						       <th lay-data="{fixed: 'right',width:150, align:'center', toolbar: '#BurDemo'}">操作</th>
 						    </tr>
 						  </thead>
