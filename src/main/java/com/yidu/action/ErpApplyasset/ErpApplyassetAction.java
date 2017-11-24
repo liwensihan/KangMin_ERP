@@ -42,18 +42,19 @@ public class ErpApplyassetAction {
 	 * @param state 状态
 	 * @param staTime 开始时间
 	 * @param endTime 结束时间
+	 * @param maxState 用于判断状态
 	 * @return 返回map集合
 	 */
 	@ResponseBody
 	@RequestMapping("showList")
-	public Map<String,Object> showList(String page,String limit,String keyWord,String staEndTime,String state){
-		System.out.println("123"+staEndTime);
+	public Map<String,Object> showList(String page,String limit,String keyWord,String staEndTime,String state,String maxState){
 		Map<String,Object> paraMap = new HashMap<String,Object>();//定义一个map集合 传入参数查询出集合
 		Pages pages = new Pages();//定义一个分页实体类
 		pages.setCurPage(Integer.valueOf(page));//设值 开始的行数
 		pages.setMaxResult(Integer.valueOf(limit));//设值 每页显示的行数
 		paraMap.put("pages", pages);//存入map
 		if(keyWord!=null && keyWord!="")paraMap.put("keyWord", "%"+keyWord+"%");//模糊查询参数存入map
+		if("1".equals(maxState))paraMap.put("maxState", 1);//状态查询参数
 		paraMap.put("state", state);//状态查询参数
 		if(Tools.isEmpty(staEndTime)){
 			paraMap.put("staTime", "");//开始的时间

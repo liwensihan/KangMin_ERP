@@ -135,7 +135,7 @@ public class ErpPurchaseServiceImpl implements ErpPurchaseService{
 			audit.setState(1);//设置审核状态  0未通过 2通过
 		}
 		audit.setIsva(1);
-		int rows = auditMapper.insertSelective(audit);//执行审核表增加
+		auditMapper.insertSelective(audit);//执行审核表增加
 		return erpPurchaseMapper.auditPurchase(map);
 	}
 }

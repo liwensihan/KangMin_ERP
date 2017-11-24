@@ -172,7 +172,6 @@
 			} ] ],
 			id : 'testReload',
 			page : true,
-			height : 413,
 			done : function(res, curr, count) {
 				layer.close(loadIndex);//加载层关闭  
 			}
@@ -340,7 +339,6 @@
 			} ] ],
 			id : 'testReload2',
 			page : true,
-			height : 413,
 			done : function(res, curr, count) {
 				layer.close(loadIndex);//加载层关闭  
 			}

@@ -173,6 +173,9 @@
   	<if test="state !=null and state!=''">
   		and t.STATE = #{state}
   	</if>
+  	<if test="maxState != null and maxState !=''">
+  		and t.STATE <![CDATA[ <> ]]> '1'
+  	</if>
   	<if test="staTime !=null and staTime !=''">
   		and (t.APPASS_TIME &gt;= #{staTime} and t.APPASS_TIME &lt;= #{endTime})
   	</if>
