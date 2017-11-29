@@ -3,7 +3,11 @@
  */
 package com.yidu.service.ErpQuality;
 
+import java.util.List;
+import java.util.Map;
+
 import com.yidu.model.ErpQuality;
+import com.yidu.model.ErpQualityDetail;
 
 /**
  * 质检的service
@@ -40,11 +44,23 @@ public interface ErpQualityService {
      * @param record 质检对象
      * @return int
      */
-    int updateByPrimaryKeySelective(ErpQuality record);
+    int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist);
     /**
      * 选择修改
      * @param record 质检对象
      * @return int
      */
     int updateByPrimaryKey(ErpQuality record);
+    /**
+     * 查询质检对象
+     * @param map 参数
+     * @return 质检对象集合
+     */
+    List<ErpQuality> selectByPrimaryNew(Map<String,Object> map);
+    /**
+     * 查询质检对象的总行数
+     * @param map 参数
+     * @return int
+     */
+    int selectByPrimaryNewCount(Map<String,Object> map);
 }

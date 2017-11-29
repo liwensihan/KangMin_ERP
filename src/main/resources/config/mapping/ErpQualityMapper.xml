@@ -25,6 +25,33 @@
     from erp_quality
     where QUA_ID = #{quaId,jdbcType=VARCHAR}
   </select>
+  
+  <!-- 查询质检对象 -->
+  <select id="selectByPrimaryNew" resultMap="BaseResultMap" parameterType="map">
+  		SELECT * FROM erp_quality q 
+  		<where>
+  			<if test="pricer!=null">
+    		(
+    			q.QUA_ISVA like CONCAT('%',#{pricer},'%' )
+  			)
+  			</if>
+  			AND q.ISVA=1 GROUP BY q.CREATETIME DESC LIMIT #{page},#{limit}
+  		</where>
+  </select>
+  <!-- 查询质检对象总行数-->
+  <select id="selectByPrimaryNewCount" resultType="int" parameterType="map">
+  		SELECT count(*) FROM erp_quality q 
+  		<where>
+  			<if test="pricer!=null">
+    		(
+    			q.QUA_ISVA like CONCAT('%',#{pricer},'%' )
+  			)
+  			</if>
+  			AND q.ISVA=1 
+  		</where>
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from erp_quality
     where QUA_ID = #{quaId,jdbcType=VARCHAR}

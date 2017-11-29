@@ -4,6 +4,7 @@
 package com.yidu.action.ErpQuality;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yidu.model.ErpQuality;
+import com.yidu.model.ErpQualityDetail;
 import com.yidu.model.ErpStaff;
 import com.yidu.service.ErpQuality.ErpQualityService;
 import com.yidu.util.Pages;
@@ -60,7 +62,8 @@ public class ErpQualityAction {
 		map.put("count",service.selectByPrimaryNewCount(map));
 		map.put("data", list);
 		return map;
-	};
+	}
+
 	/**
 	 * 审批的方法
 	 * @param session 取采购人
@@ -69,11 +72,20 @@ public class ErpQualityAction {
 	 */
 	@RequestMapping("updateByPrimaryKeySelective")
 	@ResponseBody
-	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua){
+	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua,Integer[] qdetGood,Integer[] qdetBab){
+		//System.out.println(qdetGood[0]+"--------------------------"+qdetBab[0]);
+		//新建一个质检明细的集合
+		List<ErpQualityDetail> detlist = new ArrayList<ErpQualityDetail>();
+		for(int i =0;i<qdetGood.length;i++){//循环一个数组因为两个数组的值对应只有循环一个就好了
+			ErpQualityDetail det = new ErpQualityDetail();//创建一个质检对象
+			det.setQdetGood(qdetGood[i]);//把数组里面的东西放入对象
+			det.setQdetBab(qdetBab[i]);
+			detlist.add(det);//把对象放入集合
+		}
 		SsmMessage mes = new SsmMessage();
 		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到用户对象
 		qua.setQuaQc(staff.getStaName());//把当前用户名放入质检里
-		int rows = service.updateByPrimaryKeySelective(qua);
+		int rows = service.updateByPrimaryKeySelective(qua,detlist);
 		if(rows>-1){ 
 			mes.setMes("成功");
 			mes.setState(1);
@@ -83,6 +95,5 @@ public class ErpQualityAction {
 		}
 		return mes;
 	}
-	}
-
-
+	
+}

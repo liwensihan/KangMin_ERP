@@ -185,4 +185,15 @@ public class ErpPurchaseAction {
 		int rows = erpPurchaseService.auditPurchase(map);
 		return mes;
 	}
+	/**
+	 * 查询单个对象
+	 * @param purcId 采购id
+	 * @return 返回采购对象
+	 */
+	@ResponseBody
+	@RequestMapping("/selectByPrimaryKey")
+	public ErpPurchase selectByPrimaryKey(String purcId){
+		return erpPurchaseService.selectByPrimaryKey(purcId);
+		
+	}
 }
