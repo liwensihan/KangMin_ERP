@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.yidu.model.ErpQuality;
 import com.yidu.model.ErpQualityDetail;
+import com.yidu.util.BackException;
 
 /**
  * 质检的service
@@ -44,7 +45,7 @@ public interface ErpQualityService {
      * @param record 质检对象
      * @return int
      */
-    int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist);
+    int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist) throws BackException;
     /**
      * 选择修改
      * @param record 质检对象

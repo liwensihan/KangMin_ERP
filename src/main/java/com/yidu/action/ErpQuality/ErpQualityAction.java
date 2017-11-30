@@ -22,6 +22,7 @@ import com.yidu.model.ErpQuality;
 import com.yidu.model.ErpQualityDetail;
 import com.yidu.model.ErpStaff;
 import com.yidu.service.ErpQuality.ErpQualityService;
+import com.yidu.util.BackException;
 import com.yidu.util.Pages;
 import com.yidu.util.SsmMessage;
 
@@ -46,13 +47,14 @@ public class ErpQualityAction {
 	 */
 	@RequestMapping("selectByPrimaryNew")
 	@ResponseBody
-	public Map<String,Object> selectByPrimaryNew(Integer page,Integer limit,String pricer,String typePri){
+	public Map<String,Object> selectByPrimaryNew(Integer page,Integer limit,String pricer,String price){
+		System.out.println("-------------------------------"+pricer);
 		Map<String,Object> map1 = new HashMap<String,Object>();
 		Pages pa = new Pages();
 		pa.setCurPage(page);
 		pa.setMaxResult(limit);
 		map1.put("page", pa.getFirstRows());
-		map1.put("typePri",typePri);
+		map1.put("price",price);
 		map1.put("limit", pa.getMaxResult());
 		map1.put("pricer", pricer);
 		List<ErpQuality> list = service.selectByPrimaryNew(map1);
@@ -72,27 +74,36 @@ public class ErpQualityAction {
 	 */
 	@RequestMapping("updateByPrimaryKeySelective")
 	@ResponseBody
-	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua,Integer[] qdetGood,Integer[] qdetBab){
-		//System.out.println(qdetGood[0]+"--------------------------"+qdetBab[0]);
+	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua,Integer[] qdetGood,Integer[] qdetBab,String[] wnId){
+		
 		//新建一个质检明细的集合
 		List<ErpQualityDetail> detlist = new ArrayList<ErpQualityDetail>();
 		for(int i =0;i<qdetGood.length;i++){//循环一个数组因为两个数组的值对应只有循环一个就好了
 			ErpQualityDetail det = new ErpQualityDetail();//创建一个质检对象
 			det.setQdetGood(qdetGood[i]);//把数组里面的东西放入对象
 			det.setQdetBab(qdetBab[i]);
+			det.setRawId(wnId[i]);
+			det.setQuaId(qua.getQuaId());
 			detlist.add(det);//把对象放入集合
 		}
 		SsmMessage mes = new SsmMessage();
 		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到用户对象
 		qua.setQuaQc(staff.getStaName());//把当前用户名放入质检里
-		int rows = service.updateByPrimaryKeySelective(qua,detlist);
-		if(rows>-1){ 
-			mes.setMes("成功");
-			mes.setState(1);
-		}else{
-			mes.setMes("失败");
-			mes.setState(0);
+		System.out.println(qdetGood[0]+"--------------------------"+qdetBab[0]+"--------------------------"+wnId[0]+"----------"+staff.getStaName());
+		int rows;
+		try {
+			rows = service.updateByPrimaryKeySelective(qua,detlist);
+			if(rows>-1){ 
+				mes.setMes("成功");
+				mes.setState(1);
+			}else{
+				mes.setMes("失败");
+				mes.setState(0);
+			}
+		} catch (BackException e) {
+			e.printStackTrace();
 		}
+		
 		return mes;
 	}
 	

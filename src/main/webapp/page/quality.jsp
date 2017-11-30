@@ -30,11 +30,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
 <div class="demoTable">
-  <div class="layui-inline" style="margin-left:40%;">
-    <input class="layui-input" name="price" id="price" placeholder="编号/名字/备注" autocomplete="off">
-  </div>
-  <button class="layui-btn" data-type="reload" onclick="solo()">搜索</button>
-   <a class="layui-btn" lay-event="edit" onclick="addtype()">增加</a>
+<table>
+	<tr>
+		<td style="width: 8%;">
+		<form class="layui-form" >
+			<select lay-filter="aihao" id="seleAi">
+		       <option value="1" selected>待审核</option>
+		       <option value="2">通过</option>
+		       <option value="3">打回</option>
+		    </select>
+		</form>
+		</td>
+		<td style="width:3%;"></td>
+		<td>
+			<div class="layui-inline" >
+	   		 <input class="layui-input" name="price" id="price" placeholder="请输入" autocomplete="off">
+	  	</div>
+		  <button class="layui-btn" data-type="reload" onclick="solo()">搜索</button>
+		</td>
+	</tr>
+	
+</table>
+ 
+  
+  
 </div>
 	<!-- 显示主体 -->
 	<table class="layui-hide" id="idTest" lay-filter="demo">
@@ -112,6 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   {{d.typer.typeName}}
 </script>
 <script>
+	
 	//重置质检单表的方法
 	function noa(){
 		$("#qualit-form input[type=reset]").trigger("click");//触发reset按钮 } 
@@ -145,42 +165,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  btn2:function(index, layero){
 					  $("#chong").click();
 				  },
-	    		  cancel:function(){
-	    			  $("#chong").click();//清空表单
-	    		  }
+	    		  /* cancel:function(){
+	    			 // $("#chong").click();//清空表单
+	    		  } */
 				  
 			});
 		});
 	}
-	//通过的方法
-	function yes(){
-		var a = true;
-		if($("#wby").val()==null || $("#wby").val()==""){
-			layer.msg('请输入质检信息。。', {icon: 5});
-		}else{
-			$("#qualit-form input[type$='text']").each(function(n){  //判断表单里面也没有空的值有就跳出循环
-		          if($(this).val()=="")  
-		          {  
-		               layer.msg('<i class="layui-icon" style="font-size: 30px; color: #FF5722;">&#x1006;</i>填入正确的参数');
-		               a=false;
-		              // break;
-		          }
-		     });
-		}
-		if(a){
-			var data =$("#qualit-form").serialize();//表单序列化
-		  	  data+="&quaIsva=1";
-		  	  $.post("ErpQualityAction/updateByPrimaryKeySelective.action",data,function(mes){
-		  		    if(mes.state==1){//真确的样式
-					 		
-			 		}else{
-			 			
-			 		}
-		  	  });
-		}
-	  
-		
-	}
+	
 	//不通过的方法
 	function no(){
 		$("#qualit-form input[type$='text']").each(function(n){  
@@ -246,8 +238,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				url : 'ErpQualityAction/selectByPrimaryNew.action',
 				method : 'POST',
 				where: { //设定异步数据接口的额外参数，任意设
-					'typePri': 1
-					//'pricer':1
+					//'typePri': 1
+					'price':1
 				},
 				cols : [ [ /* {
 					//checkbox : true,
@@ -290,7 +282,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					width : 100,
 					align : 'center'
 				}
-				
+				,{
+					field : 'quaGood',
+					title : '良品',
+					width : 100,
+					align : 'center'
+				}
 				,{
 					field : 'createtime',
 					title : '创建时间',
@@ -313,7 +310,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 				
 				] ],
-				id : 'purcId',
+				id : 'tableQuali',
 				page : true,
 				height : 315
 				
@@ -322,66 +319,132 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			table.on('tool(demo)', function(obj){
 			     var data = obj.data;//得到当前行的数据
 				 if(obj.event === 'edit'){//判断点击的是那个按钮
-					   var da = {"purcId":data.purcId};
-					   $.post("Purchase/selectByPrimaryKey.action",da,function(bri){
-						 $("#qualityId").val(data.quaId);
-						   table.render({
-								elem : '#proTab',
-								data: bri.det,
-								cols : [ [ {
-									field : 'rawName',
-									title : '原材料',
-									width : 180,
-									align : 'center'
-								}, {
-									field : 'purcTotalNumber',
-									title : '数量',
-									width : 200,
-									sort : true,
-									align : 'center'
-								}
-								] ],
-								width : 383
-								
-							});
-						   var q = 0;
-						   //计算采购总数
-						   $.each(bri.det,function(o,b){
-							  q+=b.purcTotalNumber;
-							  $("#qualit-form-det").append("<div class='layui-form-item'> <input type='hidden' id='wnId' name='quaId' value='"+b.purcTotalNumber+"'>"+
-									   " <div class='layui-inline'><label class='layui-form-label'>"+b.rawName+"</label><div class='layui-input-inline' style='width: 100px;'>"+
-							       " <input name='qdetGood' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.purcTotalNumber+"' readonly>"+
-							      "</div><div class='layui-form-mid'>-</div> <div class='layui-input-inline' style='width: 100px;'>"+
-							       " <input name='qdetBab' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'') ' autocomplete='off' class='layui-input' oninput='babv(this,"+b.purcTotalNumber+")' value='0'  type='text'>"+
-							      "</div></div></div>");
+					 var i = data.purcId;//得到id
+				 	 var j = data.indentId;
+					 if(i!=null){//判断是否为空
+						 var da = {"purcId":data.purcId};
+						   $.post("Purchase/selectByPrimaryKey.action",da,function(bri){
+							 $("#qualityId").val(data.quaId);
+							   table.render({
+									elem : '#proTab',
+									data: bri.det,
+									cols : [ [ {
+										field : 'rawName',
+										title : '原材料',
+										width : 180,
+										align : 'center'
+									}, {
+										field : 'purcTotalNumber',
+										title : '数量',
+										width : 200,
+										sort : true,
+										align : 'center'
+									}
+									] ],
+									width : 383
+									
+								});
+							   var q = 0;
+							   //计算采购总数
+							   $.each(bri.det,function(o,b){
+								  q+=b.purcTotalNumber;
+								  $("#qualit-form-det").append("<div class='layui-form-item'> <input type='hidden' name='wnId' value='"+b.rowId+"'>"+
+										   " <div class='layui-inline'><label class='layui-form-label'>"+b.rawName+"</label><div class='layui-input-inline' style='width: 100px;'>"+
+								       " <input name='qdetGood' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.purcTotalNumber+"' readonly>"+
+								      "</div><div class='layui-form-mid'>-</div> <div class='layui-input-inline' style='width: 100px;'>"+
+								       " <input name='qdetBab' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'') ' autocomplete='off' class='layui-input' oninput='babv(this,"+b.purcTotalNumber+")' value='0'  type='text'>"+
+								      "</div></div></div>");
+							   });
+							   good();
+							   var a = bri.remark;
+							   if(a==null){//备注为空就等于“”
+								   a="";
+							   }
+							  
+							   //采购详情
+							   $("#purSkin").html("<tr><td>采购单号:</td>"
+										+"<td>"+bri.purcSerial+"</td><td>采购标题:</td><td>"+bri.purcTitle+"</td></tr><tr><td>采购人:</td><td>"+bri.purcName+"</td><td>采购总价:</td> <td>"+bri.purcTotalPrice+"</td> </tr><tr>"
+										+"<td>创建时间:</td><td>"+bri.createtime+"</td><td>完成时间:</td>"
+										+"<td>"+bri.purcTime+"</td></tr><tr><td>采购总数:</td><td id='qNum'>"+q+"</td><td>备注:</td><td>"+a+"</td></tr>"
+									);
 						   });
-						   good();
-						   var a = bri.remark;
-						   if(a==null){//备注为空就等于“”
-							   a="";
-						   }
-						  
-						   //采购详情
-						   $("#purSkin").html("<tr><td>采购单号:</td>"
-									+"<td>"+bri.purcSerial+"</td><td>采购标题:</td><td>"+bri.purcTitle+"</td></tr><tr><td>采购人:</td><td>"+bri.purcName+"</td><td>采购总价:</td> <td>"+bri.purcTotalPrice+"</td> </tr><tr>"
-									+"<td>创建时间:</td><td>"+bri.createtime+"</td><td>完成时间:</td>"
-									+"<td>"+bri.purcTime+"</td></tr><tr><td>采购总数:</td><td id='qNum'>"+q+"</td><td>备注:</td><td>"+a+"</td></tr>"
-								);
-					   });
-					   layer.open({
-					  		  type: 1,
-					  		  title: ['审批'],
-					  		  content: $('#from-div'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-					  		 // btn: ['确定'], //可以无限个按钮
-					  		  area: ['80%','90%'],
-					  		  cancel:function(){
-					  			
-					  		  }
-					  		  
-					    });
+						   layer.open({
+						  		  type: 1,
+						  		  title: ['审批'],
+						  		  content: $('#from-div'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+						  		 // btn: ['确定'], //可以无限个按钮
+						  		  area: ['80%','90%'],
+						  		  cancel:function(){
+						  			
+						  		  }
+						  		  
+						    });
+					 }else{
+						 var da = {"indentId":j};
+						   $.post("Purchase/selectByPrimaryKey.action",da,function(bri){
+							   
+							   
+						   });
+					 }
 				  }
 			}); 
 	});
+	
+	//通过的方法
+	function yes(){
+		if($("#wby").val()==null || $("#wby").val()==""){
+			layer.msg('请输入质检信息。。', {icon: 5});
+		}else{
+			/* $("#qualit-form input[type$='text']").each(function(n){  //判断表单里面也没有空的值有就跳出循环
+		          if($(this).val()=="")  
+		          {  
+		               layer.msg('<i class="layui-icon" style="font-size: 30px; color: #FF5722;">&#x1006;</i>填入正确的参数');
+		               a=false;
+		              // break;
+		          }
+		     }); */
+			var data =$("#qualit-form").serialize();//表单序列化
+		  	  data+="&quaIsva=2";
+		  	  $.post("ErpQualityAction/updateByPrimaryKeySelective.action",data,function(mes){
+			  		if(mes.state==1){//真确的样式
+			  			layer.closeAll('page'); //关闭所有页面层
+		         		//刷新页面
+			  		 	table.reload('tableQuali', {
+			  		 		where: { //设定异步数据接口的额外参数，任意设
+			  	  				'price':$("#seleAi").val()
+		         			}
+						});
+			  		 	layer.msg('<i class="layui-icon" style="font-size: 40px; color: #5FB878;">&#xe618;</i>'+mes.mes);
+		         	}else{
+		         		layer.msg('<i class="layui-icon" style="font-size: 40px; color: #FF5722;">&#x1006;</i>'+mes.mes);
+		         	}
+		  	  });
+		}
+	}
+	//下拉框的刷新表格方法
+	var form;
+	layui.use('form', function(){
+		form = layui.form;
+		  form.on('select(aihao)', function(data){
+			  console.log(data.value);
+			  table.reload('tableQuali', {
+		  	 		where: { //设定异步数据接口的额外参数，任意设
+		  				'price':data.value
+		  			}
+		  		});
+		});
+		
+	});
+	//搜索刷新
+	function solo(){
+		table.reload('tableQuali', {
+			method:"post",
+  	 		where: { //设定异步数据接口的额外参数，任意设
+  				'pricer':$("#price").val(),
+  				'price':$("#seleAi").val()
+  			}
+  		});
+	}
 //刷新表单
 </script>
 <!-- 设置工具栏 -->
@@ -389,11 +452,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <a class="layui-btn layui-btn-mini" lay-event="edit" >审批</a>
 </script>
 <script id="IvsaName" type="text/html">
-
   {{#  if(d.quaIsva === 1){ }}
     	<span class="layui-badge layui-bg-gray">待质检</span>
+  {{#  } }} 	
+  {{#  if(d.quaIsva === 2){ }}
+		<span class="layui-badge layui-bg-green">通过</span>
   {{#  } }} 
+  {{#  if(d.quaIsva === 3){ }}
+		<span class="layui-badge layui-bg-green">打回</span>
+  {{#  } }}
 </script>
+<script id="Ivsatype" type="text/html">
+  {{#  if(d.purcId === null){ }}
+    	<span class="layui-badge layui-bg-green">生产</span>
+  {{#  } }} 	
+ {{#  if(d.indentId === null){ }}
+    	<span class="layui-badge layui-bg-green">采购</span>
+  {{#  } }} </script>
  
+</body>
 </body>
 </html>

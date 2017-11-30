@@ -3,6 +3,7 @@
  */
 package com.yidu.service.ErpQuality;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ import com.yidu.dao.ErpQualityMapper;
 import com.yidu.model.ErpQuality;
 import com.yidu.model.ErpQualityDetail;
 import com.yidu.service.ErpQualityDetail.ErpQualityDetailService;
+import com.yidu.util.BackException;
+import com.yidu.util.Tools;
 
 /**
  * 质检表service接口
@@ -39,8 +42,11 @@ public class ErpQualityImpl implements ErpQualityService{
 
 	@Override
 	public int insertSelective(ErpQuality record) {
-		
-		return 0;
+		record.setCreatetime(Tools.getCurDateTime());
+		String data = mapper.selectSerial(Tools.getDateStr(new Date()));
+		record.setQuaSreial(Tools.getSerial(data, "ZJ"));
+		record.setQuaIsva(1);
+		return mapper.insertSelective(record);
 	}
 
 	@Override
@@ -50,13 +56,16 @@ public class ErpQualityImpl implements ErpQualityService{
 	}
 
 	@Override
-	public int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist) {
+	public int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist) throws BackException {
 		for (Iterator iterator = detlist.iterator(); iterator.hasNext();) {
 			ErpQualityDetail erpQualityDetail = (ErpQualityDetail) iterator.next();
-			service.insertSelective(erpQualityDetail);
+			int row = service.insertSelective(erpQualityDetail);
+			if(row<-1){//药品药效添加失败抛出异常事物回滚
+				throw new BackException("添加质检明细的时候报错");//抛出异常 
+			}
 		}
-		
-		return 0;
+		int rows =mapper.updateByPrimaryKeySelective(record);
+		return rows;
 	}
 
 	@Override

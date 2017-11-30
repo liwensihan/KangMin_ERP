@@ -30,11 +30,18 @@
   <select id="selectByPrimaryNew" resultMap="BaseResultMap" parameterType="map">
   		SELECT * FROM erp_quality q 
   		<where>
-  			<if test="pricer!=null">
-    		(
-    			q.QUA_ISVA like CONCAT('%',#{pricer},'%' )
+  			<if test="price!=null">
+  			(
+  				q.QUA_ISVA like CONCAT('%',#{price},'%' )
+  				or
+  				q.QUA_SREIAL like CONCAT('%',#{pricer},'%' )
+    			or
+    			q.QUA_QC like CONCAT('%',#{pricer},'%' )
+    			or
+    			q.CREATETIME like CONCAT('%',#{pricer},'%' )
   			)
   			</if>
+  			
   			AND q.ISVA=1 GROUP BY q.CREATETIME DESC LIMIT #{page},#{limit}
   		</where>
   </select>
@@ -42,15 +49,24 @@
   <select id="selectByPrimaryNewCount" resultType="int" parameterType="map">
   		SELECT count(*) FROM erp_quality q 
   		<where>
-  			<if test="pricer!=null">
-    		(
-    			q.QUA_ISVA like CONCAT('%',#{pricer},'%' )
+  			<if test="price!=null">
+  			(
+  				q.QUA_ISVA like CONCAT('%',#{price},'%' )
+  				or
+  				q.QUA_SREIAL like CONCAT('%',#{pricer},'%' )
+    			or
+    			q.QUA_QC like CONCAT('%',#{pricer},'%' )
+    			or
+    			q.CREATETIME like CONCAT('%',#{pricer},'%' )
   			)
   			</if>
   			AND q.ISVA=1 
   		</where>
   </select>
-  
+  <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select QUA_SREIAL from erp_quality where QUA_SREIAL like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from erp_quality
@@ -69,6 +85,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpQuality" >
+  	<selectKey keyProperty="quaId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
     insert into erp_quality
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="quaId != null" >

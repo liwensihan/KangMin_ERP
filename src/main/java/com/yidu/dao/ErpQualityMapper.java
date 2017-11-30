@@ -58,6 +58,10 @@ public interface ErpQualityMapper {
      * @return int
      */
     int selectByPrimaryNewCount(Map<String,Object> map);
-    
-    
+    /**
+     * 查询编号
+     * @param data 当前时间
+     * @return 今天最大的编号
+     */
+   String  selectSerial(String data);
 }
