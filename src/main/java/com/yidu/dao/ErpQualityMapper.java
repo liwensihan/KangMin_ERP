@@ -33,7 +33,7 @@ public interface ErpQualityMapper {
      * @param quaId 质检id
      * @return 质检对象
      */
-    ErpQuality selectByPrimaryKey(String quaId);
+    ErpQuality selectByPrimaryKey(Map<String,Object> map);
     /**
      * 修改
      * @param record 质检对象

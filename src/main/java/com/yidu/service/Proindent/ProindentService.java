@@ -126,4 +126,11 @@ public interface ProindentService {
 	  * @return
 	  */
 	  List<Map<String, Object>>  showpf(String indentId);
+	  
+	  /**
+	     * 质检表查询单个对象
+	     * @param indentId  订单id
+	     * @return 返回list 
+	     */
+	  ErpProindent showidQualit(String indentId);
 }

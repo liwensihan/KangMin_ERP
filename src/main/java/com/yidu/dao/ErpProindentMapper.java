@@ -61,6 +61,12 @@ public interface ErpProindentMapper {
     
   //根据订单id查询明细，和商品表查看明细
     List<Map<String, Object>> showid(String indentId);
+    /**
+     * 质检表查询单个对象
+     * @param indentId  订单id
+     * @return 返回list 
+     */
+    ErpProindent showidQualit(String indentId);
     
     int updateByPrimaryKey(ErpProindent record);
 

@@ -74,7 +74,7 @@ public class ErpQualityAction {
 	 */
 	@RequestMapping("updateByPrimaryKeySelective")
 	@ResponseBody
-	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua,Integer[] qdetGood,Integer[] qdetBab,String[] wnId){
+	public SsmMessage updateByPrimaryKeySelective(HttpSession session,ErpQuality qua,Integer[] qdetGood,Integer[] qdetBab,String[] rawId,String[] kinId){
 		
 		//新建一个质检明细的集合
 		List<ErpQualityDetail> detlist = new ArrayList<ErpQualityDetail>();
@@ -82,14 +82,17 @@ public class ErpQualityAction {
 			ErpQualityDetail det = new ErpQualityDetail();//创建一个质检对象
 			det.setQdetGood(qdetGood[i]);//把数组里面的东西放入对象
 			det.setQdetBab(qdetBab[i]);
-			det.setRawId(wnId[i]);
+			if(kinId!=null){
+				det.setKinId(kinId[i]);
+			}else{
+				det.setRawId(rawId[i]);
+			}
 			det.setQuaId(qua.getQuaId());
 			detlist.add(det);//把对象放入集合
 		}
 		SsmMessage mes = new SsmMessage();
 		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到用户对象
 		qua.setQuaQc(staff.getStaName());//把当前用户名放入质检里
-		System.out.println(qdetGood[0]+"--------------------------"+qdetBab[0]+"--------------------------"+wnId[0]+"----------"+staff.getStaName());
 		int rows;
 		try {
 			rows = service.updateByPrimaryKeySelective(qua,detlist);
@@ -106,5 +109,23 @@ public class ErpQualityAction {
 		
 		return mes;
 	}
-	
+	/**
+	 * 查询单个对象
+	 * @param quaId
+	 * @param indentId
+	 * @param purcId
+	 * @return
+	 */
+	@RequestMapping("selectByPrimaryKey")
+	@ResponseBody
+	public ErpQuality selectByPrimaryKey(String quaId,String indentId, String purcId){
+		//System.out.println(quaId+"--------------------------"+indentId+"------------------------------------"+purcId);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("quaId", quaId);
+		map.put("indentId", indentId);
+		map.put("purcId", purcId);
+		return service.selectByPrimaryKey(map);
+		
+	}
 }

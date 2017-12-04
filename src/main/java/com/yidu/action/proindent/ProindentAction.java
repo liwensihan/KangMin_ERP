@@ -324,4 +324,16 @@ public class ProindentAction {
 		List<Map<String, Object>> dent = proindentService.selectByPrimaryProid(indentId);
 		return dent;
 	}
+	/**
+	 * 根据ID查询
+	 * @param express
+	 * @return
+	 */
+	@RequestMapping("/showidQualit")
+	@ResponseBody
+	public ErpProindent showidQualit(String indentId){
+		return proindentService.showidQualit(indentId);
+	}
+	
+	
 }

@@ -123,6 +123,8 @@
     	   <span class="layui-btn layui-btn-normal layui-btn-small">订单已完成</span>
 	{{# }else if(d.indentState==4) { }}
 			<span class="layui-btn layui-btn-danger layui-btn-small">申请配料中</span>
+	{{# }else if(d.indentState==5) { }}
+			<span class="layui-btn layui-btn-danger layui-btn-small">质检不合格</span>
 	{{#  } }}
 </script>
 

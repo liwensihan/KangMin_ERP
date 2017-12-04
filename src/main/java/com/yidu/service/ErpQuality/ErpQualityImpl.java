@@ -13,9 +13,13 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.yidu.dao.ErpQualityMapper;
+import com.yidu.model.ErpProindent;
+import com.yidu.model.ErpPurchase;
 import com.yidu.model.ErpQuality;
 import com.yidu.model.ErpQualityDetail;
+import com.yidu.service.ErpPurchase.ErpPurchaseService;
 import com.yidu.service.ErpQualityDetail.ErpQualityDetailService;
+import com.yidu.service.Proindent.ProindentService;
 import com.yidu.util.BackException;
 import com.yidu.util.Tools;
 
@@ -29,6 +33,10 @@ public class ErpQualityImpl implements ErpQualityService{
 	private ErpQualityMapper mapper;//质检的导
 	@Resource
 	private ErpQualityDetailService service;//质检的service
+	@Resource
+	private ProindentService proService;//生产的servic
+	@Resource
+	private ErpPurchaseService purService;//采购的service
 	@Override
 	public int deleteByPrimaryKey(String quaId) {
 		
@@ -50,13 +58,14 @@ public class ErpQualityImpl implements ErpQualityService{
 	}
 
 	@Override
-	public ErpQuality selectByPrimaryKey(String quaId) {
+	public ErpQuality selectByPrimaryKey(Map<String,Object> map) {
 		
-		return null;
+		return mapper.selectByPrimaryKey(map);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(ErpQuality record,List<ErpQualityDetail> detlist) throws BackException {
+		//遍历detlist集合并添加到质检表明细里面
 		for (Iterator iterator = detlist.iterator(); iterator.hasNext();) {
 			ErpQualityDetail erpQualityDetail = (ErpQualityDetail) iterator.next();
 			int row = service.insertSelective(erpQualityDetail);
@@ -64,6 +73,24 @@ public class ErpQualityImpl implements ErpQualityService{
 				throw new BackException("添加质检明细的时候报错");//抛出异常 
 			}
 		}
+		//判断质检状态为打回（3） 并且生产id为空 或者“” 把生产订单修改为质检不合格(5)
+		if(record.getQuaIsva()==3 && record.getIndentId()!=null || record.getIndentId()!=""){
+			ErpProindent pro = new ErpProindent();
+			pro.setState(5);
+			pro.setIndentId(record.getIndentId());
+			pro.setRemark(record.getRemark());
+			proService.updateByPrimaryKeySelective(pro);
+			
+		}
+		//判断质检状态为三并且采购id不为空或者“” 把采购订单修改为质检不合格（5）
+		if(record.getQuaIsva()==3 && record.getPurcId()!=null || record.getPurcId()!=""){
+			ErpPurchase pur = new ErpPurchase();
+			pur.setState(5);
+			pur.setPurcId(record.getPurcId());
+			pur.setRemark(record.getRemark());
+			purService.updateByPrimaryKeySelective(pur);
+		}
+		//调用导里面的修改方法
 		int rows =mapper.updateByPrimaryKeySelective(record);
 		return rows;
 	}

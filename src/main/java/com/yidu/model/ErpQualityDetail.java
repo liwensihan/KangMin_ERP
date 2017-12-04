@@ -16,8 +16,27 @@ public class ErpQualityDetail {
     private String remark;
 
     private String createtime;
+    
+    private String kindName;
+    private String rawName;
+    
+    public String getRawName() {
+		return rawName;
+	}
 
-    public String getQdetId() {
+	public void setRawName(String rawName) {
+		this.rawName = rawName;
+	}
+
+	public String getKindName() {
+		return kindName;
+	}
+
+	public void setKindName(String kindName) {
+		this.kindName = kindName;
+	}
+
+	public String getQdetId() {
         return qdetId;
     }
 

@@ -260,6 +260,8 @@
     <span class="layui-badge layui-bg-orange">已提交至财务审核</span>
   {{#  } else if(d.state == 0) { }}
     <span class="layui-badge">审核未通过</span>
+  {{#  } else if(d.state == 5) { }}
+    <span class="layui-badge">质检不合格</span>
   {{#  } }}
 
 </script>

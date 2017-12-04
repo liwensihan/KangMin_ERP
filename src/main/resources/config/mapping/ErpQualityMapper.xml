@@ -14,23 +14,39 @@
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
     <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <!-- 一对多关系   property 属性值   ofType 集合类型   原材料对药效的关系-->
+    <collection property="det" ofType="ErpQualityDetail">  
+            <id column="QDET_ID" property="qdetId" jdbcType="VARCHAR" />
+		    <result column="QUA_ID" property="quaId" jdbcType="VARCHAR" />
+		    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+		    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+		    <result column="QDET_GOOD" property="qdetGood" jdbcType="INTEGER" />
+		    <result column="QDET_BAB" property="qdetBab" jdbcType="INTEGER" />
+		    <result column="KIN_NAME" property="kindName" jdbcType="VARCHAR" />
+		    <result column="RAW_NAME" property="rawName" jdbcType="VARCHAR" />
+		    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+     </collection>
   </resultMap>
   <sql id="Base_Column_List" >
     QUA_ID, INDENT_ID, PURC_ID, QUA_SREIAL, QUA_QC, QUA_GOOD, QUA_BAB, QUA_ISVA, ISVA, 
     CREATER, CREATETIME, REMARK
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from erp_quality
-    where QUA_ID = #{quaId,jdbcType=VARCHAR}
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    SELECT * FROM erp_quality q , erp_quality_detail d
+ 		<if test="purcId !=null and purcId !=''">
+ 				,erp_raw r where  d.QUA_ID=q.QUA_ID  AND d.RAW_ID=r.RAW_ID and q.QUA_ID = #{quaId,jdbcType=VARCHAR}
+ 		</if> 
+   		<if test="indentId !=null and indentId !=''">
+ 				,erp_kinds k where  d.KIN_ID=k.KIN_ID AND  d.QUA_ID=q.QUA_ID and q.QUA_ID = #{quaId,jdbcType=VARCHAR}
+ 		</if>
   </select>
   
   <!-- 查询质检对象 -->
   <select id="selectByPrimaryNew" resultMap="BaseResultMap" parameterType="map">
   		SELECT * FROM erp_quality q 
   		<where>
-  			<if test="price!=null">
+  			<if test="price!=null and peice !=''">
   			(
   				q.QUA_ISVA like CONCAT('%',#{price},'%' )
   				or
@@ -49,7 +65,7 @@
   <select id="selectByPrimaryNewCount" resultType="int" parameterType="map">
   		SELECT count(*) FROM erp_quality q 
   		<where>
-  			<if test="price!=null">
+  			<if test="price!=null and peice !=''">
   			(
   				q.QUA_ISVA like CONCAT('%',#{price},'%' )
   				or

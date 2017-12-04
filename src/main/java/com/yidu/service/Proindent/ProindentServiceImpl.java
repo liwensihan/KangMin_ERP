@@ -162,5 +162,10 @@ public class ProindentServiceImpl implements ProindentService{
 		return erpProindentMapper.showpf(indentId);
 	}
 
+	@Override
+	public ErpProindent showidQualit(String indentId) {
+		return erpProindentMapper.showidQualit(indentId);
+	}
+
 }
 	
