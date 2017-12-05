@@ -50,25 +50,31 @@
 				elem : '#LAY_table_user',
 				url : 'Bank/selectAll.action',
 				method : 'POST',
-				cols : [ [ {
-					checkbox : true,
-					fixed : true
-				}, {
-					field : 'purcTitle',
-					title : '药品',
+				cols : [ [  {
+					field : 'bankNumber',
+					title : '入库编号',
 					width : 180,
 					align : 'center'
 				}, {
-					field : 'indentNumber',
-					title : '生产数量',
+					field : 'bankCount',
+					title : '入库数量',
 					width : 180,
 					align : 'center'
 				}, {
-					field : 'indentMoney',
-					title : '生产金额',
+					field : 'reaark',
+					title : '备注',
 					width : 180,
 					align : 'center'
-				}] ],
+				},{
+					toolbar: '#barDemo',
+					title : '操作',
+					width : 200,
+					//align : 'center',
+					sort: true, 
+					fixed: 'right'
+				}
+				
+				] ],
 				id : 'testReload',
 				page : true,
 				height : 315
@@ -94,7 +100,9 @@
 		});
 
 	</script>
-	<script type="text/html" id="barDemo">
+<!-- 设置工具栏 -->
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-mini" lay-event="edit" >详情</a>
 </script>
 </body>
 </html>

@@ -8,14 +8,15 @@
     <result column="OB_ID" property="obId" jdbcType="VARCHAR" />
     <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
     <result column="INVEDET_NUM" property="invedetNum" jdbcType="INTEGER" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
     <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
     <result column="ISVA" property="isva" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    INVEDET_ID, BANK_ID, WARE_ID, OB_ID, KIN_ID, INVEDET_NUM, CREATER, CREATETIME, REMARK, 
-    ISVA
+ <sql id="Base_Column_List" >
+    INVEDET_ID, BANK_ID, WARE_ID, OB_ID, KIN_ID, RAW_ID, INVEDET_NUM, CREATER, CREATETIME, 
+    REMARK, ISVA
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -29,15 +30,18 @@
   </delete>
   <insert id="insert" parameterType="com.yidu.model.ErpInvedet" >
     insert into erp_invedet (INVEDET_ID, BANK_ID, WARE_ID, 
-      OB_ID, KIN_ID, INVEDET_NUM, 
-      CREATER, CREATETIME, REMARK, 
-      ISVA)
+      OB_ID, KIN_ID, RAW_ID, 
+      INVEDET_NUM, CREATER, CREATETIME, 
+      REMARK, ISVA)
     values (#{invedetId,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, #{wareId,jdbcType=VARCHAR}, 
-      #{obId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, #{invedetNum,jdbcType=INTEGER}, 
-      #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{isva,jdbcType=INTEGER})
+      #{obId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, 
+      #{invedetNum,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpInvedet" >
+  	 <selectKey keyProperty="invedetId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
     insert into erp_invedet
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="invedetId != null" >
@@ -54,6 +58,9 @@
       </if>
       <if test="kinId != null" >
         KIN_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
       </if>
       <if test="invedetNum != null" >
         INVEDET_NUM,
@@ -87,6 +94,9 @@
       <if test="kinId != null" >
         #{kinId,jdbcType=VARCHAR},
       </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
       <if test="invedetNum != null" >
         #{invedetNum,jdbcType=INTEGER},
       </if>
@@ -119,6 +129,9 @@
       <if test="kinId != null" >
         KIN_ID = #{kinId,jdbcType=VARCHAR},
       </if>
+      <if test="rawId != null" >
+        RAW_ID = #{rawId,jdbcType=VARCHAR},
+      </if>
       <if test="invedetNum != null" >
         INVEDET_NUM = #{invedetNum,jdbcType=INTEGER},
       </if>
@@ -143,6 +156,7 @@
       WARE_ID = #{wareId,jdbcType=VARCHAR},
       OB_ID = #{obId,jdbcType=VARCHAR},
       KIN_ID = #{kinId,jdbcType=VARCHAR},
+      RAW_ID = #{rawId,jdbcType=VARCHAR},
       INVEDET_NUM = #{invedetNum,jdbcType=INTEGER},
       CREATER = #{creater,jdbcType=VARCHAR},
       CREATETIME = #{createtime,jdbcType=VARCHAR},

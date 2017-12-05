@@ -1,8 +1,15 @@
-package com.yidu.dao;
+/**
+ * 
+ */
+package com.yidu.service.ErpInvedet;
 
 import com.yidu.model.ErpInvedet;
 
-public interface ErpInvedetMapper {
+/**
+ * @author 大晶儿
+ * 2017年12月5日
+ */
+public interface ErpInvedetService {
 	/**
 	 * 删除
 	 * @param invedetId 入库明细id

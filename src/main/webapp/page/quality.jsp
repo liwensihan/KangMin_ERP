@@ -119,6 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  </div>
 			 <!-- 质检表单结束 -->
 	</div>
+	<!-- 质检详情 -->
 	<div id="xq-div" style="display: none; margin: 3%;"> 
 		<table class="layui-table"  lay-skin="nob" >
 		  <tbody id="xq-purSkin">
@@ -128,6 +129,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  
 		</table>
 	</div>
+	<!-- 详情结束 -->
+	<!-- 入库表添加 -->
+	<div id="bank-div" style="display: none; margin: 3%;"> 
+		<form id="bank-form">
+			<fieldset class="layui-elem-field layui-field-title site-title">
+		      <legend><a name="compatibility">入库内容</a></legend>
+		    </fieldset>
+		    <input type="hidden" name="bankCount" id="bank-count">
+			<div id="bank-form-det">
+					
+			</div>
+			<div class="layui-form-item layui-form-text">
+				    <label class="layui-form-label">备注:</label>
+				    <div class="layui-input-block">
+				      <textarea name="remark" placeholder="请输入内容" id="wby" class="layui-textarea"></textarea>
+				    </div>
+			</div>
+		</form>
+		
+		
+		 <div id="but-shen"  style=" position:fixed; bottom:6%;width:53.5%; padding-left: 22%;background-color: #f3f5f399;">
+				<button class="layui-btn" style="margin-right: 23%;" onclick="yesb()">
+				  <i class="layui-icon">&#xe6af;</i>通过
+				</button>
+				<button class="layui-btn layui-btn-danger" onclick="nob()">
+				  <i class="layui-icon">&#xe69c;</i>打回
+				</button>
+		</div>
+	</div>
+	<!-- 入库表结束 -->
 <!-- 自定义模板  药效-->
 <script type="text/html" id="resr">
   {{#  layui.each(d.res, function(index, item){ }}
@@ -477,6 +508,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  		  }
 				  		  
 				    });
+				 }else if(obj.event === 'ban'){
+					 var da = {"quaId":data.quaId,"indentId":data.indentId,"purcId":data.purcId};
+					 
+					 $.post("ErpQualityAction/selectByPrimaryKey.action",da,function(bri){
+						 var i = 0 ;
+						 $.each(bri.det,function(o,b){
+							 if(b.kinId!=null){
+								 $("#bank-form-det").append("<div class='layui-form-item'> <input type='hidden' name='kinId' value='"+b.kinId+"'>"+
+										   " <div class='layui-inline'><label class='layui-form-label'>"+b.kindName+":</label><div class='layui-input-inline'>"+
+								       " <input name='invedetNum' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.qdetGood+"' readonly>"+
+								      "</div></div></div></div>");
+								 	
+							 }else{
+								
+									  q+=b.purcTotalNumber;
+									  $("#qualit-form-det").append("<div class='layui-form-item'> <input type='hidden' name='rawId' value='"+b.rowId+"'>"+
+											   " <div class='layui-inline'><label class='layui-form-label'>"+b.rawName+"</label><div class='layui-input-inline'>"+
+									       " <input name='invedetNum' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.qdetGood+"' readonly>"+
+									      "</div></div></div></div>");
+								  
+							 }
+							i+=b.qdetGood;//得到所有总数
+						 	$("#bank-count").val(i);//给文本框赋值
+				  	 });
+					 });
+					 layer.open({
+				  		  type: 1,
+				  		  title: ['入库 单'],
+				  		  content: $('#bank-div'), //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+				  		 // btn: ['确定'], //可以无限个按钮
+				  		  area: ['80%','90%'],
+				  		  cancel:function(){
+				  			$("#bank-form-det").html("");
+				  		  }
+				  		  
+				    });
 				 }
 			}); 
 	});
@@ -505,6 +572,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  	  });
 		}
 		
+	}
+	function yesb(){
+		var data =$("#bank-form").serialize();//表单序列化
+	  	  $.post("Bank/insertSelective.action",data,function(mes){
+		  		if(mes.state==1){//真确的样式
+		  			layer.closeAll('page'); //关闭所有页面层
+	         		//刷新页面
+		  		 	table.reload('tableQuali', {
+		  		 		where: { //设定异步数据接口的额外参数，任意设
+		  	  				'price':$("#seleAi").val()
+	         			}
+					});
+		  		 	layer.msg('<i class="layui-icon" style="font-size: 40px; color: #5FB878;">&#xe618;</i>'+mes.mes);
+	         	}else{
+	         		layer.msg('<i class="layui-icon" style="font-size: 40px; color: #FF5722;">&#x1006;</i>'+mes.mes);
+	         	}
+	  	  });
 	}
 	//不通过的方法
 	function no(){
@@ -562,7 +646,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <a class="layui-btn layui-btn-mini" lay-event="edit" >审批</a>
 {{# }else if(d.quaIsva==2  ) { }}
 	<a class="layui-btn layui-bg-gray layui-btn-mini" lay-event="exq">查看详情</a>
-	<a class="layui-btn layui-bg-orange layui-btn-mini">填写入库单</a>
+	<a class="layui-btn layui-bg-orange layui-btn-mini" lay-event="ban">填写入库单</a>
 {{# }else if(d.quaIsva==3 ) { }}
 	<a class="layui-btn layui-bg-gray layui-btn-mini " lay-event="exq" >查看详情</a>
 {{#  } }}
