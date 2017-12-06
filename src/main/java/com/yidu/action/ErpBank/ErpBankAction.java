@@ -69,7 +69,7 @@ public class ErpBankAction {
 	 */
 	@ResponseBody
 	@RequestMapping("/insertSelective")
-	public SsmMessage insertSelective(ErpBank bank,String[] kinId,Integer[] invedetNum,HttpSession session,String[] rawId){
+	public SsmMessage insertSelective(ErpBank bank,String[] kinId,Integer[] invedetNum,HttpSession session,String[] rawId,String quaId){
 		SsmMessage mes = new SsmMessage();
 		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到一个session取出登录人信息
 		List<ErpInvedet> list = new ArrayList<ErpInvedet>();//创建一个集合把从页面上得到的数组放入库存库明细集合里面
@@ -85,7 +85,7 @@ public class ErpBankAction {
 			list.add(inv);
 		}
 		bank.setCreater(staff.getStaId());//把创建人放入入库对象
-		int rows = erpBankService.insertSelective(bank,list);
+		int rows = erpBankService.insertSelective(bank,list,quaId);
 		if(rows<1){
 			mes.setMes("创建发生错误！");
 			mes.setState(0);

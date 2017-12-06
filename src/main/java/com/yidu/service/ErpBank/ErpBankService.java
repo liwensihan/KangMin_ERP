@@ -29,7 +29,7 @@ public interface ErpBankService {
      * @param record 入库对象
      * @return int
      */
-    int insertSelective(ErpBank record,List<ErpInvedet> list);
+    int insertSelective(ErpBank record,List<ErpInvedet> list,String quaId);
     /**
      * 查询单个对象
      * @param bankId 入库id

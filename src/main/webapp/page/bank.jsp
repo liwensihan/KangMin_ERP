@@ -60,7 +60,14 @@
 					title : '入库数量',
 					width : 180,
 					align : 'center'
-				}, {
+				},  {
+					field : 'bankIsva',
+					title : '入库状态',
+					width : 180,
+					align : 'center',
+					templet: '#ivsaBank'
+				}
+				, {
 					field : 'reaark',
 					title : '备注',
 					width : 180,
@@ -104,5 +111,15 @@
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-mini" lay-event="edit" >详情</a>
 </script>
+<script type="text/html" id="ivsaBank">
+  {{#  if(d.bankIsva === 1){ }}
+    	<span class="layui-badge layui-bg-gray">待审核</span>	
+  {{# }else if(d.bankIsva === 2 ) { }}
+		<span class="layui-badge layui-bg-green">通过</span>
+  {{# }else if(d.bankIsva === 3 ) { }}
+		<span class="layui-badge layui-bg-red">打回</span>
+  {{#  } }}
+</script>
+
 </body>
 </html>

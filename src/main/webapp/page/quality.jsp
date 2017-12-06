@@ -38,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		       <option value="1" selected>待审核</option>
 		       <option value="2">通过</option>
 		       <option value="3">打回</option>
+		       <option value="4">入库</option>
 		    </select>
 		</form>
 		</td>
@@ -137,6 +138,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		      <legend><a name="compatibility">入库内容</a></legend>
 		    </fieldset>
 		    <input type="hidden" name="bankCount" id="bank-count">
+		    <input type="hidden" id="quayId" name="quaId">
 			<div id="bank-form-det">
 					
 			</div>
@@ -151,10 +153,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		 <div id="but-shen"  style=" position:fixed; bottom:6%;width:53.5%; padding-left: 22%;background-color: #f3f5f399;">
 				<button class="layui-btn" style="margin-right: 23%;" onclick="yesb()">
-				  <i class="layui-icon">&#xe6af;</i>通过
+				  <i class="layui-icon">&#xe6af;</i>确定
 				</button>
 				<button class="layui-btn layui-btn-danger" onclick="nob()">
-				  <i class="layui-icon">&#xe69c;</i>打回
+				  <i class="layui-icon">&#xe69c;</i>取消
 				</button>
 		</div>
 	</div>
@@ -513,6 +515,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 
 					 $.post("ErpQualityAction/selectByPrimaryKey.action",da,function(bri){
 						 var i = 0 ;
+						 $("#quayId").val(bei.quaId);//给质检id文本框赋值
 						 $.each(bri.det,function(o,b){
 							 if(b.kinId!=null){
 								 $("#bank-form-det").append("<div class='layui-form-item'> <input type='hidden' name='kinId' value='"+b.kinId+"'>"+
@@ -521,9 +524,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								      "</div></div></div></div>");
 								 	
 							 }else{
-								
-									  q+=b.purcTotalNumber;
-									  $("#qualit-form-det").append("<div class='layui-form-item'> <input type='hidden' name='rawId' value='"+b.rowId+"'>"+
+									  $("#bank-form-det").append("<div class='layui-form-item'> <input type='hidden' name='rawId' value='"+b.rowId+"'>"+
 											   " <div class='layui-inline'><label class='layui-form-label'>"+b.rawName+"</label><div class='layui-input-inline'>"+
 									       " <input name='invedetNum' onkeyup='this.value=this.value.replace(/\D/g,'')' onafterpaste='this.value=this.value.replace(/\D/g,'')' autocomplete='off' class='layui-input'  type='text' value='"+b.qdetGood+"' readonly>"+
 									      "</div></div></div></div>");
@@ -531,7 +532,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							 }
 							i+=b.qdetGood;//得到所有总数
 						 	$("#bank-count").val(i);//给文本框赋值
-				  	 });
+				  	 	});
 					 });
 					 layer.open({
 				  		  type: 1,
@@ -542,8 +543,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  		  cancel:function(){
 				  			$("#bank-form-det").html("");
 				  		  }
-				  		  
+					 
 				    });
+				 }else if(obj.event === 'jyban'){
+					 layer.msg('已申请入库。。', {icon: 5});
 				 }
 			}); 
 	});
@@ -615,6 +618,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  	  });
 		}
 	}
+	//添加库存时取消的方法
+	function nob(){
+		layer.close(index);
+		$("#bank-form-det").html("");
+	}
+	
+	
+	
 	//下拉框的刷新表格方法
 	var form;
 	layui.use('form', function(){
@@ -646,8 +657,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <a class="layui-btn layui-btn-mini" lay-event="edit" >审批</a>
 {{# }else if(d.quaIsva==2  ) { }}
 	<a class="layui-btn layui-bg-gray layui-btn-mini" lay-event="exq">查看详情</a>
-	<a class="layui-btn layui-bg-orange layui-btn-mini" lay-event="ban">填写入库单</a>
-{{# }else if(d.quaIsva==3 ) { }}
+	 <a class="layui-btn layui-bg-orange layui-btn-mini" lay-event="ban">填写入库单</a>
+{{# }else if(d.quaIsva==3 || d.quaIsva==4) { }}
 	<a class="layui-btn layui-bg-gray layui-btn-mini " lay-event="exq" >查看详情</a>
 {{#  } }}
 
@@ -659,14 +670,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<span class="layui-badge layui-bg-green">通过</span>
   {{# }else if(d.quaIsva === 3 ) { }}
 		<span class="layui-badge layui-bg-red">打回</span>
+  {{# }else if(d.quaIsva === 4) { }}
+		<span class="layui-badge layui-bg-green">通过</span>
   {{#  } }}
 </script>
 <script id="Ivsatype" type="text/html">
   {{#  if(d.purcId === null){ }}
-    	<span class="layui-badge layui-bg-blue"">生产</span>	
-	{{# }else if(d.indentId === null ) { }}
-    	<span class="layui-badge layui-bg-cyan">采购</span>
-  {{#  } }} 
+    	<span class="layui-badge layui-bg-blue"">生产</span>
+  {{# }else if(d.indentId === null ) { }}
+		<span class="layui-badge layui-bg-cyan">采购</span>
+ {{#  } }}
 
 </script>
 <script id="IvsaKr" type="text/html">
