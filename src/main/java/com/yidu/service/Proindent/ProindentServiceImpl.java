@@ -10,7 +10,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.yidu.common.Tools;
+import com.yidu.dao.ErpAuditMapper;
 import com.yidu.dao.ErpProindentMapper;
+import com.yidu.model.ErpAudit;
 import com.yidu.model.ErpProindent;
 
 /**
@@ -24,7 +27,8 @@ public class ProindentServiceImpl implements ProindentService{
 	
 	@Resource
 	private ErpProindentMapper erpProindentMapper;
-
+	@Resource
+	private ErpAuditMapper auditMapper;//审核mapper
 	/**
 	 * 增加方法
 	 */
@@ -166,6 +170,27 @@ public class ProindentServiceImpl implements ProindentService{
 	public ErpProindent showidQualit(String indentId) {
 		return erpProindentMapper.showidQualit(indentId);
 	}
-
+	/**
+	 * 生产订单审核
+	 * @author 胡鑫
+	 * @date 2017年11月30日09:33:52
+	 * @param map 生产订单id 审核状态 回馈信息 
+	 * @return 返回执行的行数
+	 */
+	@Override
+	public int auditPpoindent(Map<String, Object> map) {
+		String indentId = (String) map.get("indentId");//得到生产订单id
+		String feedBack = (String) map.get("feedBack");//得到反馈信息
+		String state = (String) map.get("state");//得到审核转台 0未通过 2通过 
+		
+		ErpAudit audit = new ErpAudit();//定义一个审核实体类
+		audit.setBusinessId(indentId);//生产订单id
+		audit.setFeedBack(feedBack);//设置反馈信息
+		audit.setAudTime(Tools.getCurDateTime());//设置审核时间
+		audit.setIsva(1);//设置是否有效
+		audit.setState(Integer.valueOf(state));//设置审核状态  0未通过 2通过
+		auditMapper.insertSelective(audit);//执行审核表增加
+		return erpProindentMapper.auditPpoindent(map);
+	}
 }
 	

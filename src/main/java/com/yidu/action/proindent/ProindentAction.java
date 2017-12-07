@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yidu.common.Tools;
 import com.yidu.model.ErpProindent;
 import com.yidu.model.ErpProindentDetail;
 import com.yidu.service.Proindent.ProindentService;
@@ -334,6 +335,29 @@ public class ProindentAction {
 	public ErpProindent showidQualit(String indentId){
 		return proindentService.showidQualit(indentId);
 	}
-	
+	/**
+	 * 生产订单审核
+	 * @author 胡鑫
+	 * @date 2017年11月30日09:32:09
+	 * @param indentId 生产订单id
+	 * @param state 审核状态
+	 * @param feedBack 反馈信息
+	 * @return 返回消息类
+	 */
+	@ResponseBody
+	@RequestMapping("/auditPpoindent")
+	public SsmMessage auditPpoindent(String indentId,String state,String feedBack){
+		SsmMessage mes = new SsmMessage();//定义一个消息类用于返回jsp
+		Map<String,Object>map = new HashMap<String,Object>();//定义一个map集合
+		if(Tools.isEmpty(feedBack)){//判断字符串是否为空
+			map.put("feedBack", "暂无反馈信息");
+		}else{
+			map.put("feedBack", feedBack);//map集合中存入 反馈消息
+		}
+		map.put("indentId", indentId);//map集合中存入财务id
+		map.put("state", state);//map集合中存入 审核是否通过   state=2 通过 state=0 不通过
+		int rows = proindentService.auditPpoindent(map);
+		return mes;
+	}
 	
 }

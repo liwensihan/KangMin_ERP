@@ -76,5 +76,13 @@ public interface ErpProindentMapper {
      * @return
      */
     ErpProindent findById(String indentId);
+    /**
+	 * 生产订单审核
+	 * @author 胡鑫
+	 * @date 2017年11月30日09:33:52
+	 * @param map 生产订单id 审核状态 回馈信息 
+	 * @return 返回执行的行数
+	 */
+	int auditPpoindent(Map<String, Object> map);
 
 }

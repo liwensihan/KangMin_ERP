@@ -434,6 +434,9 @@
       CREATER = #{creater,jdbcType=VARCHAR}
     where INDENT_ID = #{indentId,jdbcType=VARCHAR}
   </update>
-  
+  <!-- 生产订单审核 -->
+  <update id="auditPpoindent" parameterType="map" >
+  	update erp_proindent set STATE = #{state} where indent_id=#{indentId}
+  </update>
  
 </mapper>
