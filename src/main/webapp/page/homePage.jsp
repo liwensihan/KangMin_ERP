@@ -108,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  	<div class="x-slide_left"  style="background-position: 0px 0px;"></div>
 			    <div class="layui-tab-item layui-show">
 			    	<!-- 首页显示的内容 -->
-			    	<iframe name="iframe" width="100%" height="100%" scrolling="yes" frameborder="0" noresize="noresize" src="pages/test1.jsp"></iframe>
+			    	<iframe name="iframe" width="100%" height="100%" scrolling="yes" frameborder="0" noresize="noresize" src="index.jsp"></iframe>
 			    </div>
 			  </div>
 			</div>
