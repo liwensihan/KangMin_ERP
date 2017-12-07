@@ -46,14 +46,14 @@ public class ErpBankAction {
 	 */
 	@ResponseBody
 	@RequestMapping("/selectAll")
-	public Map<String,Object> selectAll(Integer page,Integer limit,String pricer){
+	public Map<String,Object> selectAll(Integer page,Integer limit,String price){
 		Map<String,Object> map1 = new HashMap<String,Object>();
 		Pages pa = new Pages();
 		pa.setCurPage(page);
 		pa.setMaxResult(limit);
 		map1.put("page", pa.getFirstRows());
 		map1.put("limit", pa.getMaxResult());
-		map1.put("pricer", pricer);
+		map1.put("price", price);
 		List<ErpBank> list = erpBankService.selectAll(map1);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("code", 0);
@@ -94,5 +94,16 @@ public class ErpBankAction {
 			mes.setState(1);
 		}
 		return mes;
+	}
+	/**
+	 * 查询单个对象
+	 * @param bankId 入库id
+	 * @return 返回入库对象
+	 */
+	@ResponseBody
+	@RequestMapping("/selectByPrimaryKey")
+	public ErpBank selectByPrimaryKey(String bankId){
+		return erpBankService.selectByPrimaryKey(bankId);
+		
 	}
 }

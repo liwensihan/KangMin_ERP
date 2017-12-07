@@ -1,4 +1,7 @@
 package com.yidu.model;
+
+import java.util.List;
+
 /**
  * 入库单表
  * @author Gjwen
@@ -27,8 +30,27 @@ public class ErpBank {
     private String bankNum;//数量
     
     private Double bankPrice;//价格
+    private String staName;
     
-    public Integer getBankIsva() {
+    public String getStaName() {
+		return staName;
+	}
+
+	public void setStaName(String staName) {
+		this.staName = staName;
+	}
+
+	private List<ErpInvedet> det;
+    
+    public List<ErpInvedet> getDet() {
+		return det;
+	}
+
+	public void setDet(List<ErpInvedet> det) {
+		this.det = det;
+	}
+
+	public Integer getBankIsva() {
 		return bankIsva;
 	}
 

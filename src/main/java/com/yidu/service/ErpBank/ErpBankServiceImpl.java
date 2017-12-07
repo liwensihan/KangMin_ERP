@@ -106,9 +106,8 @@ public class ErpBankServiceImpl implements ErpBankService{
 
 	@Override
 	public ErpBank selectByPrimaryKey(String bankId) {
-		return null;
+		return erpBankMapper.selectByPrimaryKey(bankId);
 	}
-
 	@Override
 	public int updateByPrimaryKeySelective(ErpBank record) {
 		return 0;

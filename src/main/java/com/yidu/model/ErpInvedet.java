@@ -18,8 +18,26 @@ public class ErpInvedet {
     private String rawId;//原材料id
     
     private String createtime;//创建时间
+    private String kinsName;
+    private String rawName;
+    
+    public String getKinsName() {
+		return kinsName;
+	}
 
-    public String getRawId() {
+	public void setKinsName(String kinsName) {
+		this.kinsName = kinsName;
+	}
+
+	public String getRawName() {
+		return rawName;
+	}
+
+	public void setRawName(String rawName) {
+		this.rawName = rawName;
+	}
+
+	public String getRawId() {
 		return rawId;
 	}
 
