@@ -2,10 +2,12 @@ package com.yidu.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ErpPact {
     private String pactId;
 
-    private String purDetId;
+    private String purId;
 
     private String applyId;
 
@@ -43,12 +45,12 @@ public class ErpPact {
         this.pactId = pactId == null ? null : pactId.trim();
     }
 
-    public String getPurDetId() {
-        return purDetId;
+    public String getPurId() {
+        return purId;
     }
 
-    public void setPurDetId(String purDetId) {
-        this.purDetId = purDetId == null ? null : purDetId.trim();
+    public void setPurId(String purId) {
+        this.purId = purId == null ? null : purId.trim();
     }
 
     public String getApplyId() {
@@ -83,6 +85,7 @@ public class ErpPact {
         this.pactNumber = pactNumber == null ? null : pactNumber.trim();
     }
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     public Date getPactSigntime() {
         return pactSigntime;
     }

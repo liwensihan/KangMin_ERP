@@ -6,6 +6,9 @@ package com.yidu.service.ErpWarehouse;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import com.yidu.common.MyException;
 import com.yidu.model.ErpWarehouse;
 
 /**
@@ -38,4 +41,14 @@ public interface ErpWarehouseService {
 	 * @return
 	 */
 	public int warehouseFindRawRows(Map<String,Object> map);
+	
+	/**
+	 * 根据配方ID修改仓库数量
+	 * @author 刘东
+	 * @param map
+	 * @return
+	 */
+	int updateck(String[] str,HttpServletResponse response)throws MyException;
+	
+	
 }

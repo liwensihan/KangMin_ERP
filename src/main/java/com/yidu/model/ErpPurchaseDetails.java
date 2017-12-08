@@ -13,18 +13,8 @@ public class ErpPurchaseDetails {
     
     private Integer purcTotalNumber;//总数量
     
-    private String rawName;
-    
 
-    public String getRawName() {
-		return rawName;
-	}
-
-	public void setRawName(String rawName) {
-		this.rawName = rawName;
-	}
-
-	public String getRowId() {
+    public String getRowId() {
 		return rowId;
 	}
 

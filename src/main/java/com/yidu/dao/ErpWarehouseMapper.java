@@ -10,6 +10,22 @@ import com.yidu.model.ErpWarehouse;
  * 2017年11月9日-下午2:38:37
  */
 public interface ErpWarehouseMapper {
+	
+	/**
+	 * 根据配方ID修改仓库数量
+	 * @author 刘东
+	 * @param map
+	 * @return
+	 */
+	int updateck(Map<String, Object> map);
+	
+	/**
+	 * 查询是否大于0
+	 * @param wareId
+	 * @return
+	 */
+	int selectck(String wareId);
+	
 	/**
 	 * 查询商品
 	 * @param map

@@ -22,17 +22,8 @@ public class ErpProindentDetail {
     private String remark;
 
     private String isva;
-    private String kindName;
-    
-    public String getKindName() {
-		return kindName;
-	}
 
-	public void setKindName(String kindName) {
-		this.kindName = kindName;
-	}
-
-	public String getEntdeId() {
+    public String getEntdeId() {
         return entdeId;
     }
 

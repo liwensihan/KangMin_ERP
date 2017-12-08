@@ -16,20 +16,6 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
     <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
-    <!-- 一对多关系   property 属性值   ofType 集合类型   原材料对药效的关系-->
-    <collection property="det" ofType="ErpProindentDetail">  
-            <id column="ENTDE_ID" property="entdeId" jdbcType="VARCHAR" />
-		    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
-		    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
-		    <result column="ENTDE_NUM" property="entdeNum" jdbcType="INTEGER" />
-		    <result column="NUM" property="num" jdbcType="INTEGER" />
-		    <result column="ENTDE_PRICE" property="entdePrice" jdbcType="DECIMAL" />
-		    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
-		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
-		    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
-		    <result column="KIN_NAME" property="kindName" jdbcType="VARCHAR" />
-		    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
-     </collection>
   </resultMap>
  <sql id="Base_Column_List" >
     INDENT_ID, INDENT_NUMBER, INDENT_MONEY, INDENT_COUNT, INDENT_urgency, INDENT_EMETIME, 
@@ -52,10 +38,20 @@
 			#{int,jdbcType=VARCHAR}
 		
 	</select> -->
+	
+	
+	<!-- 根据订单ID修改生产状态 -->
+  <update id="updatezt" parameterType="java.lang.String">
+  	UPDATE erp_proindent
+  	<set>
+        INDENT_STATE =1
+  	</set>
+  	where INDENT_ID=#{indentId}
+  </update> 
  
  	<!-- 订单明细，商品，配方，原材料，查询配方 -->
  	<select id="showpf" resultType="map" parameterType="java.lang.String">
- 		SELECT raw.RAW_ID,kin.KIN_NAME,bur.BUR_G,raw.RAW_NAME FROM erp_proindent_detail det ,erp_kinds kin,erp_burden bur,erp_raw raw
+ 		SELECT raw.RAW_ID,kin.KIN_NAME,bur.BUR_G,raw.RAW_NAME,raw.RAW_CONTENT,raw.RAW_UNIT FROM erp_proindent_detail det ,erp_kinds kin,erp_burden bur,erp_raw raw
 		WHERE det.KIN_ID = kin.KIN_ID AND bur.KIN_ID = kin.KIN_ID AND bur.RAW_ID = raw.RAW_ID
 		AND det.INDENT_ID=#{indentId} 	
  	</select>
@@ -70,7 +66,7 @@
 		AND deta.LOG_ID=plog.LOG_ID
 		AND deta.KIN_ID=kin.KIN_ID
 		AND pro.indent_id=#{indentId}
-		ORDER BY plog.LOG_COMPLET ASC  
+		ORDER BY plog.LOG_COMPLET ASC 
  	</select>
  	
  <!-- 根据ID修改生产状态 -->
@@ -106,17 +102,6 @@
   <select id="showid" resultType="map" parameterType="java.lang.String" >
 	   SELECT kin.KIN_ID,kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
 	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE,det.NUM
-	   FROM 
-	   ERP_PROINDENT pro,
-	   ERP_PROINDENT_DETAIL det,
-	   ERP_KINDS kin
-	   WHERE pro.INDENT_ID=det.INDENT_ID 
-	   AND det.KIN_ID=kin.KIN_ID 
-	   AND pro.INDENT_ID = #{indentId,jdbcType=VARCHAR}
-  </select>
-  <!-- 根据订单id查询明细，和商品表  查看明细 -->
-  <select id="showidQualit" resultMap="BaseResultMap" parameterType="java.lang.String" >
-	   SELECT *
 	   FROM 
 	   ERP_PROINDENT pro,
 	   ERP_PROINDENT_DETAIL det,
@@ -434,9 +419,8 @@
       CREATER = #{creater,jdbcType=VARCHAR}
     where INDENT_ID = #{indentId,jdbcType=VARCHAR}
   </update>
-  <!-- 生产订单审核 -->
+  
   <update id="auditPpoindent" parameterType="map" >
   	update erp_proindent set STATE = #{state} where indent_id=#{indentId}
   </update>
- 
 </mapper>

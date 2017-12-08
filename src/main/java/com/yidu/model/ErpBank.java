@@ -1,15 +1,15 @@
 package com.yidu.model;
-
-import java.util.List;
-
 /**
  * 入库单表
  * @author Gjwen
  * 2017年11月13日-上午8:58:05
  */
 public class ErpBank {
-    private Integer bankIsva;
     private String bankId;
+
+    private String indentId;
+
+    private String purcId;
 
     private String bankNumber;
 
@@ -30,35 +30,8 @@ public class ErpBank {
     private String bankNum;//数量
     
     private Double bankPrice;//价格
-    private String staName;
     
-    public String getStaName() {
-		return staName;
-	}
-
-	public void setStaName(String staName) {
-		this.staName = staName;
-	}
-
-	private List<ErpInvedet> det;
-    
-    public List<ErpInvedet> getDet() {
-		return det;
-	}
-
-	public void setDet(List<ErpInvedet> det) {
-		this.det = det;
-	}
-
-	public Integer getBankIsva() {
-		return bankIsva;
-	}
-
-	public void setBankIsva(Integer bankIsva) {
-		this.bankIsva = bankIsva;
-	}
-
-	/**
+    /**
      * 采购表信息
      */
     private String purcTitle;//采购标题
@@ -152,6 +125,22 @@ public class ErpBank {
 
     public void setBankId(String bankId) {
         this.bankId = bankId == null ? null : bankId.trim();
+    }
+
+    public String getIndentId() {
+        return indentId;
+    }
+
+    public void setIndentId(String indentId) {
+        this.indentId = indentId == null ? null : indentId.trim();
+    }
+
+    public String getPurcId() {
+        return purcId;
+    }
+
+    public void setPurcId(String purcId) {
+        this.purcId = purcId == null ? null : purcId.trim();
     }
 
     public String getBankNumber() {

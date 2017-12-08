@@ -24,7 +24,7 @@
 <title>仓库表</title>
 </head>
 <body>
-	<div class="layui-tab">
+	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 	  <ul class="layui-tab-title">
 	    <li class="layui-this">药品仓库</li>
 	    <li>原材料仓库</li>
@@ -47,8 +47,32 @@
 			</table>
 	    </div>
 	    <div class="layui-tab-item">
-		    <table class="layui-table"  lay-skin="nob" id="LAY_table_raw">
-				
+		    <table class="layui-table"  lay-skin="nob" id="proTab">
+				<tbody>
+					<tr>
+						<td width='100px'>商品名:</td>
+						<td colspan='5' id=""></td>
+					</tr>
+					<tr>
+						<td width='100px'>商品编号:</td>
+						<td>1234567</td>
+						<td width='100px'>结束时间:</td>
+						<td colspan='3'>1234567</td>
+					</tr>
+					<tr>
+						<td width='100px'>订单总数量:</td>
+						<td>123456</td>
+						<td width='100px'>订单总价格:</td>
+						<td>123456</td>
+						<td width='100px'>订单创建人:</td>
+						<td>1234</td>
+					</tr>
+					<tr>
+						<td width='100px'>订单备注:</td>
+						<td colspan='5'>1234567890</td>
+					</tr>
+				</tbody>
+	
 			</table>
 	    	
 	    </div>
@@ -134,63 +158,12 @@
 				}
 				
 				] ],
-				
+				id : 'kinId',
 				page : true,
 				height : 315
 				
 			});
-			//方法级渲染
-			table.render({
-				elem : '#LAY_table_raw',
-				url : 'Warehouse/selectAllRaw.action',
-				method : 'POST',
-				cols : [ [ {
-					checkbox : true,
-					fixed : true
-				}, {
-					field : 'rawName',
-					title : '原材料名',
-					width : 180,
-					align : 'center'
-				}, {
-					field : 'wareNum',
-					title : '库存量',
-					width : 180,
-					sort : true,
-					align : 'center'
-				}
-				,{
-					field : 'rawPrice',
-					title : '单价',
-					width : 180,
-					align : 'center'
-				}
-				,{
-					field : 'createtime',
-					title : '创建时间',
-					width : 180,
-					align : 'center'
-				}
-				,{
-					field : 'remark',
-					title : '备注',
-					width : 300,
-					align : 'center'
-				}
-				,{
-					toolbar: '#rawDemo',
-					title : '操作',
-					width : 180,
-					//align : 'center',
-					sort: true, 
-					fixed: 'right'
-				}
-				
-				] ],
-				page : true,
-				height : 315
-				
-			});
+
 
 			//This搜索
 			var $ = layui.$, active = {
@@ -213,9 +186,6 @@
 
 	</script>
 <script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-mini" lay-event="buredit" >查看详情</a>
-</script>
-<script type="text/html" id="rawDemo">
   <a class="layui-btn layui-btn-mini" lay-event="buredit" >查看详情</a>
 </script>
 </body>

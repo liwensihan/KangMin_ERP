@@ -3,6 +3,7 @@
  */
 package com.yidu.service.ErpApplyasset;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -16,8 +17,13 @@ import org.springframework.stereotype.Service;
 import com.yidu.common.Tools;
 import com.yidu.dao.ErpApplyassetMapper;
 import com.yidu.dao.ErpAuditMapper;
+import com.yidu.dao.ErpFinanceMapper;
+import com.yidu.dao.ErpPurchaseMapper;
 import com.yidu.model.ErpApplyasset;
 import com.yidu.model.ErpAudit;
+import com.yidu.model.ErpFinance;
+import com.yidu.model.ErpPurchase;
+import com.yidu.model.ErpStaff;
 
 /**
  * @author zhangwei
@@ -30,7 +36,10 @@ public class ErpApplyassetServiceImpl implements ErpApplyassetService{
 	private ErpApplyassetMapper erpApplyassetMapper;//资金申请mapper
 	@Resource
 	private ErpAuditMapper auditMapper;//审核mapper
-	
+	@Resource
+	private ErpFinanceMapper financeMapper;//财务mapper
+	@Resource
+	private ErpPurchaseMapper erpPurchaseMapper;//采购订单mapper
 	
 	/**
 	 * 初始化页面显示
@@ -105,16 +114,39 @@ public class ErpApplyassetServiceImpl implements ErpApplyassetService{
 	 */
 	@Override
 	public int auditApplyasset(Map<String, Object> map) {
+		ErpFinance finance = financeMapper.findListFinance();//得到财务详细
+		
 		String appassId = (String) map.get("appassId");//得到资金申请id
 		String feedBack = (String) map.get("feedBack");//得到反馈信息
 		String state = (String) map.get("state");
+		ErpStaff staff = (ErpStaff) map.get("staff");//得到人员类
 		ErpApplyasset applyasset = erpApplyassetMapper.selectByPrimaryKey(appassId);//根据资金申请id查询该信息
+		BigDecimal applyassetNum = new BigDecimal(applyasset.getAppassNum());
+		if(Integer.valueOf(state)>=2){
+			if(applyassetNum.doubleValue()>finance.getFinanceNum().doubleValue()){//判断申请的资金是否大于财务总金额
+				return 102;//返回状态信息 102
+			}
+		}
+		if(state.equals("2")){
+			finance.setFinanceNum(finance.getFinanceNum().subtract(applyassetNum));//总经理审核成功后将财务总金额减去申请的金额
+			financeMapper.updateByPrimaryKeySelective(finance);//执行修改
+		}
 		ErpAudit audit = new ErpAudit();//定义一个审核实体类
 		audit.setBusinessId(applyasset.getPurcId());//设置采购id
 		audit.setFeedBack(feedBack);//设置反馈信息
 		audit.setAudTime(Tools.getCurDateTime());//设置审核时间
 		audit.setState(Integer.valueOf(state));//设置审核状态  0未通过 2通过
-		int rows = auditMapper.updateByPrimaryKeySelective(audit);//执行审核表修改
+		audit.setIsva(1);
+		if(state.equals("0")){
+			audit.setState(0);//设置审核状态  0未通过 2通过
+		}else{
+			audit.setState(2);//设置审核状态  0未通过 2通过
+		}
+		int rows = auditMapper.insertSelective(audit);//执行审核表修改
+		ErpPurchase purchase = new ErpPurchase();//定义采购订单实体类
+		purchase.setState(Integer.valueOf(state));//设置状态
+		purchase.setPurcId(applyasset.getPurcId());//设置采购id
+		erpPurchaseMapper.updateByPrimaryKeySelective(purchase);//执行采购订单修改状态
 		return erpApplyassetMapper.auditApplyasset(map);   
 	}
 }

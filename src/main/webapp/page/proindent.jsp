@@ -76,7 +76,7 @@
 
 
 
-<table class="layui-table" lay-data="{width: 1010, height:495, url:'dent/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
+<table class="layui-table" lay-data="{width: 1060, height:495, url:'dent/showList.action', page:true,id:'testReload',method:'post'}" lay-filter="demo">
   <thead>
     <tr>
       <th lay-data="{field:'indentId', width:140, sort: true, fixed: true},hidden:'true'">ID</th>
@@ -90,7 +90,7 @@
    	  <th lay-data="{field:'indentEmetime', width:200, sort: true}">生产订单生成时间</th>
    	  <th lay-data="{field:'indentWorktime', width:200, sort: true}">本次订单需要花费的时间</th>
    	  <th lay-data="{field:'indentEndtime', width:200, sort: true}">预计完成时间</th>
-      <th lay-data="{fixed: 'right', width:230, align:'center', toolbar: '#barDemo'}"></th>
+      <th lay-data="{fixed: 'right', width:280, align:'center', toolbar: '#barDemo'}"></th>
     </tr>
   </thead>
 </table>
@@ -123,13 +123,11 @@
     	   <span class="layui-btn layui-btn-normal layui-btn-small">订单已完成</span>
 	{{# }else if(d.indentState==4) { }}
 			<span class="layui-btn layui-btn-danger layui-btn-small">申请配料中</span>
-	{{# }else if(d.indentState==5) { }}
-			<span class="layui-btn layui-btn-danger layui-btn-small">质检不合格</span>
 	{{#  } }}
 </script>
 
 <script type="text/html" id="barDemo">
-{{#  if(d.indentState==4){ }}
+{{#  if(d.indentState==4 && d.state==2){ }}
   <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="pf">配料</a>
 {{# }else { }}
 	<a class="layui-btn layui-btn-disabled layui-btn-mini">配料</a>
@@ -137,6 +135,11 @@
   <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
   <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="show">查看</a>
+{{#  if(d.indentState==3){ }}
+  <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="zj">质检</a>
+{{# }else { }}
+	<a class="layui-btn layui-btn-disabled layui-btn-mini">质检</a>
+{{#  } }}
 </script>
 
          
@@ -156,7 +159,7 @@ layui.use('table', function(){
     if(obj.event === 'detail'){
       layer.msg('ID：'+ data.id + ' 的查看操作');
     } else if(obj.event === 'del'){
-    	if(data.indentState==1 || data.indentState==4){
+    	if(data.indentState==4){
     	layer.confirm('真的删除行么', function(index){
     	 obj.del();
         layer.close(index);
@@ -180,7 +183,7 @@ layui.use('table', function(){
 		} 
      
 	} else if(obj.event === 'edit'){
-		if(data.indentState==1 || data.indentState==4){
+		if(data.indentState==4){
 			layer.open({
 				type:2,
 				skin: 'layui-layer-molv',//样式
@@ -203,11 +206,13 @@ layui.use('table', function(){
     	layer.open({
 			type:2,
 			skin: 'layui-layer-molv',//样式
-			content:'page/proindentpf.jsp?indentId='+data.indentId,
+			content:'page/proindentpf.jsp?indentId='+data.indentId+'&indentCount='+data.indentCount,
 			area: ['80%', '80%'],
 			title: '配置配方',
 		});
     	
+    }else if(obj.event==='zj'){
+    	alert("质检");
     }
   });
   
@@ -243,7 +248,7 @@ function add(){
 		skin: 'layui-layer-molv',//样式
 		content:'page/Logadd.jsp',
 		area: ['98%', '80%'],
-		title: '增加会员',
+		title: '增加订单日志',
 	});
 
 }

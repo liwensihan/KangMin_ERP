@@ -27,7 +27,7 @@
   		or APPLY_PHONE like #{keywords}
   		or APPLY_EMAIL like #{keywords}) and
   	</if>
-  	isva=0
+  	isva=1
   	limit #{pages.firstRows},#{pages.maxResult}
   </select>
   <select id="applyFindRows" resultType="int" parameterType="map"> 
@@ -40,7 +40,7 @@
   		or APPLY_PHONE like #{keywords}
   		or APPLY_EMAIL like #{keywords}) and
   	</if>
-  	isva=0
+  	isva=1
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -208,7 +208,7 @@
     select 
     <include refid="Base_Column_List" />
     from erp_apply
-    where ISVA = 0
+    where ISVA = 1
   </select>
   
 </mapper>

@@ -17,11 +17,11 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from erp_quality_detail
+    from "erp_quality_detail"
     where QDET_ID = #{qdetId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from erp_quality_detail
+    delete from "erp_quality_detail"
     where QDET_ID = #{qdetId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.yidu.model.ErpQualityDetail" >
@@ -33,10 +33,7 @@
       #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpQualityDetail" >
-  <selectKey keyProperty="qdetId" order="BEFORE" resultType="java.lang.String">
-			select UUID()
-	</selectKey>
-    insert into erp_quality_detail
+    insert into "erp_quality_detail"
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="qdetId != null" >
         QDET_ID,
@@ -91,7 +88,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpQualityDetail" >
-    update erp_quality_detail
+    update "erp_quality_detail"
     <set >
       <if test="quaId != null" >
         QUA_ID = #{quaId,jdbcType=VARCHAR},
@@ -118,7 +115,7 @@
     where QDET_ID = #{qdetId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpQualityDetail" >
-    update erp_quality_detail
+    update "erp_quality_detail"
     set QUA_ID = #{quaId,jdbcType=VARCHAR},
       RAW_ID = #{rawId,jdbcType=VARCHAR},
       KIN_ID = #{kinId,jdbcType=VARCHAR},

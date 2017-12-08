@@ -1,53 +1,25 @@
 package com.yidu.model;
 
 public class ErpInvedet {
-    private String invedetId;//库存明细id
+    private String invedetId;
 
-    private String bankId; //入库id
+    private String bankId;
 
-    private String wareId;//仓库id
+    private String wareId;
 
-    private String obId;//出库
+    private String obId;
 
-    private String kinId;//商品id
+    private String kinId;
 
-    private Integer invedetNum; //数量
+    private Integer invedetNum;
 
-    private String creater;//创建人
-    
-    private String rawId;//原材料id
-    
-    private String createtime;//创建时间
-    private String kinsName;
-    private String rawName;
-    
-    public String getKinsName() {
-		return kinsName;
-	}
+    private String creater;
 
-	public void setKinsName(String kinsName) {
-		this.kinsName = kinsName;
-	}
+    private String createtime;
 
-	public String getRawName() {
-		return rawName;
-	}
+    private String remark;
 
-	public void setRawName(String rawName) {
-		this.rawName = rawName;
-	}
-
-	public String getRawId() {
-		return rawId;
-	}
-
-	public void setRawId(String rawId) {
-		this.rawId = rawId;
-	}
-
-	private String remark;//备注
-
-    private Integer isva;//是否有效
+    private Integer isva;
 
     public String getInvedetId() {
         return invedetId;

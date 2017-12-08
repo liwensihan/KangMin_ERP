@@ -3,7 +3,7 @@
 <mapper namespace="com.yidu.dao.ErpPactMapper" >
   <resultMap id="BaseResultMap" type="com.yidu.model.ErpPact" >
     <id column="PACT_ID" property="pactId" jdbcType="VARCHAR" />
-    <result column="PUR_DET_ID" property="purDetId" jdbcType="VARCHAR" />
+    <result column="PUR_ID" jdbcType="VARCHAR" property="purId" />
     <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
     <result column="PATYPE_ID" property="patypeId" jdbcType="VARCHAR" />
     <result column="PACT_TITLE" property="pactTitle" jdbcType="VARCHAR" />
@@ -20,42 +20,146 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    PACT_ID, PUR_DET_ID, APPLY_ID, PATYPE_ID, PACT_TITLE, PACT_NUMBER, PACT_SIGNTIME, 
+    PACT_ID, PUR_ID, APPLY_ID, PATYPE_ID, PACT_TITLE, PACT_NUMBER, PACT_SIGNTIME, 
     PACT_TEXT, PARTA_NAME, PARTB_NAME, PACT_ENDTIME, PACT_ISVO, ISVA, CREATER, CREATETIME, 
     REMARK
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from erp_pact
-    where PACT_ID = #{pactId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from erp_pact
-    where PACT_ID = #{pactId,jdbcType=VARCHAR}
-  </delete>
+  
+  <!-- 增加方法 -->
   <insert id="insert" parameterType="com.yidu.model.ErpPact" >
-    insert into erp_pact (PACT_ID, PUR_DET_ID, APPLY_ID, 
+  <selectKey keyProperty="pactId" resultType="string" order="BEFORE">
+			SELECT REPLACE(UUID(),'-','') AS id;
+		</selectKey>
+  
+    insert into erp_pact (PACT_ID, PUR_ID, APPLY_ID, 
       PATYPE_ID, PACT_TITLE, PACT_NUMBER, 
       PACT_SIGNTIME, PACT_TEXT, PARTA_NAME, 
       PARTB_NAME, PACT_ENDTIME, PACT_ISVO, 
       ISVA, CREATER, CREATETIME, 
       REMARK)
-    values (#{pactId,jdbcType=VARCHAR}, #{purDetId,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, 
+    values (#{pactId,jdbcType=VARCHAR}, #{purId,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, 
       #{patypeId,jdbcType=VARCHAR}, #{pactTitle,jdbcType=VARCHAR}, #{pactNumber,jdbcType=VARCHAR}, 
       #{pactSigntime,jdbcType=DATE}, #{pactText,jdbcType=VARCHAR}, #{partaName,jdbcType=VARCHAR}, 
       #{partbName,jdbcType=VARCHAR}, #{pactEndtime,jdbcType=VARCHAR}, #{pactIsvo,jdbcType=VARCHAR}, 
       #{isva,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
+  
+   <!-- 查询所有 -->
+  <select id="selectshow" parameterType="map" resultMap="BaseResultMap" >
+    select * from erp_pact
+    <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	PACT_TITLE like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_SIGNTIME like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_TEXT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		and ISVA=1
+  	</where>
+  	limit #{page},#{limit}
+  </select>
+  
+  
+  <!-- 总行数 -->
+   <select id="findRowCount" parameterType="map" resultType="int" >
+    select COUNT(*) from erp_pact
+     <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	PACT_TITLE like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_SIGNTIME like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	PACT_TEXT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		and ISVA=1
+  	</where>
+  </select>
+  
+  <!-- 修改或删除 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpPact" >
+    update erp_pact
+    <set >
+      <if test="purId != null" >
+        PUR_ID = #{purId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="patypeId != null" >
+        PATYPE_ID = #{patypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="pactTitle != null" >
+        PACT_TITLE = #{pactTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pactNumber != null" >
+        PACT_NUMBER = #{pactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pactSigntime != null" >
+        PACT_SIGNTIME = #{pactSigntime,jdbcType=DATE},
+      </if>
+      <if test="pactText != null" >
+        PACT_TEXT = #{pactText,jdbcType=VARCHAR},
+      </if>
+      <if test="partaName != null" >
+        PARTA_NAME = #{partaName,jdbcType=VARCHAR},
+      </if>
+      <if test="partbName != null" >
+        PARTB_NAME = #{partbName,jdbcType=VARCHAR},
+      </if>
+      <if test="pactEndtime != null" >
+        PACT_ENDTIME = #{pactEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="pactIsvo != null" >
+        PACT_ISVO = #{pactIsvo,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PACT_ID = #{pactId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_pact
+    where PACT_ID = #{pactId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_pact
+    where PACT_ID = #{pactId,jdbcType=VARCHAR}
+  </delete>
+  
+  
   <insert id="insertSelective" parameterType="com.yidu.model.ErpPact" >
     insert into erp_pact
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="pactId != null" >
         PACT_ID,
       </if>
-      <if test="purDetId != null" >
-        PUR_DET_ID,
+      <if test="purId != null" >
+        PUR_ID,
       </if>
       <if test="applyId != null" >
         APPLY_ID,
@@ -104,8 +208,8 @@
       <if test="pactId != null" >
         #{pactId,jdbcType=VARCHAR},
       </if>
-      <if test="purDetId != null" >
-        #{purDetId,jdbcType=VARCHAR},
+      <if test="purId != null" >
+        #{purId,jdbcType=VARCHAR},
       </if>
       <if test="applyId != null" >
         #{applyId,jdbcType=VARCHAR},
@@ -151,60 +255,10 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpPact" >
-    update erp_pact
-    <set >
-      <if test="purDetId != null" >
-        PUR_DET_ID = #{purDetId,jdbcType=VARCHAR},
-      </if>
-      <if test="applyId != null" >
-        APPLY_ID = #{applyId,jdbcType=VARCHAR},
-      </if>
-      <if test="patypeId != null" >
-        PATYPE_ID = #{patypeId,jdbcType=VARCHAR},
-      </if>
-      <if test="pactTitle != null" >
-        PACT_TITLE = #{pactTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="pactNumber != null" >
-        PACT_NUMBER = #{pactNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="pactSigntime != null" >
-        PACT_SIGNTIME = #{pactSigntime,jdbcType=DATE},
-      </if>
-      <if test="pactText != null" >
-        PACT_TEXT = #{pactText,jdbcType=VARCHAR},
-      </if>
-      <if test="partaName != null" >
-        PARTA_NAME = #{partaName,jdbcType=VARCHAR},
-      </if>
-      <if test="partbName != null" >
-        PARTB_NAME = #{partbName,jdbcType=VARCHAR},
-      </if>
-      <if test="pactEndtime != null" >
-        PACT_ENDTIME = #{pactEndtime,jdbcType=VARCHAR},
-      </if>
-      <if test="pactIsvo != null" >
-        PACT_ISVO = #{pactIsvo,jdbcType=VARCHAR},
-      </if>
-      <if test="isva != null" >
-        ISVA = #{isva,jdbcType=INTEGER},
-      </if>
-      <if test="creater != null" >
-        CREATER = #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CREATETIME = #{createtime,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null" >
-        REMARK = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where PACT_ID = #{pactId,jdbcType=VARCHAR}
-  </update>
+  
   <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpPact" >
     update erp_pact
-    set PUR_DET_ID = #{purDetId,jdbcType=VARCHAR},
+    set PUR_ID = #{purId,jdbcType=VARCHAR},
       APPLY_ID = #{applyId,jdbcType=VARCHAR},
       PATYPE_ID = #{patypeId,jdbcType=VARCHAR},
       PACT_TITLE = #{pactTitle,jdbcType=VARCHAR},

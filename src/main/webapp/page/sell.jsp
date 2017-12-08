@@ -64,8 +64,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				
 				<div style="text-align: center;">
 					日期：<input class="inputText" type="text" value="${times}" readonly>
-					订单编号：<input class="inputText" type="text" value="${kinordSerial}" readonly>
 					分店：<input class="inputText" type="text" value="${annexName}" readonly>
+						<input type="hidden" id="annexId" value="${annexId}"/>
 					经办人：<input class="inputText" type="text" value="${staName}" readonly>
 					<hr>
 					会员编号：<input id="memberId" class="inputText" type="text">
@@ -85,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					      <th>商品名称</th>
 					      <th>净含量</th>
 					      <th>保质期</th>
-					      <th>价格</th>
+					      <th>零售价</th>
 					      <th>数量</th>
 					      <th>总金额</th>
 					    </tr>
@@ -104,13 +104,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="footDiv" align="right">
 						<input type="checkbox" name="on-off" lay-filter="on-off" lay-skin="switch" lay-text="批发|零售">
 						原金额：<span style="margin-right:20px;text-decoration:line-through;">
-							<span id="sumPrice0" style="font-size: 22px;">180</span>元</span>
+							<span id="sumPrice0" style="font-size: 22px;">0</span>元</span>
 						会员折扣：<span id="memberZheko" style="margin-right:20px;color:red;">非会员</span>
 						应付金额：<span style="margin-right:20px;color:red;">
-						<span style="font-size: 22px;" id="sumPrice1">120</span>元</span>
+						<span style="font-size: 22px;" id="sumPrice1">0</span>元</span>
 						实付金额：<input id="sumPrice2" class="inputText" maxlength="8" type="text" style="width:80px">
 						找零：<span style="margin-right:20px;color:red;">
-						<span style="font-size: 22px;" id="sumPrice3">80</span>元</span>
+						<span style="font-size: 22px;" id="sumPrice3">0</span>元</span>
 						<hr>
 						<button class="layui-btn layui-btn-small" lay-submit lay-filter="submit"><i class="layui-icon">&#xe609;</i>保存</button>
 						<button class="layui-btn layui-btn-primary layui-btn-small" lay-submit lay-filter="reset"><i class="layui-icon">&#x1007;</i>清空</button>
@@ -123,6 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 		$('.x-slide_left',window.parent.document).click();
 		document.getElementById("kinBarcode").focus();//自动聚焦
+		var noOff = false;//是否批发
 		showNum();//更改显示记录数
 		showPrice();//更改总金额
 		var layer;
@@ -140,19 +141,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(kindsIndex.length==0){
 				layer.msg('请录入商品！');
 			}else{
-				var price2 = $("#sumPrice2").val();//找零金额
-				if(price2<0 || price2==""){
+				var price3 = $("#sumPrice3").text();//找零金额
+				if(price3<0 || price3==""){
 					layer.msg('实付金额应大于应付金额！');
 					return false;
 				}
-				alert("通过");
+				//获取数据
+				var memberId = $("#memberId").val();//会员编号
+				var kind = new Array();
+				$(kindsIndex).each(function(i,element){
+					var kindId = $(this).children().eq(1).children().val();
+					var price = $(this).children().eq(5).text();
+					var kindNum = $(this).children().eq(6).children().val();
+					var remark = $(this).children().eq(8).children().val();
+					var str = kindId+"@"+price+"@"+kindNum+"@"+remark;
+					kind[i]=str;
+				});
+				var sumPrice0 = $("#sumPrice0").text();//原金额
+				var sumPrice1 = $("#sumPrice1").text();//应付金额
+				var sumPrice2 = $("#sumPrice2").val();//实付金额
+				var sumPrice3 = $("#sumPrice3").text();//找零
+				var memberZheko =1;//折扣
+				if($("#memberZheko").text()!="非会员" && $("#memberZheko").text()!="批发不打折"){
+					var memberZheko = $("#memberZheko").text().replace("折","");
+				}
+				var data ={};
+				data.annexId=$("#annexId").val();
+				data.memberId=memberId;
+				data.kind=kind;
+				data.sumPrice0=sumPrice0;
+				data.sumPrice1=sumPrice1;
+				data.sumPrice2=sumPrice2;
+				data.sumPrice3=sumPrice3;
+				data.memberZheko=memberZheko;
+				data.noOff=noOff;
+				console.info(data);
+				//增加订单
+				var url = "sctockmp/addSctockmp.action";
+				$.post(url, data, function(info){
+					if(info==1){
+						if(noOff){
+							layer.msg('订单生成，等待审核！');
+						}else{
+							layer.msg('订单完成！');
+						}
+						$("#memberId").val("");
+						$("#kinList tbody tr").remove();
+						showPrice();//更改总金额
+					}else{
+						layer.msg('操作失败！');
+					}
+				});
 			}
 		    return false;
 		  });
 		  //监听重置
 		  form.on('submit(reset)', function(data){
-		    //layer.msg(JSON.stringify(data.field));
-		    layer.msg("点击重置");
+			$("#memberId").val("");
+			$("#kinList tbody tr").remove();
+			showPrice();//更改总金额
 		    return false;
 		  });
 		  //监听删除
@@ -179,10 +226,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  });
 		  //复选框监听
 		  form.on('switch(on-off)', function(data){
+			$("#kinList tbody tr").remove();
+			showPrice();//更改总金额
 		  	if(data.elem.checked==true){
 		  		layer.msg("批发模式");
+		  		noOff=true;
+		  		$("#memberZheko").text("批发不打折");
+		  		$("#kinList thead tr").eq(1).children().eq(4).text("批发价");
 		  	}else{
 		  		layer.msg("零售模式");
+		  		noOff=false;
+		  		$("#memberZheko").text("非会员");
+		  		$("#kinList thead tr").eq(1).children().eq(4).text("零售价");
 		  	}
 		  });
 		});
@@ -214,6 +269,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		//更改显示金额
 		function showPrice(){
+			showNum();
 			var tr = $("#kinList tbody tr");
 			if(tr.length>0){
 				var sumPrice0 =0;
@@ -232,7 +288,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				return false;
 			}
 			//更改应付金额
-			if($("#memberZheko").text()=="非会员"){
+			if($("#memberZheko").text()=="非会员" || $("#memberZheko").text()=="批发不打折"){
 				$("#sumPrice1").text($("#sumPrice0").text());
 			}else{
 				var memberZheko = $("#memberZheko").text().replace("折","");
@@ -245,38 +301,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		//增加
 		$("#kinBarcode").change(function(){
-	  		var url = "ErpKindsAction/findByKinBarcode.action";
-	  		var data = {"kinBarcode":$(this).val()}
+	  		var url = "sumstock/findByKinBarcode.action";
+	  		var data = {"kinBarcode":$(this).val(),"annexId":$("#annexId").val()}
 			$.post(url, data, function(info){
 				if(info==""){
 					layer.msg("找不到该商品！");
 					return ;
 				}
+				if(info.STOCK_SUOUNT<1){
+					layer.msg("抱歉，该商品库存不足！");
+					return ;
+				}
 				var falg = true;
 				var tr = $("#kinList tbody tr");
-				if(info!="" && tr.length>0){
+				if(info!="" && tr.length>0){//给相同的商品加数量
 					$(tr).each(function(i,element){
 						var text = $(this).children().eq(1).children("input").val();
-						if(info.kinId==text){
+						if(info.KIN_ID==text){
 							falg=false;
 							var num = parseInt($(this).children().eq(6).children().val());
 							$(this).children().eq(6).children().val(num+1);
 						}
 					});
-					$("#sumPrice").val(sumPrice);
 				}
 				if(info!="" && falg==true){
-					$("#kinList tbody").append('<tr>'+
-						      '<td><input type="checkbox" name="kin" lay-skin="primary" ></td>'+
-						      '<td><input type="hidden" name="kinId" value="'+info.kinId+'"/>'+info.kinSerial+'</td>'+
-						      '<td>'+info.kinName+'</td>'+
-						      '<td>'+info.kinContent+'</td>'+
-						      '<td>'+info.kinExpiration+'</td>'+
-						      '<td>'+info.kinPrice+'</td>'+
-						      '<td><input class="inputText num" type="text" value="1" maxlength="4" onkeyup="updateNum(this)"></td>'+
-						      '<td>0</td>'+
-						      '<td><input class="inputText" type="text" maxlength="40" style="margin:0px;"/></td>'+
-						    '</tr>');
+					if(!noOff){
+						$("#kinList tbody").append('<tr>'+
+							      '<td><input type="checkbox" name="kin" lay-skin="primary" ></td>'+
+							      '<td><input type="hidden" name="kinId" value="'+info.KIN_ID+'"/>'+info.KIN_SERIAL+'</td>'+
+							      '<td>'+info.KIN_NAME+'</td>'+
+							      '<td>'+info.KIN_CONTENT+'</td>'+
+							      '<td>'+info.KIN_EXPIRATION+'</td>'+
+							      '<td>'+info.KIN_STOST+'</td>'+
+							      '<td><input class="inputText num" type="text" value="1" maxlength="4" onkeyup="updateNum(this)"></td>'+
+							      '<td>0</td>'+
+							      '<td><input class="inputText" type="text" maxlength="40" style="margin:0px;"/></td>'+
+							    '</tr>');
+					}else{
+						$("#kinList tbody").append('<tr>'+
+							      '<td><input type="checkbox" name="kin" lay-skin="primary" ></td>'+
+							      '<td><input type="hidden" name="kinId" value="'+info.KIN_ID+'"/>'+info.KIN_SERIAL+'</td>'+
+							      '<td>'+info.KIN_NAME+'</td>'+
+							      '<td>'+info.KIN_CONTENT+'</td>'+
+							      '<td>'+info.KIN_EXPIRATION+'</td>'+
+							      '<td>'+info.KIN_SELLINF+'</td>'+
+							      '<td><input class="inputText num" type="text" value="1" maxlength="4" onkeyup="updateNum(this)"></td>'+
+							      '<td>0</td>'+
+							      '<td><input class="inputText" type="text" maxlength="40" style="margin:0px;"/></td>'+
+							    '</tr>');
+					}
+					
 					form.render('checkbox');
 				}
 				showPrice();
@@ -287,6 +361,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		//更改会员号
 		$("#memberId").change(function(){
+			if(noOff){
+				layer.msg("温馨提示：批发模式，不允许折扣");
+				return false;
+			}
 			var url = "member/findById.action";
 	  		var data = {"memberId":$(this).val()}
 			$.post(url, data, function(member){

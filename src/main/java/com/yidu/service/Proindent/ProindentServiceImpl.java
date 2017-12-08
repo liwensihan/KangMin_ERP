@@ -166,9 +166,15 @@ public class ProindentServiceImpl implements ProindentService{
 		return erpProindentMapper.showpf(indentId);
 	}
 
+	/**
+	   * 根据订单ID修改生产状态
+	   * @param indentId
+	   * @return
+	   */
 	@Override
-	public ErpProindent showidQualit(String indentId) {
-		return erpProindentMapper.showidQualit(indentId);
+	public int updatezt(String indentId) {
+		// TODO Auto-generated method stub
+		return erpProindentMapper.updatezt(indentId);
 	}
 	/**
 	 * 生产订单审核
@@ -192,5 +198,6 @@ public class ProindentServiceImpl implements ProindentService{
 		auditMapper.insertSelective(audit);//执行审核表增加
 		return erpProindentMapper.auditPpoindent(map);
 	}
+
 }
 	

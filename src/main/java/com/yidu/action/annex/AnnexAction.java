@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yidu.common.Tools;
 import com.yidu.model.ErpAnnex;
 import com.yidu.model.ErpStaff;
 import com.yidu.service.annex.AnnexService;
@@ -24,7 +25,7 @@ import com.yidu.service.annex.AnnexService;
 /**
  * 分店action
  * @author ouyang
- * @data 2017年11月16日10:39:49
+ * @dateTime 2017年11月16日10:39:49
  */
 @Controller
 @RequestMapping("/annex")
@@ -39,6 +40,8 @@ public class AnnexAction {
 	 * @param annexData 查询参数
 	 * @param annexTime 查询创建时间
 	 * @return 产品集合
+	 * @author ouyang
+	 * @dateTime 2017年11月28日11:23:35
 	 */
 	@RequestMapping("/findAll")
 	@ResponseBody
@@ -71,6 +74,8 @@ public class AnnexAction {
 	 * @param annex 分店实体类
 	 * @param session HttpSession
 	 * @return 影响行数
+	 * @author ouyang
+	 * @dateTime 2017年11月28日11:23:35
 	 */
 	@RequestMapping("/addOrUpdate")
 	@ResponseBody
@@ -94,4 +99,42 @@ public class AnnexAction {
 		return row;
 	}
 	
+	/**
+	 * 查找所有分店集合
+	 * @return 分店集合
+	 * @author ouyang
+	 * @dateTime 2017年11月28日11:23:35
+	 */
+	@RequestMapping("/showList")
+	@ResponseBody
+	public List<ErpAnnex> showList(){
+		return service.getAnnex();
+	}
+	
+	/**
+	 * 初始化加载所有分店统计图
+	 * @author 胡鑫
+	 * @date 2017年12月7日10:25:27
+	 * @return 返回map集合
+	 */
+	@RequestMapping("/showChar")
+	@ResponseBody
+	public Map<String,Object> showChar(String annexId,String year,String month){		
+		Map<String,Object>parMap = new HashMap<String,Object>();//定义一个map集合用于sql查询参数
+		parMap.put("annexId", annexId);//分店id主键
+		
+		if(Tools.isEmpty(year)){
+			parMap.put("year", "");//年份
+		}else{
+			parMap.put("year", "%"+year+"%");//年份
+		}
+		if(Tools.isEmpty(month)){
+			parMap.put("month", "");//月份
+		}else{
+			parMap.put("month", "%"+month+"%");//月份
+		}
+		Map<String,Object> map = service.showChar(parMap);
+
+		return map;
+	}
 }

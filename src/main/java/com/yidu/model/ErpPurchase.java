@@ -1,7 +1,4 @@
 package com.yidu.model;
-
-import java.util.List;
-
 /**
  * 采购订单Model
  * @author Gjwen
@@ -26,17 +23,31 @@ public class ErpPurchase {
 
     private Integer isva;//是否有效
     private String remark;//备注
-    private List<ErpPurchaseDetails> det;
+    
     private Double purcTotalPrice;//总数价格
     
+    /**
+     * 以下为查看详情所用数据
+     */
+    private String purcTotalPriceDetails;//采购详细表单价
+    
+    private String rawName;//原材料名
    
 
-	public List<ErpPurchaseDetails> getDet() {
-		return det;
+	public String getPurcTotalPriceDetails() {
+		return purcTotalPriceDetails;
 	}
 
-	public void setDet(List<ErpPurchaseDetails> det) {
-		this.det = det;
+	public void setPurcTotalPriceDetails(String purcTotalPriceDetails) {
+		this.purcTotalPriceDetails = purcTotalPriceDetails;
+	}
+
+	public String getRawName() {
+		return rawName;
+	}
+
+	public void setRawName(String rawName) {
+		this.rawName = rawName;
 	}
 
 	public Double getPurcTotalPrice() {

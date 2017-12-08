@@ -11,6 +11,14 @@ import com.yidu.model.ErpQuality;
  * 2017年10月19日-下午1:57:43
  */
 public interface ErpPurchaseMapper {
+	
+	/**
+	 * 查询所有下拉框
+	 * @return
+	 * @author 刘东
+	 */
+	 List<ErpPurchase> selectshow();
+	
 	/**
 	 * 查询所有
 	 * @param map
@@ -28,13 +36,19 @@ public interface ErpPurchaseMapper {
      * @param purcId
      * @return
      */
-    ErpPurchase selectByPrimaryKey(String purcId);
+    List<Map<String,Object>> selectById(String purcId);
     /**
      * 根据ID修改
      * @param purcId
      * @return
      */
     int update(ErpPurchase record);
+    /**
+     * 根据ID查询
+     * @param purcId
+     * @return
+     */
+    ErpPurchase selectByPrimaryKey(String purcId);
     
     /**
      * 根据ID删除
@@ -60,6 +74,12 @@ public interface ErpPurchaseMapper {
 	 * @return
 	 */
 	ErpPurchase findById(String purcId);
+	/**
+	 * 查询年,月份
+	 * @param date
+	 * @return
+	 */
+	public List<ErpPurchase> findTuxing(String date);
 	/**
 	 * 用于审核采购
 	 * @author 胡鑫

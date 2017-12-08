@@ -84,7 +84,7 @@ public class Tools {
 	 */
 	public static String getSerial(String data,String type){
 		if(Tools.isEmpty(data)){
-			return type+"-"+Tools.getDateStr(new Date())+"-001";
+			return type+""+Tools.getDateStr(new Date())+"-001";
 		}
 		String ser = data.substring(data.lastIndexOf("-")+1,data.length());
 		String seril ="";

@@ -40,7 +40,7 @@ public class ErpProindent {
 	    private String remark;
 
 
-		public String getIndentState() {
+	    public String getIndentState() {
 			return indentState;
 		}
 

@@ -20,6 +20,13 @@
     ANNEX_TIME, CREATER, ISVA, CREATETIME, REMARK
   </sql>
   
+  <update id="updateAnnexPriceAdd" parameterType="com.yidu.model.ErpAnnex" >
+    update erp_annex set 
+      ANNEX_PRICE = ANNEX_PRICE+#{annexPrice,jdbcType=DECIMAL} 
+    where ANNEX_ID = #{annexId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询所有分站(分页加搜索) -->
   <select id="findAll" parameterType="map" resultMap="BaseResultMap">
   	SELECT * FROM erp_annex WHERE ISVA=1
   	<if test="annexData!=null and annexData!=''">
@@ -38,6 +45,7 @@
    SELECT * FROM erp_annex WHERE ISVA=1
   </select>
   
+  <!-- 查询所有分站行数(搜索) -->
    <select id="findAllSize" parameterType="map"  resultType="java.lang.Integer">
   	SELECT count(*) FROM erp_annex WHERE ISVA=1
   	<if test="annexData!=null and annexData!=''">
@@ -207,4 +215,23 @@
       REMARK = #{remark,jdbcType=VARCHAR}
     where ANNEX_ID = #{annexId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="showChar" parameterType="map" resultMap="BaseResultMap">
+  	<if test="year !=null and year !=''">
+	  	SELECT a.ANNEX_NAME, SUBSTRING(DATE_FORMAT(s.SALE_DATE, '%Y%m%d'),5,2) as ANNEX_TIME,SUM(s.SALE_MONEY) as ANNEX_NUMBER FROM erp_annex a,erp_sctockmp s 
+	  	WHERE a.ANNEX_ID=s.ANNEX_ID 
+	  	AND  s.sale_date LIKE #{year} 
+	  	AND a.ANNEX_ID=#{annexId}
+	  	AND a.isva=1
+	  	group by SUBSTRING(DATE_FORMAT(s.SALE_DATE, '%Y%m%d'),5,2)
+  	</if>
+  	<if test="month !=null and month !=''">
+	  	SELECT a.ANNEX_NAME,SUBSTRING(DATE_FORMAT(s.SALE_DATE, '%Y%m%d'),7,2) as ANNEX_TIME,SUM(s.SALE_MONEY) as ANNEX_NUMBER FROM erp_annex a,erp_sctockmp s 
+	  	WHERE a.ANNEX_ID=s.ANNEX_ID 
+	  	AND  s.sale_date LIKE #{month} 
+	  	AND a.ANNEX_ID=#{annexId}
+	  	AND a.isva=1
+	  	group by SUBSTRING(DATE_FORMAT(s.SALE_DATE, '%Y%m%d'),7,2)
+  	</if>
+  </select>
 </mapper>

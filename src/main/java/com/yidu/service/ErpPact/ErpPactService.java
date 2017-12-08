@@ -13,6 +13,21 @@ import com.yidu.model.ErpPact;
  * 2017年11月3日
  */
 public interface ErpPactService {
+	
+	/**
+	 * 总行数
+	 * @param map
+	 * @return
+	 */
+	int findRowCount(Map<String, Object> map);
+	
+	/**
+	 * 查询所有
+	 * @param map
+	 * @return
+	 */
+	List<ErpPact> selectshow(Map<String, Object> map);
+	
 	/**
 	 * 删除
 	 * @param incomeId 类型id

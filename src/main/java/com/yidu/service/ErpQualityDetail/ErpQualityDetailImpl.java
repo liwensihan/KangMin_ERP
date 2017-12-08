@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.yidu.common.Tools;
 import com.yidu.dao.ErpQualityDetailMapper;
 import com.yidu.model.ErpQualityDetail;
 
@@ -33,7 +32,6 @@ public class ErpQualityDetailImpl implements ErpQualityDetailService{
 
 	@Override
 	public int insertSelective(ErpQualityDetail record) {
-		record.setCreatetime(Tools.getCurDateTime());
 		return mapper.insertSelective(record);
 	}
 

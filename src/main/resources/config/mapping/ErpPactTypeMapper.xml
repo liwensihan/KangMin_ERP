@@ -8,10 +8,17 @@
     <result column="REMARK" property="remark" jdbcType="VARCHAR" />
     <result column="CRATENR" property="cratenr" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    PATYPE_ID, PATYPE_SREIAL, PATYPE_NAME, REMARK, CRATENR, CREATER
+    PATYPE_ID, PATYPE_SREIAL, PATYPE_NAME, REMARK, CRATENR, CREATER, ISVA
   </sql>
+  
+  <!-- 查询所有 -->
+  <select id="select" resultMap="BaseResultMap">
+  	select * from erp_pact_type where ISVA=1
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -24,11 +31,11 @@
   </delete>
   <insert id="insert" parameterType="com.yidu.model.ErpPactType" >
     insert into erp_pact_type (PATYPE_ID, PATYPE_SREIAL, PATYPE_NAME, 
-      REMARK, CRATENR, CREATER
-      )
+      REMARK, CRATENR, CREATER, 
+      ISVA)
     values (#{patypeId,jdbcType=VARCHAR}, #{patypeSreial,jdbcType=VARCHAR}, #{patypeName,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{cratenr,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}
-      )
+      #{remark,jdbcType=VARCHAR}, #{cratenr,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.yidu.model.ErpPactType" >
     insert into erp_pact_type
@@ -51,6 +58,9 @@
       <if test="creater != null" >
         CREATER,
       </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="patypeId != null" >
@@ -70,6 +80,9 @@
       </if>
       <if test="creater != null" >
         #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -91,6 +104,9 @@
       <if test="creater != null" >
         CREATER = #{creater,jdbcType=VARCHAR},
       </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
     </set>
     where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
   </update>
@@ -100,7 +116,8 @@
       PATYPE_NAME = #{patypeName,jdbcType=VARCHAR},
       REMARK = #{remark,jdbcType=VARCHAR},
       CRATENR = #{cratenr,jdbcType=VARCHAR},
-      CREATER = #{creater,jdbcType=VARCHAR}
+      CREATER = #{creater,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER}
     where PATYPE_ID = #{patypeId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -17,6 +17,24 @@
     STOCK_ID, ANNEX_ID, STOCK_SREIAL, KIN_ID, sta_id, STOCK_SUOUNT, CREATETIME, CREATER, 
     REMARK, ISVA
   </sql>
+  
+  <!-- 根据条形码和当前分店查询药品 -->
+  <select id="findByKinBarcode" resultType="map">
+    SELECT ek.*,es.STOCK_SUOUNT FROM erp_annex AS ea,erp_sumstock AS es,erp_kinds AS ek WHERE ea.ANNEX_ID=es.ANNEX_ID AND 
+es.KIN_ID=ek.KIN_ID AND ek.KIN_BARCODE=#{0} AND ea.ANNEX_ID=#{1}
+  </select>
+  
+  <!-- 批量减少库存(根据分店ID和商品ID减少) -->
+  <update id="updateStockSuount"  parameterType="java.util.List">  
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update erp_sumstock set
+            STOCK_SUOUNT=STOCK_SUOUNT-${item.kmpNum} 
+        where ANNEX_ID = #{item.annexId} and KIN_ID = #{item.kinId}
+    </foreach>      
+  </update>
+  
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

@@ -8,23 +8,52 @@ import java.util.Date;
  * @data 2017年11月23日13:40:27
  */
 public class ErpSctockmp {
-    private String saleId;			//主键ID
-    private String staffId;			//员工ID
-    private String annexId;			//分店ID
-    private String memberId;		//会员ID
-    private BigDecimal saleNum;		//销售总数量
-    private Date saleDate;			//订单时间
-    private BigDecimal saleMoney;	//原金额
-    private BigDecimal saleDiscount;//折扣
-    private BigDecimal saleMoney1;	//应付金额
-    private BigDecimal saleMoney2;	//实付金额
-    private BigDecimal saleMoney3;	//找零
-    private String creater;			//创建人
-    private String createtime;		//创建时间
-    private String remark;			//备注
-    
+    private String saleId;				//主键ID
+    private String staffId;				//员工ID
+    private String annexId;				//分店ID
+    private String memberId;			//会员ID
+    private Integer saleNum;			//销售总数量
+    private Date saleDate;				//订单时间
+    private BigDecimal saleMoney;		//原金额
+    private BigDecimal saleDiscount;	//折扣
+    private BigDecimal saleMoney1;		//应付金额
+    private BigDecimal saleMoney2;		//实付金额
+    private BigDecimal saleMoney3;		//找零
+    private Integer saleIfWholesale;	//是否批发
+    private Integer saleWholesaleState;	//批发状态
+    private String creater;				//创建人
+    private Date createtime;			//创建时间
+    private String remark;				//备注
     
     /**
+     * 是否批发 
+     * @return
+     */
+    public Integer getSaleIfWholesale() {
+		return saleIfWholesale;
+	}
+    /**
+     * 是否批发
+     * @param saleIfWholesale
+     */
+	public void setSaleIfWholesale(Integer saleIfWholesale) {
+		this.saleIfWholesale = saleIfWholesale;
+	}
+	/**
+	 * 批发状态
+	 * @return
+	 */
+	public Integer getSaleWholesaleState() {
+		return saleWholesaleState;
+	}
+	/**
+	 * 批发状态
+	 * @param saleWholesaleState
+	 */
+	public void setSaleWholesaleState(Integer saleWholesaleState) {
+		this.saleWholesaleState = saleWholesaleState;
+	}
+	/**
      * 原金额
      * @return
      */
@@ -112,14 +141,14 @@ public class ErpSctockmp {
      * 销售总数量
      * @return
      */
-    public BigDecimal getSaleNum() {
+    public Integer getSaleNum() {
         return saleNum;
     }
     /**
      * 销售总数量
      * @param saleNum
      */
-    public void setSaleNum(BigDecimal saleNum) {
+    public void setSaleNum(Integer saleNum) {
         this.saleNum = saleNum;
     }
     /**
@@ -196,15 +225,15 @@ public class ErpSctockmp {
      * 创建时间
      * @return
      */
-    public String getCreatetime() {
+    public Date getCreatetime() {
         return createtime;
     }
     /**
      * 创建时间
      * @param createtime
      */
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime == null ? null : createtime.trim();
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
     /**
      * 备注

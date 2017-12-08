@@ -21,6 +21,24 @@
   <sql id="Base_Column_List" >
     WARE_ID, KIN_ID, RAW_ID, WARE_NUM, CREATETIME, ISVA, CREATER, REMARK
   </sql>
+  
+  <!-- 根据配方ID修改仓库数量 -->
+  <update id="updateck" parameterType="map">
+  	UPDATE ERP_WAREHOUSE 
+  	<set>
+  		<if test="int != null" >
+        WARE_NUM =WARE_NUM - #{int,jdbcType=INTEGER},
+      </if>
+  	</set>
+  	where WARE_NUM>0 AND raw_id=#{rawId}
+  </update> 
+  
+  <!-- 查询是否大于0 -->
+  <select id="selectck" parameterType="java.lang.String" resultType="int">
+  	SELECT COUNT(*) FROM ERP_WAREHOUSE WHERE raw_id=#{wareId,jdbcType=VARCHAR} AND WARE_NUM>0
+  </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

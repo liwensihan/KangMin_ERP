@@ -3,6 +3,7 @@ package com.yidu.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.yidu.common.CommomUtils;
 
@@ -107,5 +108,13 @@ public class Tools {
 		Date date = new Date();
 		return CommomUtils.SDF_TIME.format(date);
 	}
-	
+	/**
+	 * 判断集合是否为空
+	 * @param list
+	 * @return list为空返回true
+	 */
+	public static boolean isEmpty(List list){
+		if(list==null) return true ;
+		return list.isEmpty();
+	}
 }

@@ -9,14 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yidu.common.MyException;
 import com.yidu.common.Tools;
 import com.yidu.model.ErpProindent;
 import com.yidu.model.ErpProindentDetail;
+import com.yidu.service.ErpWarehouse.ErpWarehouseService;
 import com.yidu.service.Proindent.ProindentService;
 import com.yidu.service.ProindentDetail.ProindentDetailService;
 import com.yidu.util.Pages;
@@ -36,6 +39,10 @@ public class ProindentAction {
 	
 	@Resource
 	private ProindentDetailService ProindentDetailService;//订单明细
+	
+	@Resource
+	private ErpWarehouseService erpWarehouseService;//仓库
+	
 	
 	SsmMessage  mes=new SsmMessage();//消息类
 	
@@ -325,15 +332,26 @@ public class ProindentAction {
 		List<Map<String, Object>> dent = proindentService.selectByPrimaryProid(indentId);
 		return dent;
 	}
+	
+	
 	/**
-	 * 根据ID查询
-	 * @param express
+	 * 查看库存是否足够
+	 * @param detail 
+	 * @param dent
 	 * @return
+	 * @throws MyException 
 	 */
-	@RequestMapping("/showidQualit")
+	@RequestMapping("showcp")
 	@ResponseBody
-	public ErpProindent showidQualit(String indentId){
-		return proindentService.showidQualit(indentId);
+	public SsmMessage showcp(ErpProindentDetail detail,ErpProindent dent,String str,HttpServletResponse response){
+		String[] sourceStrArray=str.split("&");
+		int rows = erpWarehouseService.updateck(sourceStrArray,response);
+		if(rows!=0){
+			mes.setState(1);
+			proindentService.updatezt(dent.getIndentId());//根据订单ID修改生产状态
+		}
+		return mes;
+		
 	}
 	/**
 	 * 生产订单审核
@@ -359,5 +377,4 @@ public class ProindentAction {
 		int rows = proindentService.auditPpoindent(map);
 		return mes;
 	}
-	
 }

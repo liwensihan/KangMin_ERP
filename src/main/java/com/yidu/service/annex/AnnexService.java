@@ -66,4 +66,13 @@ public interface AnnexService {
      * @return
      */
     public List<ErpAnnex> getAnnex();
+
+    /**
+     * 初始化加载分店销售统计图
+     * @author 胡鑫
+     * @date 2017年12月7日14:04:47
+     * @param parMap sql参数
+     * @return 返回map集合
+     */
+	public Map<String, Object> showChar(Map<String, Object> parMap);
 }

@@ -3,6 +3,7 @@
  */
 package com.yidu.action.Member;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,10 @@ public class MemberAction {
 		member.setMemberPhone(member.getMemberPhone());//电话
 		member.setMemberEmail(member.getMemberEmail());//邮箱
 		member.setMemberStauts("1");//是否有效
+		int qian=9;//设定9折
+		BigDecimal a=new BigDecimal(qian);//把double转换成BigDecimal
+		member.setMemberZheko(a);//会员折扣
+		
 		
 		if(Tools.isEmpty(member.getMemberId())){
 			

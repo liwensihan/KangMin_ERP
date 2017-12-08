@@ -4,21 +4,24 @@
 package com.yidu.action.ErpPurchase;
 
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yidu.common.Tools;
+import com.yidu.model.ErpApplyasset;
+import com.yidu.model.ErpPay;
 import com.yidu.model.ErpPurchase;
 import com.yidu.model.ErpPurchaseDetails;
 import com.yidu.model.ErpRaw;
+import com.yidu.model.ErpStaff;
 import com.yidu.service.ErpPurchase.ErpPurchaseService;
 import com.yidu.service.ErpPurchaseDetails.ErpPurchaseDetailsService;
 import com.yidu.service.ErpRaw.ErpRawService;
@@ -96,16 +99,17 @@ public class ErpPurchaseAction {
 		System.out.println(d_purcId);
 		return eph;
 	}
-//	/**
-//	 * 根据ID显示修改信息
-//	 * @param purcId
-//	 * @return
-//	 */
-//	@RequestMapping("/showUpdate")
-//	@ResponseBody
-//	public ErpPurchase showUpdate(String purcId){
-//		return erpPurchaseService.selectByPrimaryKey(purcId);
-//	}
+	/**
+	 * 查看详情
+	 * @param purcId
+	 * @return
+	 */
+	@RequestMapping("/showNews")
+	@ResponseBody
+	public List<Map<String,Object>> showUpdate(String purcId){
+		System.out.println("查询详情");
+		return erpPurchaseService.selectById(purcId);
+	}
 	/**
 	 * 增加Or修改	
 	 * @param purcId
@@ -148,7 +152,7 @@ public class ErpPurchaseAction {
 				details.setRowId(arr[0]);//原材料ID
 				rows = erpPurchaseDetailsService.insertSelective(details);//添加到订单详细表中
 			}
-		}
+		}   
 		return rows;
 	}
 	/**
@@ -161,6 +165,22 @@ public class ErpPurchaseAction {
 		return erpRawService.findRawList();
 	}
 	
+	@RequestMapping("/showTuxing")
+	@ResponseBody
+	public Map<String,Object> showTuxing(String date){
+		if(Tools.isEmpty(date)){
+			date="";
+		}else{
+			date="%"+date+"%";
+		}
+		List<ErpPurchase> erpPurchase = erpPurchaseService.findTuxing(date);
+		
+		Map<String,Object> map = new HashMap<String,Object>();//定义一个map集合
+		map.put("erpPurchase",erpPurchase);//map放入资金申请集合
+		return map;
+	}
+	
+
 	/**
 	 * 用于审核采购
 	 * @author 胡鑫
@@ -168,11 +188,12 @@ public class ErpPurchaseAction {
 	 * @param purcId 采购订单id
 	 * @param state 状态信息
 	 * @param feedBack 回馈信息
+	 * @param session 得到session
 	 * @return 返回消息类
 	 */
 	@ResponseBody
 	@RequestMapping("/auditPurchase")
-	public SsmMessage auditPurchase(String purcId,String state,String feedBack){
+	public SsmMessage auditPurchase(String purcId,String state,String feedBack,HttpSession session){
 		SsmMessage mes = new SsmMessage();//定义一个消息类用于返回jsp
 		Map<String,Object>map = new HashMap<String,Object>();//定义一个map集合
 		if(Tools.isEmpty(feedBack)){//判断字符串是否为空
@@ -182,18 +203,9 @@ public class ErpPurchaseAction {
 		}
 		map.put("purcId", purcId);//map集合中存入财务id
 		map.put("state", state);//map集合中存入 审核是否通过   state=2 通过 state=0 不通过
+		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到人员session
+		map.put("staff", staff);
 		int rows = erpPurchaseService.auditPurchase(map);
 		return mes;
-	}
-	/**
-	 * 查询单个对象
-	 * @param purcId 采购id
-	 * @return 返回采购对象
-	 */
-	@ResponseBody
-	@RequestMapping("/selectByPrimaryKey")
-	public ErpPurchase selectByPrimaryKey(String purcId){
-		return erpPurchaseService.selectByPrimaryKey(purcId);
-		
 	}
 }

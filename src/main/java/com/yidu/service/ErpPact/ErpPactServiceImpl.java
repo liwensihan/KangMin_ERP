@@ -24,6 +24,15 @@ import com.yidu.util.Tools;
 public class ErpPactServiceImpl implements ErpPactService{
 	@Resource
 	private ErpPactMapper erpPactMapper;
+	
+	
+	@Override
+	public List<ErpPact> selectshow(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpPactMapper.selectshow(map);
+	}
+	
+	
 	@Override
 	public int deleteByPrimaryKey(String pactId) {
 		
@@ -74,6 +83,13 @@ public class ErpPactServiceImpl implements ErpPactService{
 	public List<ErpPact> findDimPact(Map<String, Object> map) {
 		
 		return erpPactMapper.findDimPact(map);
+	}
+
+
+	@Override
+	public int findRowCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return erpPactMapper.findRowCount(map);
 	}
 
 }

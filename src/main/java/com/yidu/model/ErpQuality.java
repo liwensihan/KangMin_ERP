@@ -1,7 +1,5 @@
 package com.yidu.model;
 
-import java.util.List;
-
 public class ErpQuality {
     private String quaId;
 
@@ -26,18 +24,8 @@ public class ErpQuality {
     private String createtime;
 
     private String remark;
-    
-    private List<ErpQualityDetail> det;
-    
-    public List<ErpQualityDetail> getDet() {
-		return det;
-	}
 
-	public void setDet(List<ErpQualityDetail> det) {
-		this.det = det;
-	}
-
-	public String getQuaId() {
+    public String getQuaId() {
         return quaId;
     }
 

@@ -206,4 +206,8 @@
       REMARK = #{remark,jdbcType=VARCHAR}
     where AUD_ID = #{audId,jdbcType=VARCHAR}
   </update>
+  
+  <select id="showListById" resultMap="BaseResultMap" parameterType="map">
+  	select * from erp_audit where BUSINESS_ID=#{businessId} and isva=1 ORDER BY AUD_TIME DESC
+  </select>
 </mapper>

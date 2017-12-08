@@ -73,6 +73,7 @@
       <th lay-data="{field:'memberPhone', width:130}">会员电话号码</th>
    	  <th lay-data="{field:'memberEmail', width:200}">会员邮箱</th>
    	  <th lay-data="{field:'memberStarttime', width:200, sort: true, templet:'#logoTpl'}">会员开卡日期</th>
+   	  <th lay-data="{field:'memberZheko', width:100}">会员折扣</th>
       <th lay-data="{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}"></th>
     </tr>
   </thead>

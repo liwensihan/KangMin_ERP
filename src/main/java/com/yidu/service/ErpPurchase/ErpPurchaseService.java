@@ -14,6 +14,14 @@ import com.yidu.model.ErpPurchase;
  * 2017年10月19日-下午3:09:23
  */
 public interface ErpPurchaseService {
+	
+	/**
+	 * 查询所有下拉框
+	 * @return
+	 * @author 刘东
+	 */
+	 List<ErpPurchase> selectshow();
+	
 	/**
 	 * 查询所有
 	 * @param map
@@ -31,7 +39,7 @@ public interface ErpPurchaseService {
      * @param purcId
      * @return
      */
-    ErpPurchase selectByPrimaryKey(String purcId);
+    List<Map<String,Object>> selectById(String purcId);
     /**
      * 根据ID修改 
      * @param purcId
@@ -50,6 +58,14 @@ public interface ErpPurchaseService {
      * @return
      */
     public int purchaseFindRows(Map<String,Object> map);
+
+    /**
+     * 查询年,月
+     * @param date
+     * @return
+     */
+    public List<ErpPurchase> findTuxing(String date);
+
     
     /**
 	 * 用于审核采购

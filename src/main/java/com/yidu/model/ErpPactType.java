@@ -13,6 +13,8 @@ public class ErpPactType {
 
     private String creater;
 
+    private Integer isva;
+
     public String getPatypeId() {
         return patypeId;
     }
@@ -59,5 +61,13 @@ public class ErpPactType {
 
     public void setCreater(String creater) {
         this.creater = creater == null ? null : creater.trim();
+    }
+
+    public Integer getIsva() {
+        return isva;
+    }
+
+    public void setIsva(Integer isva) {
+        this.isva = isva;
     }
 }

@@ -15,6 +15,13 @@
 <script src="res/layui/layui.js" charset="utf-8"></script>
 <script src="res/js/echarts.js"></script>
 <title>财务管理</title>
+<style type="text/css">
+	#ss{
+		color:#780000;	
+		font-size:18px;
+		text-align:center;
+	}
+</style>
 </head>
 <body>
 	<div class="layui-tab layui-tab-brief" lay-filter="test1">
@@ -445,7 +452,7 @@
 			}, {
 				fixed : 'right',
 				title : '操作',
-				width : 150,
+				width : 180,
 				align : 'center',
 				toolbar : '#barDemo3'
 			} ] ],
@@ -494,6 +501,88 @@
 						
 					}
 				})
+			}else if(layEvent === 'record'){
+				var url = "auditAction/showListById.action";
+				var datas = {
+					'purcId' : data.purcId
+				};
+				$.post(url, datas, function(returnData) {
+					var tabVal = '<div id="ss">审核记录</div>';
+					$.each(returnData, function(i, item) {
+						var state ;
+						if(item.state == 0){
+							state='<span class="layui-badge">审核未通过</span>';
+						}else{
+							state='<span class="layui-badge layui-bg-green">审核已通过<span>';
+						}
+						tabVal += '' + '<tr>' + '<td>' + item.audName
+								+ '</td>' + '<td>' + item.audTime
+								+ '</td>' + '<td>' + state
+								+ '</td>' + '<td>' + item.feedBack
+								+ '</td>' + '</tr>' + '';
+					})
+					layer.open({
+						type : 1,
+						title : false, //不显示标题栏
+						closeBtn : true,
+						area: '600px',//调节宽度，高度自适应
+						shade : 0.8,
+						id : 'LAY_layuipro', //设定一个id，防止重复弹出
+						btnAlign : 'c',
+						moveType : 1, //拖拽模式，0或者1
+						content : '<table class="layui-table" style="color:#404040">' + '<thead>'
+								+ '<tr>' 
+								+ '<th>审核人</th>' 
+								+ '<th>审核时间</th>'
+								+ '<th>状态</th>' 
+								+ '<th>回馈信息</th>' 
+								+ '</tr>' 
+								+ '</thead>'
+								+ '<tbody>'+ tabVal + '</tbody>'
+								+ '</table>',
+					});
+				})
+				
+			}else if (layEvent === 'edit') {
+				var url = "Purchase/showNews.action";
+				var datas = {
+					'purcId' : data.purcId
+				};
+				$.post(url, datas, function(returnData) {
+					var tabVal = '<div id="ss">查看详情</div>';
+					$.each(returnData, function(i, item) {
+						tabVal += '' + '<tr>' + '<td>' + item.PURC_NAME
+								+ '</td>' + '<td>' + item.RAW_NAME
+								+ '</td>' + '<td>' + item.PURC_TIME
+								+ '</td>' + '<td>' + item.PURC_TITLE
+								+ '</td>' + '<td>' + item.PUR_TOTAL_PRICE
+								+ '</td>' + '<td>' + item.PURC_TOTAL_PRICE
+								+ '</td>' + '</tr>' + '';
+					})
+					layer.open({
+						type : 1,
+						title : false, //不显示标题栏
+						closeBtn : true,
+						area: '600px',//调节宽度，高度自适应
+						shade : 0.8,
+						id : 'LAY_layuipro', //设定一个id，防止重复弹出
+						btnAlign : 'c',
+						moveType : 1, //拖拽模式，0或者1
+						content : '<table class="layui-table" style="color:#404040">' + '<thead>'
+								+ '<tr>' 
+								+ '<th>采购人</th>' 
+								+ '<th>材料</th>'
+								+ '<th>采购时间</th>' 
+								+ '<th>药物</th>'
+								+ '<th>材料单价</th>'
+								+ '<th>总价</th>' 
+								+ '</tr>' 
+								+ '</thead>'
+								+ '<tbody>'+ tabVal + '</tbody>'
+								+ '</table>',
+					});
+				})
+				
 			}else if(layEvent === 'audit'){ //审核
 				if(data.state == '1'){
 					layer.open({
@@ -525,7 +614,11 @@
 									layer.close(index);
 									layer.close(loadIndex);//加载层关闭
 									$(".layui-laypage-skip .layui-laypage-btn",window.document).click();//刷新父页面数据表格的当前页
-									layer.msg("提交成功!");
+									if(returnData.state == 102){
+										layer.msg(returnData.mes);
+									}else{
+										layer.msg("提交成功!");
+									}
 								},
 								error:function(returnData){
 									layer.close(loadIndex);//加载层关闭
@@ -565,7 +658,7 @@
 </script>
 <script type="text/html" id="state">	
   {{#  if(d.state == 1){ }}
-    <span class="layui-badge layui-bg-orange">审核中</span>
+    <span class="layui-badge layui-bg-orange">待审核</span>
   {{#  } else if(d.state == 2) { }}
     <span class="layui-badge layui-bg-green">审核通过</span>
   {{#  } else if(d.state == 3) { }}
@@ -583,6 +676,8 @@
 </script>
 <script type="text/html" id="barDemo3">
   <a class="layui-btn layui-btn-mini" lay-event="audit">审核</a>
-  <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-mini layui-bg-orange" lay-event="record">记录</a>
+  <a class="layui-btn layui-btn-mini" lay-event="edit">查看</a>
+
 </script>
 </html>

@@ -13,6 +13,12 @@
   <sql id="Base_Column_List" >
     KMP_ID, SALE_ID, KIN_ID, KMP_NUM, KMP_PRICE, REMAKE, ISVA
   </sql>
+  
+  <select id="findBySaleId" resultType="map" parameterType="java.lang.String" >
+    SELECT * FROM erp_sctockmp_detail AS sd,erp_kinds AS ki WHERE 
+sd.KIN_ID=ki.KIN_ID AND sd.SALE_ID=#{SALE_ID,jdbcType=VARCHAR}
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -23,6 +29,18 @@
     delete from erp_sctockmp_detail
     where KMP_ID = #{kmpId,jdbcType=VARCHAR}
   </delete>
+  
+  <!-- 批量插入 -->
+  <insert id="addSctockmpDetailList" parameterType="List">
+	insert into erp_sctockmp_detail (KMP_ID, SALE_ID, KIN_ID, 
+      KMP_NUM, KMP_PRICE, REMAKE, ISVA) values
+	<foreach collection="list" item="item" index="index" separator=",">
+	(#{item.kmpId,jdbcType=VARCHAR}, #{item.saleId,jdbcType=VARCHAR}, #{item.kinId,jdbcType=VARCHAR}, 
+      #{item.kmpNum,jdbcType=INTEGER}, #{item.kmpPrice,jdbcType=DECIMAL}, #{item.remake,jdbcType=VARCHAR}, 
+      #{item.isva,jdbcType=VARCHAR}) 
+	</foreach>
+  </insert>  
+  
   <insert id="insert" parameterType="com.yidu.model.ErpSctockmpDetail" >
     insert into erp_sctockmp_detail (KMP_ID, SALE_ID, KIN_ID, 
       KMP_NUM, KMP_PRICE, REMAKE, 

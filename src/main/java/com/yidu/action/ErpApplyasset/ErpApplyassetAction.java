@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yidu.common.Tools;
 import com.yidu.model.ErpApplyasset;
+import com.yidu.model.ErpStaff;
 import com.yidu.service.ErpApplyasset.ErpApplyassetService;
 import com.yidu.util.Pages;
 import com.yidu.util.SsmMessage;
@@ -83,7 +85,7 @@ public class ErpApplyassetAction {
 	 */
 	@ResponseBody
 	@RequestMapping("auditFeedback")
-	public SsmMessage auditFeedback(String appassId,String feedBack,String state){
+	public SsmMessage auditFeedback(String appassId,String feedBack,String state,HttpSession session){
 		SsmMessage mes = new SsmMessage();
 		Map<String,Object>map = new HashMap<String,Object>();//定义一个map集合
 		if(Tools.isEmpty(feedBack)){//判断字符串是否为空
@@ -93,7 +95,13 @@ public class ErpApplyassetAction {
 		}
 		map.put("appassId", appassId);//map集合中存入 资金申请id
 		map.put("state", state);//map集合中存入 审核是否通过   state=2 通过 state=0 不通过
+		ErpStaff staff = (ErpStaff) session.getAttribute("staff");//得到人员session
+		map.put("staff", staff);
 		int rows = service.auditApplyasset(map);
+		if(rows == 102){
+			mes.setMes("余额不足扣除当前资金申请!");
+			mes.setState(102);
+		}
 		return mes;
 	}
 }
