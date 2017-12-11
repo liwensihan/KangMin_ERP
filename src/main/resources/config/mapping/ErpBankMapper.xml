@@ -15,25 +15,59 @@
     <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
     <result column="CREATER" property="creater" jdbcType="VARCHAR" />
     <result column="REAARK" property="reaark" jdbcType="VARCHAR" />
+     <collection property="det" ofType="ErpInvedet">  
+           <id column="INVEDET_ID" property="invedetId" jdbcType="VARCHAR" />
+		    <result column="BANK_ID" property="bankId" jdbcType="VARCHAR" />
+		    <result column="WARE_ID" property="wareId" jdbcType="VARCHAR" />
+		    <result column="OB_ID" property="obId" jdbcType="VARCHAR" />
+		    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+		    <result column="KIN_NAME" property="kinsName" jdbcType="VARCHAR" />
+		    <result column="RAW_NAME" property="rawName" jdbcType="VARCHAR" />
+		    <result column="INVEDET_NUM" property="invedetNum" jdbcType="INTEGER" />
+		    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+		    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+     </collection>
   </resultMap>
   <sql id="Base_Column_List" >
     BANK_ID, INDENT_ID, PURC_ID,BANK_NUM,BANK_PRICE, BANK_NUMBER, BANK_TIME, BANK_COUNT, BANK_STAFFID, ISVA, 
     CREATETIME, CREATER, REAARK
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from erp_bank
-    where BANK_ID = #{bankId,jdbcType=VARCHAR}
+    SELECT * FROM erp_bank b,erp_invedet d LEFT JOIN erp_raw r ON d.RAW_ID=r.RAW_ID LEFT JOIN erp_kinds k ON d.KIN_ID=k.KIN_ID , erp_staff s WHERE d.BANK_ID=b.BANK_ID 
+    AND b.CREATER = s.sta_id AND  b.ISVA=1 AND b.BANK_ID =#{bankId}
   </select>
-  
+   <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select BANK_NUMBER from erp_bank where BANK_NUMBER like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
   		SELECT eb.* FROM erp_bank eb LEFT JOIN 
   		erp_proindent ept ON eb.INDENT_ID=ept.INDENT_ID LEFT JOIN 
   		erp_purchase epe ON eb.PURC_ID=epe.PURC_ID  
   		WHERE eb.isva=1
   </select>
-  
+  <!-- 查询总行数-->
+   <select id="selectAllConut" resultType="int" parameterType="map">
+  	SELECT conut(*) FROM erp_bank eb,erp_staff s
+  		<where>
+  			eb.CREATER = s.sta_id
+  			<if test="price!=null and price !=''">
+  			(
+  				eb.BANK_ISVA like CONCAT('%',#{price},'%' )
+  				or
+  				eb.BANK_TIME like CONCAT('%',#{prie},'%' )
+  				or 
+  				eb.BANK_STAFFID like CONCAT('%',#{prie},'%' )
+  				or 
+  				s.sta_name like CONCAT('%',#{prie},'%' )
+  			)
+  			</if>
+  			AND eb.ISVA=1
+  		</where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from erp_bank
     where BANK_ID = #{bankId,jdbcType=VARCHAR}
