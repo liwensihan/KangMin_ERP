@@ -45,7 +45,10 @@ public class ErpBankServiceImpl implements ErpBankService{
 	 */
 	@Resource
 	private ErpPurchaseMapper erpPurchaseMapper;
-
+	@Resource
+	private ErpInvedetService invService;//库存明细表service
+	@Resource
+	private ErpQualityMapper qualitMapper;//质检表mapper
 	@Override
 	public List<ErpBank> selectAll(Map<String, Object> map) {
 		List<ErpBank> erp = erpBankMapper.selectAll(map);
@@ -72,5 +75,53 @@ public class ErpBankServiceImpl implements ErpBankService{
 		
 		return list;//返回list
 	}
+@Override
+	public int selectAllConut(Map<String, Object> map) {
+		return 0;
+	}
 
+	@Override
+	public int insertSelective(ErpBank record,List<ErpInvedet> list,String quaId) {
+		String uuid = UUID.randomUUID()+"";//得到一个uuid
+		String data = erpBankMapper.selectSerial(Tools.getDateStr(new Date()));//通过得到当前最大编号的方法同时使用工具类把该编号格式成日期
+		record.setBankNumber(Tools.getSerial(data, "RK"));//使用工具类得到入库编号
+		record.setBankId(uuid);
+		record.setIsva(1);//是否有效
+		record.setBankIsva(1);//入库状态
+		record.setCreatetime(Tools.getCurDateTime());//创建时间
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			ErpInvedet erpInvedet = (ErpInvedet) iterator.next();
+			erpInvedet.setBankId(uuid);
+			int rows = invService.insertSelective(erpInvedet);
+			if(rows<-1){//入库明细添加失败抛出异常事物回滚； 
+				try {
+					throw new BackException("添加库存明细的时候报错");
+				} catch (BackException e) {
+					e.printStackTrace();
+				}//抛出异常 
+			}
+		}
+		
+		ErpQuality qua = new ErpQuality();//得到质检对象
+		qua.setQuaId(quaId);//得到质检id
+		qua.setQuaIsva(4);//修改质检状态为已经提交入库单
+		int rows = qualitMapper.updateByPrimaryKeySelective(qua);//调用质检的修改方法
+		if(rows<-1){// 修改状态失败全部回滚
+			try {
+				throw new BackException("修改质检状态的时候报错");
+			} catch (BackException e) {
+				e.printStackTrace();
+			}//抛出异常 
+		}
+		return erpBankMapper.insertSelective(record);//得到导里面的添加方法
+	}
+
+	@Override
+	public ErpBank selectByPrimaryKey(String bankId) {
+		return erpBankMapper.selectByPrimaryKey(bankId);
+	}
+	@Override
+	public int updateByPrimaryKeySelective(ErpBank record) {
+		return erpBankMapper.updateByPrimaryKeySelective(record);
+	}
 }
