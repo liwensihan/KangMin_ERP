@@ -45,7 +45,15 @@ public class ErpBank {
     private String indentMoney;//生产金额
     
     private String yaoPing;
+    private List<ErpInvedet> det;
     
+    public List<ErpInvedet> getDet() {
+		return det;
+	}
+
+	public void setDet(List<ErpInvedet> det) {
+		this.det = det;
+	}
     
 	public Double getPurcTotalPrice() {
 		return purcTotalPrice;
