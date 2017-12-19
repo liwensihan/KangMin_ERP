@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpModelSubordinateMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpModelSubordinate" >
+    <id column="model_sub_id" property="modelSubId" jdbcType="VARCHAR" />
+    <result column="model_id" property="modelId" jdbcType="VARCHAR" />
+    <result column="model_sub_name" property="modelSubName" jdbcType="VARCHAR" />
+    <result column="model_sub_url" property="modelSubUrl" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+    <result column="reateTime" property="reatetime" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    model_sub_id, model_id, model_sub_name, model_sub_url, ISVA, reateTime, creater, 
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_model_subordinate
+    where model_sub_id = #{modelSubId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_model_subordinate
+    where model_sub_id = #{modelSubId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpModelSubordinate" >
+    insert into erp_model_subordinate (model_sub_id, model_id, model_sub_name, 
+      model_sub_url, ISVA, reateTime, 
+      creater, remark)
+    values (#{modelSubId,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, #{modelSubName,jdbcType=VARCHAR}, 
+      #{modelSubUrl,jdbcType=VARCHAR}, #{isva,jdbcType=VARCHAR}, #{reatetime,jdbcType=VARCHAR}, 
+      #{creater,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpModelSubordinate" >
+    insert into erp_model_subordinate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="modelSubId != null" >
+        model_sub_id,
+      </if>
+      <if test="modelId != null" >
+        model_id,
+      </if>
+      <if test="modelSubName != null" >
+        model_sub_name,
+      </if>
+      <if test="modelSubUrl != null" >
+        model_sub_url,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="reatetime != null" >
+        reateTime,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="modelSubId != null" >
+        #{modelSubId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelSubName != null" >
+        #{modelSubName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelSubUrl != null" >
+        #{modelSubUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="reatetime != null" >
+        #{reatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpModelSubordinate" >
+    update erp_model_subordinate
+    <set >
+      <if test="modelId != null" >
+        model_id = #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelSubName != null" >
+        model_sub_name = #{modelSubName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelSubUrl != null" >
+        model_sub_url = #{modelSubUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="reatetime != null" >
+        reateTime = #{reatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where model_sub_id = #{modelSubId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpModelSubordinate" >
+    update erp_model_subordinate
+    set model_id = #{modelId,jdbcType=VARCHAR},
+      model_sub_name = #{modelSubName,jdbcType=VARCHAR},
+      model_sub_url = #{modelSubUrl,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=VARCHAR},
+      reateTime = #{reatetime,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where model_sub_id = #{modelSubId,jdbcType=VARCHAR}
+  </update>
+  
+  
+    <select id="findAllModelSub" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT * FROM erp_staff sta,
+	      erp_personel_role prole,
+	      erp_role role,
+	      erp_role_model rolem,
+	      erp_model model ,
+	      erp_model_subordinate sub WHERE sta.sta_id = prole.sta_id AND
+				        				  role.ROLE_ID = prole.ROLE_ID AND
+									 	  role.ROLE_ID = rolem.ROLE_ID AND
+									  	  rolem.MODEL_ID = model.MODEL_ID AND
+						     			  model.MODEL_ID = sub.model_id AND
+						     			  sta.ISVA='1' AND 
+									  	  role.ISVA='1' AND 
+									  	  model.ISVA='1' AND
+										  sub.ISVA='1' AND
+										  sta.sta_name = #{staName,jdbcType=VARCHAR}
+  </select>
+</mapper>

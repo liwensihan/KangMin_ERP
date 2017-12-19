@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpSctockmpDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpSctockmpDetail" >
+    <id column="KMP_ID" property="kmpId" jdbcType="VARCHAR" />
+    <result column="SALE_ID" property="saleId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="KMP_NUM" property="kmpNum" jdbcType="INTEGER" />
+    <result column="KMP_PRICE" property="kmpPrice" jdbcType="DECIMAL" />
+    <result column="REMAKE" property="remake" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    KMP_ID, SALE_ID, KIN_ID, KMP_NUM, KMP_PRICE, REMAKE, ISVA
+  </sql>
+  
+  <!-- 批量修改详细订单为无效 -->
+  <update id="updateIsvaBySaleId" parameterType="java.lang.String">  
+      UPDATE erp_sctockmp_detail SET ISVA = 0 WHERE SALE_ID=#{SALE_ID}
+  </update>  
+  
+  <select id="findBySaleId" resultType="map" parameterType="java.lang.String" >
+    SELECT * FROM erp_sctockmp_detail AS sd,erp_kinds AS ki WHERE 
+sd.KIN_ID=ki.KIN_ID AND sd.SALE_ID=#{SALE_ID} AND sd.ISVA=1
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_sctockmp_detail
+    where KMP_ID = #{kmpId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_sctockmp_detail
+    where KMP_ID = #{kmpId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 批量插入 -->
+  <insert id="addSctockmpDetailList" parameterType="List">
+	insert into erp_sctockmp_detail (KMP_ID, SALE_ID, KIN_ID, 
+      KMP_NUM, KMP_PRICE, REMAKE, ISVA) values
+	<foreach collection="list" item="item" index="index" separator=",">
+	(#{item.kmpId,jdbcType=VARCHAR}, #{item.saleId,jdbcType=VARCHAR}, #{item.kinId,jdbcType=VARCHAR}, 
+      #{item.kmpNum,jdbcType=INTEGER}, #{item.kmpPrice,jdbcType=DECIMAL}, #{item.remake,jdbcType=VARCHAR}, 
+      #{item.isva,jdbcType=VARCHAR}) 
+	</foreach>
+  </insert>  
+  
+  <insert id="insert" parameterType="com.yidu.model.ErpSctockmpDetail" >
+    insert into erp_sctockmp_detail (KMP_ID, SALE_ID, KIN_ID, 
+      KMP_NUM, KMP_PRICE, REMAKE, 
+      ISVA)
+    values (#{kmpId,jdbcType=VARCHAR}, #{saleId,jdbcType=VARCHAR}, #{kinId,jdbcType=VARCHAR}, 
+      #{kmpNum,jdbcType=INTEGER}, #{kmpPrice,jdbcType=DECIMAL}, #{remake,jdbcType=VARCHAR}, 
+      #{isva,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpSctockmpDetail" >
+    insert into erp_sctockmp_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="kmpId != null" >
+        KMP_ID,
+      </if>
+      <if test="saleId != null" >
+        SALE_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="kmpNum != null" >
+        KMP_NUM,
+      </if>
+      <if test="kmpPrice != null" >
+        KMP_PRICE,
+      </if>
+      <if test="remake != null" >
+        REMAKE,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="kmpId != null" >
+        #{kmpId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleId != null" >
+        #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="kmpNum != null" >
+        #{kmpNum,jdbcType=INTEGER},
+      </if>
+      <if test="kmpPrice != null" >
+        #{kmpPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remake != null" >
+        #{remake,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpSctockmpDetail" >
+    update erp_sctockmp_detail
+    <set >
+      <if test="saleId != null" >
+        SALE_ID = #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="kmpNum != null" >
+        KMP_NUM = #{kmpNum,jdbcType=INTEGER},
+      </if>
+      <if test="kmpPrice != null" >
+        KMP_PRICE = #{kmpPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remake != null" >
+        REMAKE = #{remake,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where KMP_ID = #{kmpId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpSctockmpDetail" >
+    update erp_sctockmp_detail
+    set SALE_ID = #{saleId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR},
+      KMP_NUM = #{kmpNum,jdbcType=INTEGER},
+      KMP_PRICE = #{kmpPrice,jdbcType=DECIMAL},
+      REMAKE = #{remake,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=VARCHAR}
+    where KMP_ID = #{kmpId,jdbcType=VARCHAR}
+  </update>
+</mapper>

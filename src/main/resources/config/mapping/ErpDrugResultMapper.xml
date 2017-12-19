@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpDrugResultMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpDrugResult" >
+    <id column="DRUG_RES_ID" property="drugResId" jdbcType="VARCHAR" />
+    <result column="RES_ID" property="resId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+     <!-- 一对多关系   property 属性值   ofType 集合类型   原材料对药效的关系-->
+    <collection property="res" ofType="ErpResuit">  
+            <id column="RES_ID" property="resId" jdbcType="VARCHAR" />
+		    <result column="RES_SERIAL" property="resSerial" jdbcType="VARCHAR" />
+		    <result column="RES_NAME" property="resName" jdbcType="VARCHAR" />
+		    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+		    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		    <result column="REMARK" property="remark" jdbcType="VARCHAR" /> 
+     </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DRUG_RES_ID, RES_ID, RAW_ID, KIN_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_drug_result
+    where RAW_ID = #{rawId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKind" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_drug_result
+    where KIN_ID = #{kinId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimRes" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT DRUG_RES_ID, RES_ID, RAW_ID, KIN_ID FROM erp_drug_result WHERE RES_ID =  #{resId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_drug_result
+    where DRUG_RES_ID = #{drugResId,jdbcType=VARCHAR}
+  </delete>
+ <delete id="deleteKindsRes" parameterType="java.lang.String" >
+    delete from erp_drug_result
+    where KIN_ID = #{1} and RES_ID = #{0}
+  </delete>
+  
+  <insert id="insert" parameterType="com.yidu.model.ErpDrugResult" >
+    insert into erp_drug_result (DRUG_RES_ID, RES_ID, RAW_ID, 
+      KIN_ID)
+    values (#{drugResId,jdbcType=VARCHAR}, #{resId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, 
+      #{kinId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpDrugResult" >
+  	<selectKey keyProperty="drugResId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
+    insert into erp_drug_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="drugResId != null" >
+        DRUG_RES_ID,
+      </if>
+      <if test="resId != null" >
+        RES_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="drugResId != null" >
+        #{drugResId,jdbcType=VARCHAR},
+      </if>
+      <if test="resId != null" >
+        #{resId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpDrugResult" >
+    update erp_drug_result
+    <set >
+      <if test="resId != null" >
+        RES_ID = #{resId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        RAW_ID = #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DRUG_RES_ID = #{drugResId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpDrugResult" >
+    update erp_drug_result
+    set RES_ID = #{resId,jdbcType=VARCHAR},
+      RAW_ID = #{rawId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR}
+    where DRUG_RES_ID = #{drugResId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpProindentMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpProindent" >
+    <id column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+    <result column="INDENT_NUMBER" property="indentNumber" jdbcType="VARCHAR" />
+    <result column="INDENT_MONEY" property="indentMoney" jdbcType="DECIMAL" />
+    <result column="INDENT_COUNT" property="indentCount" jdbcType="INTEGER" />
+    <result column="INDENT_urgency" property="indentUrgency" jdbcType="VARCHAR" />
+    <result column="INDENT_EMETIME" property="indentEmetime" jdbcType="VARCHAR" />
+    <result column="INDENT_WORKTIME" property="indentWorktime" jdbcType="VARCHAR" />
+    <result column="INDENT_ENDTIME" property="indentEndtime" jdbcType="VARCHAR" />
+    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+    <result column="INDENT_STATE" property="indentState" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+     <collection property="det" ofType="ErpProindentDetail">  
+           <id column="ENTDE_ID" property="entdeId" jdbcType="VARCHAR" />
+		    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+		    <result column="INDENT_ID" property="indentId" jdbcType="VARCHAR" />
+		    <result column="ENTDE_NUM" property="entdeNum" jdbcType="INTEGER" />
+		    <result column="NUM" property="num" jdbcType="INTEGER" />
+		    <result column="ENTDE_PRICE" property="entdePrice" jdbcType="DECIMAL" />
+		    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+		    <result column="KIN_NAME" property="kindName" jdbcType="VARCHAR" />
+     </collection>
+  </resultMap>
+ <sql id="Base_Column_List" >
+    INDENT_ID, INDENT_NUMBER, INDENT_MONEY, INDENT_COUNT, INDENT_urgency, INDENT_EMETIME, 
+    INDENT_WORKTIME, INDENT_ENDTIME, STATE, ISVA, INDENT_STATE, REMARK, CREATETIME, CREATER
+  </sql>
+ <!-- 根据订单id查询明细，和商品表  查看明细 -->
+  <select id="showidQualit" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	   SELECT *
+	   FROM 
+	   ERP_PROINDENT pro,
+	   ERP_PROINDENT_DETAIL det,
+	   ERP_KINDS kin
+	   WHERE pro.INDENT_ID=det.INDENT_ID 
+	   AND det.KIN_ID=kin.KIN_ID 
+	   AND pro.INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </select>
+ <!-- 查询产品，订单，订单明细，订单生产日志，订单生产日志明细，根据订单ID查询 -->
+ <!--  <select id="findByshow" resultType="map" parameterType="map">
+		SELECT kin.KIN_ID,kin.KIN_NAME,ail.ENTDE_NUM,dlog.num 
+		FROM erp_log plog,erp_log_detail dlog,erp_proindent dent,
+		erp_proindent_detail ail,erp_kinds kin
+		WHERE dent.INDENT_ID=ail.INDENT_ID AND ail.KIN_ID=kin.KIN_ID
+		AND plog.INDENT_ID=dent.INDENT_ID AND dlog.LOG_ID=plog.LOG_ID
+		AND dlog.KIN_ID=kin.KIN_ID
+		AND dent.INDENT_ID= #{indentId,jdbcType=VARCHAR}
+		AND dlog.ISVA=1
+		ORDER BY
+			dlog.num DESC
+		LIMIT 
+			#{int,jdbcType=VARCHAR}
+		
+	</select> -->
+	<!-- 根据id查询的那个生产，生产明细 -->
+ 	<select id="selectProKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 		SELECT * FROM erp_proindent p ,erp_proindent_detail rd   WHERE  rd.INDENT_ID = p.INDENT_ID  AND p.INDENT_ID= #{indentId}
+ 	</select>
+	
+	<!-- 根据订单ID修改生产状态 -->
+  <update id="updatezt" parameterType="java.lang.String">
+  	UPDATE erp_proindent
+  	<set>
+        INDENT_STATE =1
+  	</set>
+  	where INDENT_ID=#{indentId}
+  </update> 
+ 
+ 	<!-- 订单明细，商品，配方，原材料，查询配方 -->
+ 	<select id="showpf" resultType="map" parameterType="java.lang.String">
+ 		SELECT raw.RAW_ID,kin.KIN_NAME,bur.BUR_G,raw.RAW_NAME,raw.RAW_CONTENT,raw.RAW_UNIT FROM erp_proindent_detail det ,erp_kinds kin,erp_burden bur,erp_raw raw
+		WHERE det.KIN_ID = kin.KIN_ID AND bur.KIN_ID = kin.KIN_ID AND bur.RAW_ID = raw.RAW_ID
+		AND det.INDENT_ID=#{indentId} 	
+ 	</select>
+ 
+ 
+ 	<!-- 订单日志查询,根据商品，订单，日志，日志明细 -->
+ 	<select id="findByrz" resultType="map" parameterType="java.lang.String">
+ 		SELECT kin.kin_name,deta.DETAIL_NUM,deta.CREATETIME,plog.LOG_COMPLET FROM 
+		erp_proindent pro,erp_log plog,
+		erp_log_detail deta,erp_kinds kin
+		WHERE plog.indent_id=pro.indent_id
+		AND deta.LOG_ID=plog.LOG_ID
+		AND deta.KIN_ID=kin.KIN_ID
+		AND pro.indent_id=#{indentId}
+		ORDER BY plog.LOG_COMPLET ASC 
+ 	</select>
+ 	
+ <!-- 根据ID修改生产状态 -->
+ <update id="updateId" parameterType="map">
+ 	update erp_proindent set INDENT_STATE=#{indentState} where INDENT_ID=#{indentId}
+ </update>
+
+ <!-- 根据ID查询订单 -->
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select * from erp_proindent where indent_Id = #{indentId}
+	</select>
+ 
+ 
+ 
+   <!-- 查询所有订单，下拉框 -->
+   <select id="findStation" resultMap="BaseResultMap">
+   		SELECT * FROM erp_proindent WHERE STATE=2  AND isva=1 AND INDENT_STATE=1 OR INDENT_STATE=2
+   </select>
+  
+   <!-- 根据订单id查询明细，和商品表 -->
+  <select id="selectByPrimaryKeyid" resultType="map" parameterType="java.lang.String" >
+	   SELECT kin.KIN_NAME,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE,det.ENTDE_ID
+	   FROM 
+	   ERP_PROINDENT pro,
+	   ERP_PROINDENT_DETAIL det,
+	   ERP_KINDS kin
+	   WHERE pro.INDENT_ID=det.INDENT_ID 
+	   AND det.KIN_ID=kin.KIN_ID 
+	   AND pro.INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据订单id查询明细，和商品表  查看明细 -->
+  <select id="showid" resultType="map" parameterType="java.lang.String" >
+	   SELECT kin.KIN_ID,kin.KIN_SERIAL,kin.KIN_NAME,kin.KIN_CONTENT,
+	   kin.KIN_EXPIRATION,kin.KIN_PRICE,det.ENTDE_NUM,det.ENTDE_PRICE,det.NUM
+	   FROM 
+	   ERP_PROINDENT pro,
+	   ERP_PROINDENT_DETAIL det,
+	   ERP_KINDS kin
+	   WHERE pro.INDENT_ID=det.INDENT_ID 
+	   AND det.KIN_ID=kin.KIN_ID 
+	   AND pro.INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </select>
+  
+  
+   <!-- 查询所有 -->
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap" >
+    select * from erp_proindent
+   <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	INDENT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_MONEY like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_COUNT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		<if test="indentUrgency != null and indentUrgency!=''">
+  		and INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		</if>
+  		<if test="state != null and state!=''">
+  		and STATE like CONCAT('%',#{state},'%' )
+  		</if>
+  		<if test="indentState != null and indentState!=''">
+  		and INDENT_STATE like CONCAT('%',#{indentState},'%' )
+  		</if>
+  		and ISVA=1
+  	</where>
+  	ORDER BY INDENT_EMETIME DESC
+  	limit #{page},#{limit}
+  </select>
+  
+  
+  
+  <!-- 总行数 -->
+   <select id="findRowCount" parameterType="map" resultType="int" >
+    select COUNT(*) from erp_proindent
+     <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	INDENT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_MONEY like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_COUNT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		<if test="indentUrgency != null and indentUrgency!=''">
+  		and INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		</if>
+  		<if test="state != null and state!=''">
+  		and STATE like CONCAT('%',#{state},'%' )
+  		</if>
+  		<if test="indentState != null and indentState!=''">
+  		and INDENT_STATE like CONCAT('%',#{indentState},'%' )
+  		</if>
+  		and ISVA=1
+  	</where>
+  	ORDER BY INDENT_EMETIME DESC
+  </select>
+  
+  
+  
+    <!-- 查询所有 -->
+  <select id="showPro" parameterType="map" resultMap="BaseResultMap" >
+    select * from erp_proindent
+   <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	INDENT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_MONEY like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	INDENT_COUNT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		<if test="indentUrgency != null and indentUrgency!=''">
+  		 INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		</if>
+  		<if test="state != null and state!=''">
+  		 STATE like CONCAT('%',#{state},'%' )
+  		</if>
+  		<if test="indentState != null and indentState !=''">
+  		 INDENT_STATE like CONCAT('%',#{indentState},'%' )
+  		</if>
+  		and ISVA=4
+  	</where>
+  	limit #{page},#{limit}
+  </select>
+  <!-- <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap" >
+    select *,(SELECT isva FROM erp_log WHERE INDENT_ID=dent.INDENT_ID)logComplet from erp_proindent dent LEFT JOIN ERP_LOG lo ON dent.INDENT_ID=lo.INDENT_ID
+   <where>
+  		<if test="key != null and key!=''">
+  		 ( 
+  		 	dent.INDENT_NUMBER like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	dent.INDENT_MONEY like CONCAT('%',#{key},'%' )
+  		 	or
+  		 	dent.INDENT_COUNT like CONCAT('%',#{key},'%' )
+  		  )
+  		</if>
+  		<if test="indentUrgency != null and indentUrgency!=''">
+  		and dent.INDENT_urgency like CONCAT('%',#{indentUrgency},'%' )
+  		</if>
+  		<if test="state != null and state!=''">
+  		and dent.STATE like CONCAT('%',#{state},'%' )
+  		</if>
+  		<if test="logComplet != null and isva!=''">
+  		and lo.ISVA like CONCAT('%',#{logComplet},'%' )
+  		</if>
+  		and dent.ISVA=1
+  	</where>
+  	limit #{page},#{limit}
+  </select> -->
+  
+  
+  
+ <select id="selectByPrimaryProid" parameterType="map" resultType="int" >
+   SELECT * FROM erp_proindent pro ,erp_proindent_detail det ,erp_log lo,erp_log_detail ldet ,erp_kinds k
+	WHERE 
+	det.KIN_ID=k.KIN_ID
+	AND 
+	det.INDENT_ID=pro.INDENT_ID
+	AND 
+	ldet.LOG_ID=lo.LOG_ID
+	AND 
+	ldet.KIN_ID=k.KIN_ID
+	AND 
+	lo.INDENT_ID=pro.INDENT_ID
+	AND pro.INDENT_ID = #{indentId}
+	AND pro.ISVA=4
+  </select> 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_proindent
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </delete>
+  <!-- 增加方法 -->
+  <insert id="insert" parameterType="com.yidu.model.ErpProindent" >
+   <selectKey keyProperty="indentId" resultType="string" order="BEFORE">
+	    SELECT REPLACE(UUID(),'-','') AS id;
+	  </selectKey>
+	  
+    insert into erp_proindent (INDENT_ID, INDENT_NUMBER, INDENT_MONEY, 
+      INDENT_COUNT, INDENT_urgency, INDENT_EMETIME, 
+      INDENT_WORKTIME, INDENT_ENDTIME, STATE, 
+      ISVA, INDENT_STATE, REMARK, 
+      CREATETIME, CREATER)
+    values (#{indentId,jdbcType=VARCHAR}, #{indentNumber,jdbcType=VARCHAR}, #{indentMoney,jdbcType=DECIMAL}, 
+      #{indentCount,jdbcType=INTEGER}, #{indentUrgency,jdbcType=VARCHAR}, #{indentEmetime,jdbcType=VARCHAR}, 
+      #{indentWorktime,jdbcType=VARCHAR}, #{indentEndtime,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{isva,jdbcType=VARCHAR}, #{indentState,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR})
+  </insert>
+ 
+  
+  <!-- 删除或修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpProindent" >
+    update erp_proindent
+    <set >
+      <if test="indentNumber != null" >
+        INDENT_NUMBER = #{indentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="indentMoney != null" >
+        INDENT_MONEY = #{indentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="indentCount != null" >
+        INDENT_COUNT = #{indentCount,jdbcType=INTEGER},
+      </if>
+      <if test="indentUrgency != null" >
+        INDENT_urgency = #{indentUrgency,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEmetime != null" >
+        INDENT_EMETIME = #{indentEmetime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentWorktime != null" >
+        INDENT_WORKTIME = #{indentWorktime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEndtime != null" >
+        INDENT_ENDTIME = #{indentEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="indentState != null" >
+        INDENT_STATE = #{indentState,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <insert id="insertSelective" parameterType="com.yidu.model.ErpProindent" >
+    insert into erp_proindent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="indentId != null" >
+        INDENT_ID,
+      </if>
+      <if test="indentNumber != null" >
+        INDENT_NUMBER,
+      </if>
+      <if test="indentMoney != null" >
+        INDENT_MONEY,
+      </if>
+      <if test="indentCount != null" >
+        INDENT_COUNT,
+      </if>
+      <if test="indentUrgency != null" >
+        INDENT_urgency,
+      </if>
+      <if test="indentEmetime != null" >
+        INDENT_EMETIME,
+      </if>
+      <if test="indentWorktime != null" >
+        INDENT_WORKTIME,
+      </if>
+      <if test="indentEndtime != null" >
+        INDENT_ENDTIME,
+      </if>
+      <if test="state != null" >
+        STATE,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="indentState != null" >
+        INDENT_STATE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="indentId != null" >
+        #{indentId,jdbcType=VARCHAR},
+      </if>
+      <if test="indentNumber != null" >
+        #{indentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="indentMoney != null" >
+        #{indentMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="indentCount != null" >
+        #{indentCount,jdbcType=INTEGER},
+      </if>
+      <if test="indentUrgency != null" >
+        #{indentUrgency,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEmetime != null" >
+        #{indentEmetime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentWorktime != null" >
+        #{indentWorktime,jdbcType=VARCHAR},
+      </if>
+      <if test="indentEndtime != null" >
+        #{indentEndtime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=VARCHAR},
+      </if>
+      <if test="indentState != null" >
+        #{indentState,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpProindent" >
+    update erp_proindent
+    set INDENT_NUMBER = #{indentNumber,jdbcType=VARCHAR},
+      INDENT_MONEY = #{indentMoney,jdbcType=DECIMAL},
+      INDENT_COUNT = #{indentCount,jdbcType=INTEGER},
+      INDENT_urgency = #{indentUrgency,jdbcType=VARCHAR},
+      INDENT_EMETIME = #{indentEmetime,jdbcType=VARCHAR},
+      INDENT_WORKTIME = #{indentWorktime,jdbcType=VARCHAR},
+      INDENT_ENDTIME = #{indentEndtime,jdbcType=VARCHAR},
+      STATE = #{state,jdbcType=INTEGER},
+      ISVA = #{isva,jdbcType=VARCHAR},
+      INDENT_STATE = #{indentState,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR}
+    where INDENT_ID = #{indentId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="auditPpoindent" parameterType="map" >
+  	update erp_proindent set STATE = #{state} where indent_id=#{indentId}
+  </update>
+</mapper>

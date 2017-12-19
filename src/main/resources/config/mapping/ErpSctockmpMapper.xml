@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpSctockmpMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpSctockmp" >
+    <id column="SALE_ID" property="saleId" jdbcType="VARCHAR" />
+    <result column="STAFF_ID" property="staffId" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="SALE_NUM" property="saleNum" jdbcType="INTEGER" />
+    <result column="SALE_DATE" property="saleDate" jdbcType="TIMESTAMP" />
+    <result column="SALE_MONEY" property="saleMoney" jdbcType="DECIMAL" />
+    <result column="SALE_DISCOUNT" property="saleDiscount" jdbcType="DECIMAL" />
+    <result column="SALE_MONEY1" property="saleMoney1" jdbcType="DECIMAL" />
+    <result column="SALE_MONEY2" property="saleMoney2" jdbcType="DECIMAL" />
+    <result column="SALE_MONEY3" property="saleMoney3" jdbcType="DECIMAL" />
+    <result column="SALE_if_wholesale" property="saleIfWholesale" jdbcType="INTEGER" />
+    <result column="SALE_wholesale_state" property="saleWholesaleState" jdbcType="INTEGER" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SALE_ID, STAFF_ID, ANNEX_ID, MEMBER_ID, SALE_NUM, SALE_DATE, SALE_MONEY, SALE_DISCOUNT, 
+    SALE_MONEY1, SALE_MONEY2, SALE_MONEY3, SALE_if_wholesale, SALE_wholesale_state, CREATER, 
+    CREATETIME, REMARK
+  </sql>
+  
+  <!-- 查询今天销售订单数量 -->
+  <select id="findToDay" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM erp_sctockmp WHERE SUBSTRING(sale_date,3,8)=DATE_FORMAT(NOW(),'%y-%m-%d');
+  </select>
+  
+  <!-- 根据订单ID查询当前订单批发状态 -->
+  <select id="findWholesaleStateBySaleId" resultType="int" parameterType="java.lang.String" >
+    select 
+    SALE_wholesale_state
+    from erp_sctockmp
+    where SALE_ID = #{saleId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 审核通过，根据订单ID增加批发状态 -->
+  <update id="updateWholesaleStateAdd"  parameterType="java.lang.String">  
+        update erp_sctockmp set
+            SALE_wholesale_state=SALE_wholesale_state+1 
+        where SALE_ID = #{saleId} 
+  </update>
+  
+  <!-- 查询订单列表 -->
+  <select id="findAll" resultType="map" parameterType="map" >
+    SELECT sc.SALE_ID,sc.MEMBER_ID,sc.SALE_NUM,sc.SALE_DATE,
+	sc.SALE_MONEY,sc.SALE_DISCOUNT,sc.SALE_MONEY1,sc.SALE_MONEY2,sc.SALE_MONEY3,
+	sc.SALE_wholesale_state,st.sta_name,an.annex_name FROM 
+	erp_annex AS an,erp_sctockmp AS sc,erp_staff AS st WHERE 
+	an.ANNEX_ID=sc.ANNEX_ID AND sc.STAFF_ID=st.sta_id 
+	<if test="sctockmpData!=null and sctockmpData!=''"><!-- 混合数据 -->
+	   	 and (st.sta_name LIKE '%${sctockmpData}%'<!-- 人员姓名-->
+		 OR sc.MEMBER_ID LIKE '%${sctockmpData}%')<!-- 订单会员编号-->
+     </if>
+     <if test="saleDate_begin!=null and saleDate_end!=''"><!-- 如果开始日期和结束日期不为空between -->
+     	and sc.SALE_DATE  BETWEEN '${saleDate_begin}' AND '${saleDate_end}' 
+     </if>
+     <if test="SALE_if_wholesale!=null"><!-- 是否批发 -->
+     	AND sc.SALE_if_wholesale=${SALE_if_wholesale}
+     </if>
+     <if test="SALE_wholesale_state!=null and SALE_wholesale_state!=''"><!-- 批发状态 -->
+     	AND sc.SALE_wholesale_state=${SALE_wholesale_state} 
+     </if>
+     <if test="noState!=null and noState!=''">
+     	AND sc.SALE_wholesale_state!=4 AND sc.SALE_wholesale_state!=0
+     </if>
+     <if test="annexId!=null and annexId!=''">
+     	AND sc.ANNEX_ID='${annexId}' 
+     </if>
+     ORDER BY sc.SALE_DATE DESC 
+      limit #{firstRows},#{limit}
+  </select>
+  
+  <!-- 查询订单列表数量 -->
+  <select id="findAllSize" resultType="java.lang.Integer" parameterType="map" >
+    SELECT count(*) FROM 
+	erp_annex AS an,erp_sctockmp AS sc,erp_staff AS st WHERE 
+	an.ANNEX_ID=sc.ANNEX_ID AND sc.STAFF_ID=st.sta_id 
+	<if test="sctockmpData!=null and sctockmpData!=''">
+	   	 and (st.sta_name LIKE '%${sctockmpData}%'
+		 OR sc.MEMBER_ID LIKE '%${sctockmpData}%')
+     </if>
+     <if test="annexTime_begin!=null and annexTime_begin!=''">
+     	and sc.SALE_DATE  BETWEEN '${saleDate_begin}' AND '${saleDate_end}' 
+     </if>
+     <if test="SALE_if_wholesale!=null and SALE_if_wholesale!=''">
+     	AND sc.SALE_if_wholesale=${SALE_if_wholesale}
+     </if>
+     <if test="SALE_wholesale_state!=null and SALE_wholesale_state!=''">
+     	AND sc.SALE_wholesale_state=${SALE_wholesale_state} 
+     </if>
+     <if test="noState!=null and noState!=''">
+     	AND sc.SALE_wholesale_state!=4 AND sc.SALE_wholesale_state!=0
+     </if>
+     <if test="annexId!=null and annexId!=''">
+     	AND sc.ANNEX_ID='${annexId}'
+     </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_sctockmp
+    where SALE_ID = #{saleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_sctockmp
+    where SALE_ID = #{saleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpSctockmp" >
+    insert into erp_sctockmp (SALE_ID, STAFF_ID, ANNEX_ID, 
+      MEMBER_ID, SALE_NUM, SALE_DATE, 
+      SALE_MONEY, SALE_DISCOUNT, SALE_MONEY1, 
+      SALE_MONEY2, SALE_MONEY3, SALE_if_wholesale, 
+      SALE_wholesale_state, CREATER, CREATETIME, 
+      REMARK)
+    values (#{saleId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, 
+      #{memberId,jdbcType=VARCHAR}, #{saleNum,jdbcType=INTEGER}, #{saleDate,jdbcType=TIMESTAMP}, 
+      #{saleMoney,jdbcType=DECIMAL}, #{saleDiscount,jdbcType=DECIMAL}, #{saleMoney1,jdbcType=DECIMAL}, 
+      #{saleMoney2,jdbcType=DECIMAL}, #{saleMoney3,jdbcType=DECIMAL}, #{saleIfWholesale,jdbcType=INTEGER}, 
+      #{saleWholesaleState,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpSctockmp" >
+    insert into erp_sctockmp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="saleId != null" >
+        SALE_ID,
+      </if>
+      <if test="staffId != null" >
+        STAFF_ID,
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID,
+      </if>
+      <if test="memberId != null" >
+        MEMBER_ID,
+      </if>
+      <if test="saleNum != null" >
+        SALE_NUM,
+      </if>
+      <if test="saleDate != null" >
+        SALE_DATE,
+      </if>
+      <if test="saleMoney != null" >
+        SALE_MONEY,
+      </if>
+      <if test="saleDiscount != null" >
+        SALE_DISCOUNT,
+      </if>
+      <if test="saleMoney1 != null" >
+        SALE_MONEY1,
+      </if>
+      <if test="saleMoney2 != null" >
+        SALE_MONEY2,
+      </if>
+      <if test="saleMoney3 != null" >
+        SALE_MONEY3,
+      </if>
+      <if test="saleIfWholesale != null" >
+        SALE_if_wholesale,
+      </if>
+      <if test="saleWholesaleState != null" >
+        SALE_wholesale_state,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="saleId != null" >
+        #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null" >
+        #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleNum != null" >
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="saleDate != null" >
+        #{saleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleMoney != null" >
+        #{saleMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="saleDiscount != null" >
+        #{saleDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney1 != null" >
+        #{saleMoney1,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney2 != null" >
+        #{saleMoney2,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney3 != null" >
+        #{saleMoney3,jdbcType=DECIMAL},
+      </if>
+      <if test="saleIfWholesale != null" >
+        #{saleIfWholesale,jdbcType=INTEGER},
+      </if>
+      <if test="saleWholesaleState != null" >
+        #{saleWholesaleState,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpSctockmp" >
+    update erp_sctockmp
+    <set >
+      <if test="staffId != null" >
+        STAFF_ID = #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        MEMBER_ID = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="saleNum != null" >
+        SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="saleDate != null" >
+        SALE_DATE = #{saleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleMoney != null" >
+        SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="saleDiscount != null" >
+        SALE_DISCOUNT = #{saleDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney1 != null" >
+        SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney2 != null" >
+        SALE_MONEY2 = #{saleMoney2,jdbcType=DECIMAL},
+      </if>
+      <if test="saleMoney3 != null" >
+        SALE_MONEY3 = #{saleMoney3,jdbcType=DECIMAL},
+      </if>
+      <if test="saleIfWholesale != null" >
+        SALE_if_wholesale = #{saleIfWholesale,jdbcType=INTEGER},
+      </if>
+      <if test="saleWholesaleState != null" >
+        SALE_wholesale_state = #{saleWholesaleState,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SALE_ID = #{saleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpSctockmp" >
+    update erp_sctockmp
+    set STAFF_ID = #{staffId,jdbcType=VARCHAR},
+      ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      MEMBER_ID = #{memberId,jdbcType=VARCHAR},
+      SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      SALE_DATE = #{saleDate,jdbcType=TIMESTAMP},
+      SALE_MONEY = #{saleMoney,jdbcType=DECIMAL},
+      SALE_DISCOUNT = #{saleDiscount,jdbcType=DECIMAL},
+      SALE_MONEY1 = #{saleMoney1,jdbcType=DECIMAL},
+      SALE_MONEY2 = #{saleMoney2,jdbcType=DECIMAL},
+      SALE_MONEY3 = #{saleMoney3,jdbcType=DECIMAL},
+      SALE_if_wholesale = #{saleIfWholesale,jdbcType=INTEGER},
+      SALE_wholesale_state = #{saleWholesaleState,jdbcType=INTEGER},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where SALE_ID = #{saleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

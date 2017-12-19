@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpQualityDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpQualityDetail" >
+    <id column="QDET_ID" property="qdetId" jdbcType="VARCHAR" />
+    <result column="QUA_ID" property="quaId" jdbcType="VARCHAR" />
+    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+    <result column="QDET_GOOD" property="qdetGood" jdbcType="INTEGER" />
+    <result column="QDET_BAB" property="qdetBab" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    QDET_ID, QUA_ID, RAW_ID, KIN_ID, QDET_GOOD, QDET_BAB, REMARK, CREATETIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_quality_detail
+    where QDET_ID = #{qdetId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_quality_detail
+    where QDET_ID = #{qdetId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpQualityDetail" >
+    insert into "erp_quality_detail" (QDET_ID, QUA_ID, RAW_ID, 
+      KIN_ID, QDET_GOOD, QDET_BAB, 
+      REMARK, CREATETIME)
+    values (#{qdetId,jdbcType=VARCHAR}, #{quaId,jdbcType=VARCHAR}, #{rawId,jdbcType=VARCHAR}, 
+      #{kinId,jdbcType=VARCHAR}, #{qdetGood,jdbcType=INTEGER}, #{qdetBab,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpQualityDetail" >
+  <selectKey keyProperty="qdetId" order="BEFORE" resultType="java.lang.String">
+			select UUID()
+	</selectKey>
+    insert into erp_quality_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="qdetId != null" >
+        QDET_ID,
+      </if>
+      <if test="quaId != null" >
+        QUA_ID,
+      </if>
+      <if test="rawId != null" >
+        RAW_ID,
+      </if>
+      <if test="kinId != null" >
+        KIN_ID,
+      </if>
+      <if test="qdetGood != null" >
+        QDET_GOOD,
+      </if>
+      <if test="qdetBab != null" >
+        QDET_BAB,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="qdetId != null" >
+        #{qdetId,jdbcType=VARCHAR},
+      </if>
+      <if test="quaId != null" >
+        #{quaId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="qdetGood != null" >
+        #{qdetGood,jdbcType=INTEGER},
+      </if>
+      <if test="qdetBab != null" >
+        #{qdetBab,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpQualityDetail" >
+    update erp_quality_detail
+    <set >
+      <if test="quaId != null" >
+        QUA_ID = #{quaId,jdbcType=VARCHAR},
+      </if>
+      <if test="rawId != null" >
+        RAW_ID = #{rawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinId != null" >
+        KIN_ID = #{kinId,jdbcType=VARCHAR},
+      </if>
+      <if test="qdetGood != null" >
+        QDET_GOOD = #{qdetGood,jdbcType=INTEGER},
+      </if>
+      <if test="qdetBab != null" >
+        QDET_BAB = #{qdetBab,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where QDET_ID = #{qdetId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpQualityDetail" >
+    update erp_quality_detail
+    set QUA_ID = #{quaId,jdbcType=VARCHAR},
+      RAW_ID = #{rawId,jdbcType=VARCHAR},
+      KIN_ID = #{kinId,jdbcType=VARCHAR},
+      QDET_GOOD = #{qdetGood,jdbcType=INTEGER},
+      QDET_BAB = #{qdetBab,jdbcType=INTEGER},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=VARCHAR}
+    where QDET_ID = #{qdetId,jdbcType=VARCHAR}
+  </update>
+</mapper>

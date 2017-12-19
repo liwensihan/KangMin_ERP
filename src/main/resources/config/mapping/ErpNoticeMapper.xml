@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpNoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpNotice" >
+    <result column="notice_id" property="noticeId" jdbcType="VARCHAR" />
+    <result column="sta_id" property="staId" jdbcType="VARCHAR" />
+    <result column="notice_title" property="noticeTitle" jdbcType="VARCHAR" />
+    <result column="notice_content" property="noticeContent" jdbcType="VARCHAR" />
+    <result column="notice_time" property="noticeTime" jdbcType="VARCHAR" />
+    <result column="isva" property="isva" jdbcType="INTEGER" />
+    <result column="oper" property="oper" jdbcType="VARCHAR" />
+    <result column="optime" property="optime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 查询今天发布的公告数量 -->
+  <select id="findToDay" resultType="int">
+  	SELECT COUNT(*) FROM erp_notice WHERE SUBSTRING(notice_time,3,8)=DATE_FORMAT(NOW(),'%y-%m-%d');
+  </select>
+  
+  <!-- 根据公告ID查询公告信息 -->
+  <select id="findById" resultMap="BaseResultMap" parameterType="string" >
+    SELECT en.notice_id,en.notice_title,en.notice_content,en.notice_time,es.sta_name AS sta_id 
+    FROM 
+	erp_notice en,erp_staff es 
+	WHERE 
+	en.sta_id=es.sta_id and en.notice_id=#{noticeId}
+  </select>
+  
+  <!-- 查询所有分站(分页加搜索) -->
+  <select id="findAll" parameterType="map" resultMap="BaseResultMap">
+  	SELECT en.notice_id,en.notice_title,en.notice_content,en.notice_time,es.sta_name AS sta_id FROM 
+erp_notice en,erp_staff es WHERE en.sta_id=es.sta_id 
+  	<if test="noticeData!=null and noticeData!=''">
+   	 and (es.sta_name LIKE '%${noticeData}%'
+	 OR en.notice_title LIKE '%${noticeData}%')
+     </if>
+     <if test="noticeTime_begin!=null and noticeTime_begin!=''">
+     	and en.notice_time  BETWEEN '${noticeTime_begin}' AND '${noticeTime_end}' 
+     </if>
+     AND en.isva=1 ORDER BY en.notice_time desc
+     limit #{firstRows},#{limit}
+  </select>
+  
+  <!-- 查询所有分站行数(搜索) -->
+   <select id="findAllSize" parameterType="map"  resultType="int">
+  	SELECT count(*) FROM 
+erp_notice en,erp_staff es WHERE en.sta_id=es.sta_id 
+  	<if test="noticeData!=null and noticeData!=''">
+   	 and (es.sta_name LIKE '%${noticeData}%'
+	 OR en.notice_title LIKE '%${noticeData}%')
+     </if>
+     <if test="noticeTime_begin!=null and noticeTime_begin!=''">
+     	and en.notice_time  BETWEEN '${noticeTime_begin}' AND '${noticeTime_end}' 
+     </if>
+     AND en.isva=1
+  </select>
+  
+  
+  <insert id="insert" parameterType="com.yidu.model.ErpNotice" >
+    insert into erp_notice (notice_id, sta_id, notice_title, 
+      notice_content, notice_time, isva, 
+      oper, optime)
+    values (#{noticeId,jdbcType=VARCHAR}, #{staId,jdbcType=VARCHAR}, #{noticeTitle,jdbcType=VARCHAR}, 
+      #{noticeContent,jdbcType=VARCHAR}, #{noticeTime,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, 
+      #{oper,jdbcType=VARCHAR}, #{optime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpNotice" >
+    insert into erp_notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noticeId != null" >
+        notice_id,
+      </if>
+      <if test="staId != null" >
+        sta_id,
+      </if>
+      <if test="noticeTitle != null" >
+        notice_title,
+      </if>
+      <if test="noticeContent != null" >
+        notice_content,
+      </if>
+      <if test="noticeTime != null" >
+        notice_time,
+      </if>
+      <if test="isva != null" >
+        isva,
+      </if>
+      <if test="oper != null" >
+        oper,
+      </if>
+      <if test="optime != null" >
+        optime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noticeId != null" >
+        #{noticeId,jdbcType=VARCHAR},
+      </if>
+      <if test="staId != null" >
+        #{staId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeTitle != null" >
+        #{noticeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeContent != null" >
+        #{noticeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeTime != null" >
+        #{noticeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="oper != null" >
+        #{oper,jdbcType=VARCHAR},
+      </if>
+      <if test="optime != null" >
+        #{optime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

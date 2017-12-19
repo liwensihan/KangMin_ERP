@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpFdproformMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpFdproform" >
+    <id column="FDPRO_ID" property="fdproId" jdbcType="VARCHAR" />
+    <result column="FDPRO_SERIAL" property="fdproSerial" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR" />
+    <result column="sta_id" property="staId" jdbcType="VARCHAR" />
+    <result column="FDPRO_WARECOUNT" property="fdproWarecount" jdbcType="INTEGER" />
+    <result column="FDPRO_SUMPRICE" property="fdproSumprice" jdbcType="DECIMAL" />
+    <result column="FDPRO_TIME" property="fdproTime" jdbcType="VARCHAR" />
+    <result column="FDPRO_ISVA" property="fdproIsva" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="sta_name" property="staName" jdbcType="VARCHAR" />
+    <result column="ANNEX_NAME" property="annexName" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FDPRO_ID, FDPRO_SERIAL, ANNEX_ID, sta_id, FDPRO_WARECOUNT, FDPRO_SUMPRICE, FDPRO_TIME, 
+    FDPRO_ISVA, CREATETIME, CREATER, REMARK
+  </sql>
+  <!-- 根据id查询 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_fdproform
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据分店id查询所有 -->
+  <select id="findAll" resultMap="BaseResultMap" parameterType="Map">
+  SELECT * FROM erp_fdproform fd ,erp_staff staff,erp_annex annex
+  <where>
+  <if test="keywords!=null and keywords!=''">
+  (
+  	FD.FDPRO_SERIAL LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	STAFF.STA_NAME LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	ANNEX.ANNEX_NAME LIKE CONCAT ('%',#{keywords},'%') 
+  )
+  </if>
+  <if test="min!=null and min!=''">
+   AND FD.FDPRO_SUMPRICE &gt;=#{min}
+  </if>
+  <if test="max!=null and max!=''">
+  AND FD.FDPRO_SUMPRICE &lt;=#{max}
+  </if>
+  AND fd.ANNEX_ID=annex.ANNEX_ID 
+  AND fd.ANNEX_ID = staff.ANNEX_ID 
+  AND FD.ISVA='1' 
+  AND fd.sta_id=staff.sta_id 
+  AND staff.ISVA='1' 
+  AND annex.ISVA='1' 
+  AND staff.ANNEX_ID = #{annexId} 
+  order by fdpro_time desc 
+  </where>
+  limit #{page},#{limit}
+  </select>
+  
+  <!-- 查询所有-->
+  <select id="ratifyFindAll" resultMap="BaseResultMap" parameterType="Map">
+  SELECT * FROM erp_fdproform fd ,erp_staff staff,erp_annex annex
+  <where>
+  <if test="keywords!=null and keywords!=''">
+  (
+  	FD.FDPRO_SERIAL LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	STAFF.STA_NAME LIKE CONCAT ('%',#{keywords},'%')
+  )
+  </if>
+  <if test="min!=null and min!=''">
+   AND FD.FDPRO_SUMPRICE &gt;=#{min}
+  </if>
+  <if test="max!=null and max!=''">
+  AND FD.FDPRO_SUMPRICE &lt;=#{max}
+  </if>
+  AND fd.ANNEX_ID=annex.ANNEX_ID 
+  AND fd.ANNEX_ID = staff.ANNEX_ID 
+  AND FD.ISVA='1' 
+  AND fd.sta_id=staff.sta_id 
+  AND staff.ISVA='1' 
+  AND annex.ISVA='1'
+  order by fdpro_time desc
+  </where>
+  limit #{page},#{limit}
+  </select>
+  
+  <!-- 根据分店id查询所有 -->
+  <select id="findRowCount" resultType="int" parameterType="Map">
+  	SELECT COUNT(*) FROM erp_fdproform fd ,erp_staff staff,erp_annex annex
+  <where>
+  <if test="keywords!=null and keywords!=''">
+  (
+  	FD.FDPRO_SERIAL LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	STAFF.STA_NAME LIKE CONCAT ('%',#{keywords},'%')
+  )
+  </if>
+  <if test="min!=null and min!=''">
+   AND FD.FDPRO_SUMPRICE &gt;=#{min}
+  </if>
+  <if test="max!=null and max!=''">
+  AND FD.FDPRO_SUMPRICE &lt;=#{max}
+  </if>
+  AND fd.ANNEX_ID=annex.ANNEX_ID 
+  AND fd.ANNEX_ID = staff.ANNEX_ID 
+  AND FD.ISVA='1' 
+  AND fd.sta_id=staff.sta_id 
+  AND staff.ISVA='1' 
+  AND annex.ISVA='1' 
+  AND staff.ANNEX_ID = #{annexId}
+  </where>
+  </select>
+  
+  <!-- 查询所有 -->
+  <select id="ratifyFindAllCout" resultType="int" parameterType="Map">
+  	SELECT COUNT(*) FROM erp_fdproform fd ,erp_staff staff,erp_annex annex
+  <where>
+  <if test="keywords!=null and keywords!=''">
+  (
+  	FD.FDPRO_SERIAL LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	STAFF.STA_NAME LIKE CONCAT ('%',#{keywords},'%')
+  	OR
+  	ANNEX.ANNEX_NAME LIKE CONCAT ('%',#{keywords},'%') 
+  )
+  </if>
+  <if test="min!=null and min!=''">
+   AND FD.FDPRO_SUMPRICE &gt;=#{min}
+  </if>
+  <if test="max!=null and max!=''">
+  AND FD.FDPRO_SUMPRICE &lt;=#{max}
+  </if>
+  AND fd.ANNEX_ID=annex.ANNEX_ID 
+  AND fd.ANNEX_ID = staff.ANNEX_ID 
+  AND FD.ISVA='1' 
+  AND fd.sta_id=staff.sta_id 
+  AND staff.ISVA='1' 
+  AND annex.ISVA='1' 
+  </where>
+  </select>
+  
+  <!-- 根据id删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_fdproform
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 增加全部 -->
+  <insert id="insert" parameterType="com.yidu.model.ErpFdproform" >
+    insert into erp_fdproform (FDPRO_ID, FDPRO_SERIAL, ANNEX_ID, 
+      sta_id, FDPRO_WARECOUNT, FDPRO_SUMPRICE, 
+      FDPRO_TIME, FDPRO_ISVA, CREATETIME, 
+      CREATER, REMARK)
+    values (#{fdproId,jdbcType=VARCHAR}, #{fdproSerial,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, 
+      #{staId,jdbcType=VARCHAR}, #{fdproWarecount,jdbcType=INTEGER}, #{fdproSumprice,jdbcType=DECIMAL}, 
+      #{fdproTime,jdbcType=VARCHAR}, #{fdproIsva,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, 
+      #{creater,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <!-- 条件增加 -->
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpFdproform" >
+    insert into erp_fdproform
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fdproId != null" >
+        FDPRO_ID,
+      </if>
+      <if test="fdproSerial != null" >
+        FDPRO_SERIAL,
+      </if>
+      <if test="annexId != null" >
+        ANNEX_ID,
+      </if>
+      <if test="staId != null" >
+        sta_id,
+      </if>
+      <if test="fdproWarecount != null" >
+        FDPRO_WARECOUNT,
+      </if>
+      <if test="fdproSumprice != null" >
+        FDPRO_SUMPRICE,
+      </if>
+      <if test="fdproTime != null" >
+        FDPRO_TIME,
+      </if>
+      <if test="fdproIsva != null" >
+        FDPRO_ISVA,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fdproId != null" >
+        #{fdproId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproSerial != null" >
+        #{fdproSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="staId != null" >
+        #{staId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproWarecount != null" >
+        #{fdproWarecount,jdbcType=INTEGER},
+      </if>
+      <if test="fdproSumprice != null" >
+        #{fdproSumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fdproTime != null" >
+        #{fdproTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproIsva != null" >
+        #{fdproIsva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <!-- 条件修改 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpFdproform" >
+    update erp_fdproform
+    <set >
+      <if test="fdproSerial != null and  fdproSerial != ''"  >
+        FDPRO_SERIAL = #{fdproSerial,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null and  annexId != ''" >
+        ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="staId != null and  staId != ''" >
+        sta_id = #{staId,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproWarecount != null and  fdproWarecount != ''" >
+        FDPRO_WARECOUNT = #{fdproWarecount,jdbcType=INTEGER},
+      </if>
+      <if test="fdproSumprice != null and  fdproSumprice != ''" >
+        FDPRO_SUMPRICE = #{fdproSumprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fdproTime != null and  fdproTime != ''" >
+        FDPRO_TIME = #{fdproTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fdproIsva != null and  fdproIsva != ''" >
+        FDPRO_ISVA = #{fdproIsva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null and  createtime != ''" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null and  creater != ''" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null and  remark != ''" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 修改全部 -->
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpFdproform" >
+    update erp_fdproform
+    set FDPRO_SERIAL = #{fdproSerial,jdbcType=VARCHAR},
+      ANNEX_ID = #{annexId,jdbcType=VARCHAR},
+      sta_id = #{staId,jdbcType=VARCHAR},
+      FDPRO_WARECOUNT = #{fdproWarecount,jdbcType=INTEGER},
+      FDPRO_SUMPRICE = #{fdproSumprice,jdbcType=DECIMAL},
+      FDPRO_TIME = #{fdproTime,jdbcType=VARCHAR},
+      FDPRO_ISVA = #{fdproIsva,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除 -->
+  <update id="deleteFdpro" parameterType="java.lang.String">
+   update erp_fdproform 
+   set ISVA = '0' 
+   WHERE FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 通过 -->
+  <update id="updateThrough" parameterType="string">
+    update erp_fdproform
+   	set FDPRO_ISVA = '1'
+   	WHERE FDPRO_ID = #{fdproId}
+  </update> 
+  
+  <!-- 不通过 -->
+  <update id="noThrough" parameterType="java.lang.String">
+   update erp_fdproform 
+   set FDPRO_ISVA = '2' 
+   WHERE FDPRO_ID = #{fdproId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 取得修改的值 -->
+  <update id="updateValue" parameterType="com.yidu.model.ErpFdproform">
+  update erp_fdproform 
+  set FDPRO_SUMPRICE = #{fdproSumprice} ,FDPRO_WARECOUNT = #{fdproWarecount} 
+  WHERE FDPRO_ID = #{fdproId}
+  </update>
+</mapper>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpOutbankMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpOutbank" >
+    <id column="OB_ID" property="obId" jdbcType="VARCHAR" />
+    <result column="KINORD_ID" property="kinordId" jdbcType="VARCHAR" />
+    <result column="OB_NUMBER" property="obNumber" jdbcType="VARCHAR" />
+    <result column="OB_TIME" property="obTime" jdbcType="VARCHAR" />
+    <result column="OB_WARECOUNT" property="obWarecount" jdbcType="INTEGER" />
+    <result column="OB_BUSIBESS" property="obBusibess" jdbcType="INTEGER" />
+    <result column="OB_STAFFID" property="obStaffid" jdbcType="VARCHAR" />
+    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="sta_name" property="staName" jdbcType="VARCHAR" />
+     <collection property="det" ofType="ErpInvedet">  
+           <id column="INVEDET_ID" property="invedetId" jdbcType="VARCHAR" />
+		    <result column="BANK_ID" property="bankId" jdbcType="VARCHAR" />
+		    <result column="WARE_ID" property="wareId" jdbcType="VARCHAR" />
+		    <result column="OB_ID" property="obId" jdbcType="VARCHAR" />
+		    <result column="KIN_ID" property="kinId" jdbcType="VARCHAR" />
+		    <result column="KIN_NAME" property="kinsName" jdbcType="VARCHAR" />
+		    <result column="RAW_NAME" property="rawName" jdbcType="VARCHAR" />
+		    <result column="INVEDET_NUM" property="invedetNum" jdbcType="INTEGER" />
+		    <result column="RAW_ID" property="rawId" jdbcType="VARCHAR" />
+		    <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+		    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
+		    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		    <result column="ISVA" property="isva" jdbcType="INTEGER" />
+     </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OB_ID, KINORD_ID, OB_NUMBER, OB_TIME, OB_WARECOUNT, OB_BUSIBESS, OB_STAFFID, ISVA, 
+    CREATETIME, CREATER, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   SELECT * FROM erp_outbank b ,erp_invedet i , erp_kinds k ,erp_staff f WHERE b.CREATER = f.sta_id AND  i.OB_ID=b.OB_ID AND i.KIN_ID = k.KIN_ID AND b.OB_ID =#{obId}
+  </select>
+  <select id="selectSerial" resultType="java.lang.String" parameterType="java.lang.String">
+		select OB_NUMBER from erp_outbank where OB_NUMBER like
+		concat(concat('%', #{date}), '%') ORDER BY CREATETIME DESC LIMIT 1;
+	</select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+  	SELECT * FROM erp_outbank b ,erp_staff s 
+  		<where>
+  			b.CREATER = s.sta_id  and 
+  			<if test="price!=null and price !=''">
+  			(
+  				b.OB_BUSIBESS like CONCAT('%',#{price},'%' )
+  			)
+  			AND
+  			</if>
+  			<if test="prie!=null and prie !=''">
+  			(
+  				b.OB_TIME like CONCAT('%',#{prie},'%' )
+  				or 
+  				b.OB_NUMBER like CONCAT('%',#{prie},'%' )
+  				or 
+  				s.sta_name like CONCAT('%',#{prie},'%' )
+  			)
+  			AND
+  			</if>
+  			 b.ISVA=1 GROUP BY b.CREATETIME DESC LIMIT #{page},#{limit}
+  		</where>
+  </select>
+  <select id="selectAllConut" resultType="int" parameterType="map">
+  	SELECT count(*) FROM erp_outbank b ,erp_staff s 
+  		<where>
+  			b.CREATER = s.sta_id  and 
+  			<if test="price!=null and price !=''">
+  			(
+  				b.OB_BUSIBESS like CONCAT('%',#{price},'%' )
+  				
+  			)
+  			and
+  			</if>
+  			<if test="prie!=null and prie !=''">
+  			(
+  				b.OB_TIME like CONCAT('%',#{prie},'%' )
+  				or 
+  				b.OB_NUMBER like CONCAT('%',#{prie},'%' )
+  				or 
+  				s.sta_name like CONCAT('%',#{prie},'%' )
+  			)
+  			AND
+  			</if>
+  			b.ISVA=1 
+  		</where>
+  </select>
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_outbank
+    where OB_ID = #{obId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpOutbank" >
+    insert into erp_outbank (OB_ID, KINORD_ID, OB_NUMBER, 
+      OB_TIME, OB_WARECOUNT, OB_BUSIBESS, 
+      OB_STAFFID, ISVA, CREATETIME, 
+      CREATER, REMARK)
+    values (#{obId,jdbcType=VARCHAR}, #{kinordId,jdbcType=VARCHAR}, #{obNumber,jdbcType=VARCHAR}, 
+      #{obTime,jdbcType=VARCHAR}, #{obWarecount,jdbcType=INTEGER}, #{obBusibess,jdbcType=INTEGER}, 
+      #{obStaffid,jdbcType=VARCHAR}, #{isva,jdbcType=INTEGER}, #{createtime,jdbcType=VARCHAR}, 
+      #{creater,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpOutbank" >
+    insert into erp_outbank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="obId != null" >
+        OB_ID,
+      </if>
+      <if test="kinordId != null" >
+        KINORD_ID,
+      </if>
+      <if test="obNumber != null" >
+        OB_NUMBER,
+      </if>
+      <if test="obTime != null" >
+        OB_TIME,
+      </if>
+      <if test="obWarecount != null" >
+        OB_WARECOUNT,
+      </if>
+      <if test="obBusibess != null" >
+        OB_BUSIBESS,
+      </if>
+      <if test="obStaffid != null" >
+        OB_STAFFID,
+      </if>
+      <if test="isva != null" >
+        ISVA,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="creater != null" >
+        CREATER,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="obId != null" >
+        #{obId,jdbcType=VARCHAR},
+      </if>
+      <if test="kinordId != null" >
+        #{kinordId,jdbcType=VARCHAR},
+      </if>
+      <if test="obNumber != null" >
+        #{obNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="obTime != null" >
+        #{obTime,jdbcType=VARCHAR},
+      </if>
+      <if test="obWarecount != null" >
+        #{obWarecount,jdbcType=INTEGER},
+      </if>
+      <if test="obBusibess != null" >
+        #{obBusibess,jdbcType=INTEGER},
+      </if>
+      <if test="obStaffid != null" >
+        #{obStaffid,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpOutbank" >
+    update erp_outbank
+    <set >
+      <if test="kinordId != null" >
+        KINORD_ID = #{kinordId,jdbcType=VARCHAR},
+      </if>
+      <if test="obNumber != null" >
+        OB_NUMBER = #{obNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="obTime != null" >
+        OB_TIME = #{obTime,jdbcType=VARCHAR},
+      </if>
+      <if test="obWarecount != null" >
+        OB_WARECOUNT = #{obWarecount,jdbcType=INTEGER},
+      </if>
+      <if test="obBusibess != null" >
+        OB_BUSIBESS = #{obBusibess,jdbcType=INTEGER},
+      </if>
+      <if test="obStaffid != null" >
+        OB_STAFFID = #{obStaffid,jdbcType=VARCHAR},
+      </if>
+      <if test="isva != null" >
+        ISVA = #{isva,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        CREATER = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where OB_ID = #{obId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpOutbank" >
+    update erp_outbank
+    set KINORD_ID = #{kinordId,jdbcType=VARCHAR},
+      OB_NUMBER = #{obNumber,jdbcType=VARCHAR},
+      OB_TIME = #{obTime,jdbcType=VARCHAR},
+      OB_WARECOUNT = #{obWarecount,jdbcType=INTEGER},
+      OB_BUSIBESS = #{obBusibess,jdbcType=INTEGER},
+      OB_STAFFID = #{obStaffid,jdbcType=VARCHAR},
+      ISVA = #{isva,jdbcType=INTEGER},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where OB_ID = #{obId,jdbcType=VARCHAR}
+  </update>
+</mapper>

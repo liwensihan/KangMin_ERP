@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yidu.dao.ErpRoleModelSubordinateMapper" >
+  <resultMap id="BaseResultMap" type="com.yidu.model.ErpRoleModelSubordinate" >
+    <id column="SUB_ID" property="subId" jdbcType="VARCHAR" />
+    <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <result column="MODEL_ID" property="modelId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    SUB_ID, ROLE_ID, MODEL_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from erp_role_model_subordinate
+    where SUB_ID = #{subId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from erp_role_model_subordinate
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yidu.model.ErpRoleModelSubordinate" >
+    insert into erp_role_model_subordinate (SUB_ID, ROLE_ID, MODEL_ID
+      )
+    values (#{subId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yidu.model.ErpRoleModelSubordinate" >
+    insert into erp_role_model_subordinate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subId != null" >
+        SUB_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+      <if test="modelId != null" >
+        MODEL_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subId != null" >
+        #{subId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yidu.model.ErpRoleModelSubordinate" >
+    update erp_role_model_subordinate
+    <set >
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        MODEL_ID = #{modelId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SUB_ID = #{subId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yidu.model.ErpRoleModelSubordinate" >
+    update erp_role_model_subordinate
+    set ROLE_ID = #{roleId,jdbcType=VARCHAR},
+      MODEL_ID = #{modelId,jdbcType=VARCHAR}
+    where SUB_ID = #{subId,jdbcType=VARCHAR}
+  </update>
+</mapper>
