@@ -301,7 +301,6 @@ table = layui.table;
 	  	  	}
 		  }
 	  	  ,staEmail:function(value, item){
-	  		  if(value!=phone){
 	  			url="staff/getPhone.action";
 	    		  data={staEmail:value};
 	    		  var isv ;
@@ -314,7 +313,6 @@ table = layui.table;
 	    			  return "该用户名已存在。";
 	    		  }
 	  		  }
-	  	  }
   
 	});      
   
@@ -323,50 +321,21 @@ table = layui.table;
 	  console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
 	  console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
 	  console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-		    	  layer.confirm('确定提交吗！', function(){ 
-					url="staff/add.action";
-					data=$("#oneFrom").serialize();
-					$.post(url,data,function(m){
-						if(m.mes=="update"){
-					      var demoReload = $('#depaName1');
-					      var demoReload2 = $('#staSex1');
-					      var demoReload4 = $('#staName1');
-					      var demoReload5 = $('#roleName1');
-					      var demoReload6 = $('#annexName1');
-					      table.reload('testReload', {
-					        where: {
-					         
-					        	depaName: demoReload.val(),
-					         	staSex: demoReload2.val(),
-					         	staName: demoReload4.val(),
-					         	roleName: demoReload5.val(),
-					         	annexName: demoReload6.val()
-					        }
-					      }); 
-							layer.msg("修改成功");
-							layer.close(index);
-							table.reload('testReload');
-						}else{
-							  var demoReload = $('#depaName1');
-						      var demoReload2 = $('#staSex1');
-						      var demoReload4 = $('#staName1');
-						      var demoReload5 = $('#roleName1');
-						      var demoReload6 = $('#annexName1');
-						      table.reload('testReload', {
-						        where: {
-						         
-						        	depaName: demoReload.val(),
-						         	staSex: demoReload2.val(),
-						         	staName: demoReload4.val(),
-						         	roleName: demoReload5.val(),
-						         	annexName: demoReload6.val()
-						        }
-						      });
-						    
-							layer.msg("增加成功");
-						}
-					},"json")
-		})
+   	  layer.confirm('确定提交吗！', function(){ 
+		url="staff/add.action";
+		data=$("#oneFrom").serialize();
+		$.post(url,data,function(m){
+			if(m.mes=="update"){
+				layer.close(index);
+				table.reload('testReload');
+				layer.msg("修改成功");
+			}else{
+				layer.close(index);
+				table.reload('testReload');
+				layer.msg("增加成功");
+			}
+		},"json")
+	  })
 	  
 	  
 	  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -571,7 +540,7 @@ table = layui.table;
     <div class="layui-inline">
       <label class="layui-form-label"><span style="color:red;">*</span>手机(账号)</label>
       <div class="layui-input-inline">
-        <input name="staEmail" id="staEmail" lay-verify="staEmail" autocomplete="off" class="layui-input" type="tel">
+        <input name="staEmail" id="staEmail" lay-verify="staEmail||phone" autocomplete="off" class="layui-input" type="tel">
       </div>
     </div>
     <div class="layui-inline">
