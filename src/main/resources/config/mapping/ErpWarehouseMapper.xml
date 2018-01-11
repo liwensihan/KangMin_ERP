@@ -52,6 +52,7 @@
   	SELECT COUNT(*) FROM ERP_WAREHOUSE WHERE raw_id=#{wareId,jdbcType=VARCHAR} AND WARE_NUM>0
   </select>
   
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from erp_warehouse w
